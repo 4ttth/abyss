@@ -23,7 +23,7 @@ $players = [];
 
 
 try {
-    // Fetch ALL user data from the database using session username
+    // Fetch ALL user data from the database using session username TESTING TESTING
     if (isset($_SESSION['user']['username'])) {
         $query = "SELECT * FROM tbl_useraccount WHERE Username = :username";
         $stmt = $pdo->prepare($query);
