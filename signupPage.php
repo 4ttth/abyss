@@ -33,7 +33,7 @@
                 </div>
 
                 <form action="includes/signup.inc.php" method = "post">
-                    <!-- Email Field -->
+                    <!-- Email Field Let's try changing this one!-->
                     <div class="form-group mt-3">
                         <label class="form-label title">EMAIL</label>
                         <input type="text" name="email" class="form-control plchldr" placeholder="Enter email">
