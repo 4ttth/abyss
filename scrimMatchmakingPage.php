@@ -33,7 +33,7 @@
         <div class="container-fluid results">
             <div class="row g-3 searchResultsGrid">
                 <div id="squadList">
-                <!-- Available squads will be displayed here -->
+                <!-- Available squads will be displayed here again change for testing -->
                 </div>
             </div>
         </div>
