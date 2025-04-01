@@ -1,0 +1,627 @@
+@font-face {
+    font-family: planetKosmos;
+    src: url(../CSS/fonts/planet_kosmos/PLANK___.TTF);
+}
+
+@font-face {
+    font-family: glacialIndifference;
+    src: url(../CSS/fonts/glacial-indifference/GlacialIndifference-Regular.otf);
+}
+
+@font-face {
+    font-family: glacialIndifferenceBold;
+    src: url(../CSS/fonts/glacial-indifference/GlacialIndifference-Bold.otf);
+}
+
+
+body {
+    background-image: url('../IMG/backgrounds/squadCreationBackground.jpg');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+}
+
+strong {
+    font-family: glacialIndifferenceBold;
+}
+
+/* Intro Animation */
+.introScreen {
+    position: fixed;
+    width: 100%;
+    height: 100vh;
+    background-color: black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+
+.loadingAnimation {
+    width: 400px; 
+    height: 400px;
+    background-image: url('../IMG/essentials/loadingAnimation.gif'); 
+    background-size: cover;
+}
+
+.hiddenContent {
+    opacity: 0;
+}
+
+.showContent {
+    opacity: 1;
+    transition: opacity .5s ease-in-out;
+}
+
+.container-fluid {
+    height: auto;
+    align-items: flex-start !important;
+    justify-content: flex-start !important;
+    padding-left: 50px !important;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.content {
+    max-width:70% !important;
+    align-items: start !important;
+    margin-bottom: 30px;
+}
+
+/* Back Button */
+.backButton {
+    color: white !important;
+    font-size: 40px;
+    margin-top: 20p;
+    margin-left: 60%;
+}
+
+/* Logo & Name */
+.navbar-brand {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    text-align: left;
+}
+
+/* Logo Layer */
+.logo {
+    display: flex;
+    align-items: center;
+}
+
+.logoPicture {
+    width: 80px;
+    height: auto;
+    margin-right: 16px; 
+    animation: glowEffect 1.5s infinite alternate ease-in-out;
+}
+
+.logoText {
+    font-size: 50px;
+    color: white;
+    font-family: planetKosmos;
+    letter-spacing: 2px;
+    white-space: nowrap;
+    animation: glowEffect 1.5s infinite alternate ease-in-out;
+}
+
+/* Glow Animation */
+@keyframes glowEffect {
+    0% {
+        filter: drop-shadow(0 0 5px white); 
+    }
+    100% {
+        filter: drop-shadow(0 0 15px rgb(255, 255, 255));
+    }
+}
+
+/* Title */
+.title {
+    color: white;
+    font-family: glacialIndifferenceBold;
+    font-size: 200px;
+    margin-top: 10px;
+}
+
+/* Forms */
+.form-label {
+    display: block;
+    text-align: left;
+    font-weight: bold;
+}
+
+.form-group {
+    text-align: left;
+}
+
+.form-control::placeholder {
+    color: white !important;
+    opacity: 50% !important;
+}
+
+.form-control:focus {
+    border-color: white !important;
+    box-shadow: 0 0 10px white !important;
+    outline: none !important;
+}
+
+.plchldr {
+    font-family: glacialIndifference;
+    font-size: 18px !important;
+    color: white !important;
+    background-color: transparent !important;
+    border: 2px solid white !important;
+    border-radius: 0 !important;
+}
+
+/* Button */
+.loginButton {
+    font-size: 18px !important;
+    letter-spacing: 2px !important;
+    font-family: glacialIndifferenceBold !important;
+    color: white !important;
+    border: 2px solid white !important;
+    border-radius: 0 !important;
+    text-decoration: none !important;
+    cursor: pointer !important;
+    transition: 0.3s ease !important;
+    font-weight: bold !important;
+    margin-top: 20px;
+    z-index: 20 !important;
+    width: 200px;
+    margin-top: 35px !important;
+}
+
+.loginButton:hover {
+    background: white !important;
+    color: black !important;
+}
+
+a {
+    color: white !important;
+}
+
+/* Title */
+.titleLeft {
+    color: white;
+    font-family: glacialIndifferenceBold;
+    font-size: 50px;
+    margin-top: 30px;
+}
+
+.row.align-bottom {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between; 
+}
+
+.text-end {
+    display: flex;
+    align-items: flex-end;
+    justify-content: flex-end;
+}
+
+.dropdown-wrapper {
+    position: relative;
+    display: inline-block;
+    width: 100%;
+    margin-right: 5px !important;
+}
+
+/* Style Dropdown */
+.squadLevelDropdown {
+    font-family: glacialIndifference;
+    font-size: 12px !important;
+    color: white !important;
+    background-color: transparent !important;
+    border: 2px solid white !important;
+    border-radius: 0 !important;
+    text-transform: uppercase !important;
+    width: 100%; 
+    min-width: 150px; 
+    padding: 8px;
+    appearance: none; 
+}
+
+.squadLevelDropdown:focus,
+.squadLevelDropdown option {
+    color: white !important;
+    background-color: black !important; 
+}
+
+/* Drop Icon */
+.dropdown-icon {
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    font-size: 12px !important;
+    transform: translateY(-50%);
+    color: white;
+    pointer-events: none;
+}
+
+/* Verify Level Button */
+.verifyButton {
+    font-size: 12px !important;
+    font-family: glacialIndifferenceBold !important;
+    color: white !important;
+    border: 2px solid white !important;
+    border-radius: 0 !important;
+    text-decoration: none !important;
+    cursor: pointer !important;
+    transition: 0.3s ease !important;
+    font-weight: bold !important;
+    padding: 8px 15px;
+    white-space: nowrap;
+}
+
+.verifyButton:hover {
+    background: white !important;
+    color: black !important;
+}
+
+/* Sign-Up Button */
+.loginButton {
+    font-size: 18px !important;
+    letter-spacing: 2px !important;
+    font-family: glacialIndifferenceBold !important;
+    color: white !important;
+    border: 2px solid white !important;
+    border-radius: 0 !important;
+    text-decoration: none !important;
+    cursor: pointer !important;
+    transition: 0.3s ease !important;
+    font-weight: bold !important;
+    width: 200px;
+}
+
+.loginButton:hover {
+    background: white !important;
+    color: black !important;
+}
+
+/* Text Block - Left */
+.textBlockLeft {
+    display: flex;
+    justify-content: flex-start; 
+    align-items: center;
+    text-align: left;           
+    margin-top: 20px !important;
+}
+
+.titleLeft {
+    color: white;
+    font-family: glacialIndifferenceBold;
+    font-size: 50px;
+    line-height: 40px;
+}
+
+.subtitleLeft {
+    color: white;
+    font-family: glacialIndifference;
+    font-size: 14px;
+    text-transform: uppercase;
+}
+
+.descriptionLeft {
+    color: white;
+    font-family: glacialIndifferenceBold;
+    font-size: 14px;
+    text-transform: uppercase;
+}
+
+/* Member Profiles */
+.profiles-wrapper {
+    overflow-x: auto;
+    white-space: nowrap; 
+    padding-bottom: 10px;
+    position: relative;
+    scroll-behavior: smooth; 
+    padding-bottom: 20px;
+}
+
+
+.profiles {
+    display: flex;
+    gap: 20px;
+}
+
+.memberProfile {
+    margin-top: 20px;
+    border: 2px solid white;
+    height: 306px;
+    min-width: 220px;
+}
+
+/* Add Button */
+.addButton {
+    margin-top: 20px;
+    border: 2px solid white;
+    background-color: white;
+    height: 306px;
+    min-width: 220px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px; 
+    width: fit-content; 
+    padding: 10px 15px;
+    background: black;
+    color: white;
+    cursor: pointer;
+}
+
+.add {
+    font-size: 24px; 
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.buttonTitle {
+    color: white;
+    font-family: glacialIndifferenceBold;
+    font-size: 16px;
+    text-transform: uppercase;
+    text-align: center;
+}
+
+.role {
+    padding-left: 10px;
+    line-height: 15px;
+    color: white;
+    font-family: glacialIndifference;
+    font-size: 12px;
+    text-transform: uppercase;
+    text-align: center;
+    margin-top: 10px;
+}
+
+.IGN {
+    border-bottom: solid white;
+    padding-bottom: 10px;
+    text-align: center;
+    color: white;
+    font-family: glacialIndifferenceBold;
+    font-size: 25px;
+    line-height: 25px;
+}
+
+.detailsTitle {
+    margin-top: 10px;
+    padding-left: 10px;
+    line-height: 15px;
+    color: white;
+    font-family: glacialIndifferenceBold;
+    font-size: 14px;
+    text-transform: uppercase;
+}
+
+.detailsDescription {
+    padding-left: 10px;
+    line-height: 15px;
+    color: white;
+    font-family: glacialIndifference;
+    font-size: 14px;
+    text-transform: uppercase;
+}
+
+.heroCircles {
+    display: flex;
+    gap: 5px;
+    margin-top: 6px;
+    padding-left: 10px !important;
+
+}
+
+.circle {
+    width: 40px;  
+    height: 40px;
+    background-color: white;
+    border-radius: 50%;
+}
+
+/* Scrollbar */
+.profiles-wrapper::-webkit-scrollbar {
+    height: 8px;
+}
+
+.profiles-wrapper::-webkit-scrollbar-track {
+    background: #1a1a1a; 
+    border-radius: 0px;
+}
+
+.profiles-wrapper::-webkit-scrollbar-thumb {
+    background: white;
+    border-radius: 0px;
+}
+
+.profiles-wrapper::-webkit-scrollbar-thumb:hover {
+    background: #888;
+}
+
+/* Account Details */
+.accountUsername {
+    color: white;
+    font-family: glacialIndifferenceBold;
+    font-size: 14px;
+    line-height: 14px;
+    margin-top: 30px !important;
+}
+
+.accountNumber {
+    color: white;
+    font-family: glacialIndifference;
+    font-size: 14px;
+    text-transform: uppercase;
+    line-height: 14px;
+}
+
+.text {
+    color: white;
+    font-family: glacialIndifference;
+    font-size: 12px;
+    margin-top: 5px;
+}
+
+.logoutButton {
+    color: white;
+    background-color: transparent !important;
+    border: none !important;
+    padding: 0 !important;
+    font-family: glacialIndifference;
+    font-size: 12px;
+    margin-top: 5px;
+    text-decoration: underline;
+}
+
+/* Add Player Modal */
+.customModal {
+    background: rgba(0, 0, 0, 0.9) !important;
+    color: white !important;
+    font-family: glacialIndifference;
+    padding: 20px;
+    box-shadow: 0 0 10px white;
+}
+
+.modal-header h5 {
+    color: white;
+    font-family: glacialIndifferenceBold;
+    font-size: 50px;
+    line-height: 40px;
+    text-transform: capitalize !important;
+}
+
+.modal-footer {
+    display: flex;
+    justify-content: space-between;
+}
+
+.form-label {
+    font-family: glacialIndifferenceBold !important;
+    text-transform: uppercase !important;
+    color: white;
+    font-family: glacialIndifferenceBold;
+    font-size: 16px;
+    margin-top: 10px;
+}
+
+/* Buttons */
+.modalButtons {
+    font-size: 14px;
+    font-family: glacialIndifferenceBold;
+    background: transparent;
+    color: white;
+    border: 2px solid white;
+    text-decoration: none;
+    cursor: pointer;
+    transition: 0.3s ease;
+    font-weight: bold;
+    padding: 5px 20px;
+}
+
+.modalButtons:hover {
+    background: white;
+    color: black;
+}
+
+.customModal .modal-header,
+.customModal .modal-footer {
+    border: none !important;
+}
+
+/* Style Select Dropdown */
+.squadLevelDropdown {
+    font-family: glacialIndifference;
+    font-size: 12px !important;
+    color: white !important;
+    background-color: transparent !important;
+    border: 2px solid white !important;
+    border-radius: 0 !important;
+    text-transform: uppercase !important;
+    width: 100%;
+    min-width: 150px;
+    padding: 8px;
+    appearance: none;
+}
+
+/* Dropdown Options */
+.squadLevelDropdown:focus,
+.squadLevelDropdown option {
+    color: white !important;
+    background-color: black !important;
+}
+
+/* Hero Pool */
+.hero-pool-container {
+    display: flex;
+    align-items: center;
+    margin-top: 10px;
+}
+
+.hero-selection {
+    display: flex;
+    gap: 10px;
+    margin-left: 20px;
+}
+
+.hero-circle {
+    width: 35px;
+    height: 35px;
+    background-color: transparent;
+    border: 2px solid white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    overflow: hidden;
+}
+
+.hero-circle img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+/* Hero Pool Modal */
+.hero-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 5px !important;
+}
+
+.hero-icon {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    cursor: pointer;
+    border: solid white;
+    transition: transform 0.2s ease;
+}
+
+.hero-icon:hover {
+    transform: scale(1.1);
+}
+
+.heroModalLabel {
+    line-height: 15px;
+    color: white;
+    font-family: glacialIndifferenceBold;
+    font-size: 14px;
+    text-transform: uppercase;
+}
+
+/* Squad Veriication Modal */
+.custom-file-upload {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+#fileName {
+    font-size: 14px;
+    color: #aaa;
+}

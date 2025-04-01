@@ -1,0 +1,163 @@
+@font-face {
+    font-family: planetKosmos;
+    src: url(../CSS/fonts/planet_kosmos/PLANK___.TTF);
+}
+
+@font-face {
+    font-family: glacialIndifference;
+    src: url(../CSS/fonts/glacial-indifference/GlacialIndifference-Regular.otf);
+}
+
+@font-face {
+    font-family: glacialIndifferenceBold;
+    src: url(../CSS/fonts/glacial-indifference/GlacialIndifference-Bold.otf);
+}
+
+strong {
+    font-family: glacialIndifferenceBold;
+}
+
+.customPageBackground {
+    background-image: url('../IMG/backgrounds/loginBackground.jpg');    background-size: cover;
+    overflow-x: hidden;
+}
+
+/* Back Button */
+.backButton {
+    color: white !important;
+    font-size: 40px;
+    margin-bottom: 20px;
+    text-align: end;
+}
+
+/* Logo & Name */
+.logo {
+    display: flex;
+    align-items: end;
+    justify-content: flex-end;
+    text-align: right;
+}
+
+.navbar-brand {
+    display: flex;
+    align-items: end;
+    justify-content: flex-end;
+    text-align: right;
+}
+
+/* Logo Layer */
+.logo {
+    display: flex;
+    align-items: center;
+}
+
+.logoPicture {
+    width: 80px;
+    height: auto;
+    margin-right: 16px; 
+    animation: glowEffect 1.5s infinite alternate ease-in-out;
+}
+
+.logoText {
+    font-size: 50px;
+    color: white;
+    font-family: planetKosmos;
+    letter-spacing: 2px;
+    white-space: nowrap;
+    animation: glowEffect 1.5s infinite alternate ease-in-out;
+}
+
+/* Glow Animation */
+@keyframes glowEffect {
+    0% {
+        filter: drop-shadow(0 0 5px white); 
+    }
+    100% {
+        filter: drop-shadow(0 0 15px rgb(255, 255, 255));
+    }
+}
+
+/* Title */
+.title {
+    color: white;
+    font-family: glacialIndifferenceBold;
+    font-size: 20px;
+    margin-top: 20px;
+}
+
+/* Forms */
+.form-label {
+    display: block;
+    text-align: right;
+    font-weight: bold;
+}
+
+.form-group {
+    text-align: right;
+}
+
+.form-control::placeholder {
+    color: white !important;
+    opacity: 50% !important;
+}
+
+.form-control:focus {
+    border-color: white !important;
+    box-shadow: 0 0 10px white !important;
+    outline: none !important;
+}
+
+.plchldr {
+    font-family: glacialIndifference;
+    font-size: 18px !important;
+    color: white !important;
+    background-color: transparent !important;
+    border: 2px solid white !important;
+    border-radius: 0 !important;
+}
+
+/* Eye Logo */
+.eye {
+    color: white !important;
+    border: 2px solid  white !important;
+    border-radius: 0 !important;
+}
+
+/* Button */
+.loginButton {
+    font-size: 30px !important;
+    padding: 0px 70px !important;
+    letter-spacing: 2px !important;
+    font-family: glacialIndifferenceBold !important;
+    color: white !important;
+    border: 2px solid white !important;
+    border-radius: 0 !important;
+    text-decoration: none !important;
+    cursor: pointer !important;
+    transition: 0.3s ease !important;
+    font-weight:bold !important;
+    margin-top: 20px;
+    z-index: 20 !important;
+}
+
+.loginButton:hover {
+    background: white !important;
+    color: black !important;
+}
+
+/* Signup Message */
+.button {
+    justify-content: flex-end;
+    text-align: right;
+}
+
+.text {
+    color: white;
+    font-family: glacialIndifference;
+    margin-top: 5px;
+    text-align: end;
+}
+
+a {
+    color: white !important;
+}

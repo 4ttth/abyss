@@ -1,0 +1,965 @@
+@font-face {
+    font-family: planetKosmos;
+    src: url(../CSS/fonts/planet_kosmos/PLANK___.TTF);
+}
+
+@font-face {
+    font-family: glacialIndifference;
+    src: url(../CSS/fonts/glacial-indifference/GlacialIndifference-Regular.otf);
+}
+
+@font-face {
+    font-family: glacialIndifferenceBold;
+    src: url(../CSS/fonts/glacial-indifference/GlacialIndifference-Bold.otf);
+}
+
+@font-face {
+    font-family: gameCube;
+    src: url(../CSS/fonts/gamecuben/GameCube.ttf);
+}
+
+/* Entire Page */
+body {
+    overflow-x: hidden; 
+    width: 100vw;
+}
+
+.customPageBackground {
+    background-color: black;
+}
+
+strong {
+    font-family: glacialIndifferenceBold;
+}
+
+/* Intro Animation */
+.introScreen {
+    position: fixed;
+    width: 100%;
+    height: 100vh;
+    background-color: black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+
+.glowingFoxIntro {
+    width: 200px; 
+    height: 200px;
+    background-image: url('../IMG/essentials/whiteVer.PNG'); 
+    background-size: cover;
+    opacity: 0;
+    animation: foxAnimation 3s ease-in-out forwards;
+}
+
+@keyframes foxAnimation {
+    0% { opacity: 0; transform: scale(0.8); }
+    50% { opacity: 1; transform: scale(1); filter: drop-shadow(0 0 15px white); }
+    100% { opacity: 0; transform: scale(1.2); }
+}
+
+.hiddenContent {
+    opacity: 0;
+}
+
+.showContent {
+    opacity: 1;
+    transition: opacity 1s ease-in-out;
+}
+
+/* Guin Background */
+.topBackground {
+    background: url('../IMG/backgrounds/guinBackground.jpg') no-repeat center center;
+    background-size: cover;
+    background-attachment: scroll; 
+    width: 100%;
+    height: auto; 
+    min-height: 100vh;
+    margin-top: 40px;
+    opacity: 100%;
+    z-index: 0;
+    position: relative;
+}
+
+/* Navigation Bar - Logo Layer */
+/* Logo & Name */
+.navbar-brand {
+    display: flex;
+    align-items: center;
+}
+
+.logoLayer {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+.logoPicture {
+    width: 80px;
+    height: auto;
+    margin-right: 16px; 
+}
+
+.logoText {
+    font-size: 50px;
+    padding-top: 20px;
+    color: white; 
+    font-family: planetKosmos;
+    margin-right: 40px;
+    letter-spacing: 2px;
+}
+
+/* Search Bar */
+.searchBar {
+    display: flex;
+    align-items: center;
+    border: 1px solid white; 
+    border-radius: 30px;
+    padding: 5px 15px;
+    background: transparent; 
+    width: 90vw; 
+    height: 40px;
+    position: relative;
+    margin-left: 5px;
+}
+
+/* Input Field */
+.searchInput {
+    border: none;
+    background: transparent;
+    outline: none;
+    width: 100%;
+    color: white;
+    font-size: 16px;
+    padding: 5px;
+    font-family: glacialIndifference;
+    font-size: 18px !important;
+}
+
+/* Search Button */
+.searchButton {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 5px;
+    position: absolute;
+    right: 10px;
+}
+
+/* Search Button Icon */
+.searchButton img {
+    width: 25px;
+    height: 25px;
+}
+
+/* Placeholder Color */
+.searchInput::placeholder {
+    color: rgba(255, 255, 255, 0.7);
+    font-family: glacialIndifference;
+    font-size: 18px !important;
+}
+
+/* Account Logo Placeholder */
+.accountLogo {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-left: 20px !important;
+}
+
+.accountLogo i {
+    font-size: 32px; 
+    color: white;
+}
+
+/* Hover effect */
+.accountLogo:hover {
+    size: 120% !important;
+}
+
+
+/* Navigation Bar - Options Layer */
+.navigationBar {
+    background-color: black;
+    color: white;
+    position: fixed;
+    padding-top:20px;
+    padding-left: 20px !important;
+    font-family: glacialIndifferenceBold;
+    font-size: 18px;
+    letter-spacing: 3px;
+    padding-bottom: 5px;
+    box-shadow: 0px 0px 100px rgba(0, 0, 0, 100%);
+    z-index: 500;
+}
+
+.navigationBar .nav-link {
+    color: white;
+    margin-right: 100px;
+}
+
+.nav-link.active {
+    color: white !important;
+}
+
+.nav-link.active {
+    color: white !important;
+    text-shadow: 
+        0 0 10px rgba(255, 255, 255),  
+        0 0 15px rgba(255, 255, 255),  
+        0 0 20px rgba(255, 255, 255);
+    font-weight: bold;
+}
+
+.nav-link:hover {
+    color: white !important;
+    text-shadow: 
+        0 0 10px rgba(255, 255, 255),  
+        0 0 15px rgba(255, 255, 255),  
+        0 0 20px rgba(255, 255, 255);
+    font-weight: bold;
+}
+
+
+/* Content 1 */
+.abyssContainer {
+    position: absolute;
+    top: 45%;  
+    right: 10%;  
+    transform: translateY(-50%);
+    text-align: center;
+}
+
+.customSpace {
+    margin-right: 5px;
+}
+
+.abyssText {
+    font-size: 150px;  
+    font-family: planetKosmos;  
+    color: white;  
+    text-transform: uppercase;  
+    text-shadow: 
+        0 0 5px rgba(255, 255, 255, 0.4),  
+        0 0 10px rgba(255, 255, 255, 0.2),  
+        0 0 15px rgba(255, 255, 255, 0.2);  
+    animation: glowAnimation 1s infinite alternate ease-in-out;
+    z-index: -1 !important;
+}
+
+@keyframes glowAnimation {
+    0% {
+        text-shadow: 
+            0 0 5px rgba(255, 255, 255, 0.4),  
+            0 0 10px rgba(255, 255, 255, 0.2),  
+            0 0 15px rgba(255, 255, 255, 0.2);
+    }
+    100% {
+        text-shadow: 
+            0 0 8px rgba(255, 255, 255, 0.5),  
+            0 0 16px rgba(255, 255, 255, 0.4),  
+            0 0 24px rgba(255, 255, 255, 0.3);
+    }
+}
+
+/* Sign-up Button */
+.signUpButton {
+    position: absolute;
+    padding: 0px 70px;
+    font-size: 30px;
+    letter-spacing: 2px;
+    font-family: glacialIndifferenceBold;
+    background: transparent;
+    color: white;
+    border: 2px solid white;
+    text-decoration: none;
+    cursor: pointer;
+    transition: 0.3s ease;
+    font-weight:bold;
+    top: 50%;
+    z-index: 10 !important; 
+    right: 7.5%;
+}
+
+/* Button Hover Effect */
+.signUpButton:hover {
+    background: white;
+    color: black;
+}
+
+/* Abyss Content */
+.abyssContent {
+    color: white;
+    position: absolute;
+    z-index: 9;
+    right: 7.5%;
+    top: 65%;
+    font-family: glacialIndifferenceBold;
+    text-transform: uppercase;
+    width: 450px;
+    font-size: 15px;
+    line-height: 17px;
+}
+
+.loginText {
+    color: white;
+    position: absolute;
+    z-index: 9;
+    right: 7.5%;
+    top: 55.6%;
+    width: 270px;
+    font-family: glacialIndifference;
+}
+
+.loginButtonEntry {
+    color: white;
+}
+
+/* Decorative Divider */
+.divider {
+    height: 100px;
+}
+
+.decoDivide {
+    display: flex;
+    width: 100%;
+    position: absolute;
+}
+
+.decoFoxDivide {
+    display: flex;
+    width: 100%;
+    position: absolute;
+    align-items: center;
+    justify-content: center;
+}
+
+.decoLine {
+    width: 45%;
+    height: 0.5px;
+    margin-top: 4.2%;
+    background-color: white; 
+    margin-right: 10px; 
+    position: absolute;
+}
+
+.glowingFox {
+    width: 100px; 
+    height: 100px;
+    margin-top: 20px !important;
+    background: url('../IMG/essentials/whiteVer.PNG') no-repeat center center;
+    background-size: contain;
+    animation: glowEffect 1s infinite alternate ease-in-out;
+}
+
+/* Optional Glow Animation */
+@keyframes glowEffect {
+    0% {
+        filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.8));
+    }
+    100% {
+        filter: drop-shadow(0 0 15px rgba(255, 255, 255, 1)); /* Orange glow */
+    }
+}
+
+.codeDeco {
+    color: white;
+    font-family: glacialIndifference;
+    position: absolute;
+    margin-top: 3.4%;
+    background-color: black !important;
+    padding: 0px 15px 0px 80px;
+    z-index: 10;
+}
+
+.decoBox {
+    height: 15px;
+    width: 15px;
+    border: solid white;
+    background-color: white;
+    position: absolute;
+    z-index: 11;
+    margin-top: 3.7%;
+    margin-left: 35px !important;
+}
+
+/* Events and Leaderboard Layer */
+/* Events */
+.eventsLeaderboard {
+    display: flex;
+    height: 1150px;
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+/* Skin Event */
+.skinBlocks {
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: 50px !important;
+    margin-left: 50px !important;
+}
+
+.skinBlock {
+    padding: 5px;
+}
+
+.skinBlock img {
+    height: auto !important;
+    width: 300px !important; 
+    margin: 5px; 
+}
+
+/* Text Block - Center */
+.textBlockCenter {
+    display: flex;
+    justify-content: center; 
+    align-items: center;
+    text-align: center;
+    margin-top: 50px !important;
+    margin-bottom: 120px !important;
+    margin-left: 50px !important;
+}
+
+.titleCenter {
+    position: absolute;
+    color: white;
+    font-family: glacialIndifferenceBold;
+    font-size: 50px;
+    padding-left: 50px !important;
+}
+
+.subtitleCenter {
+    position: absolute;
+    color: white;
+    font-family: glacialIndifferenceBold;
+    font-size: 14px;
+    padding-left: 50px !important;
+    margin-top: 60px !important;
+    text-transform: uppercase;
+}
+
+.descriptionCenter {
+    position: absolute;
+    color: white;
+    font-family: glacialIndifference;
+    font-size: 14px;
+    padding-left: 50px !important;
+    margin-top: 90px !important;
+    text-transform: uppercase;
+}
+
+/* YouTube Link */
+.videoCard {
+    margin-top: 30px !important;
+    width: 96.5%;              
+    height: 500px;           
+    margin-left: 50px !important;
+    background-color: black;   
+    border-radius: 8px;
+    overflow: hidden;
+    margin: 20px auto;
+}
+  
+.videoCard a {
+    display: block;
+    width: 100%;
+    height: 100%;
+    text-decoration: none;
+    color: #fff;
+}
+
+.thumbnail {
+    width: 100%;
+    height: 100%;
+    position: relative;    
+    background-image: url("../IMG/essentials/youtubeLink2.png");
+    background-size: cover;
+    background-position: center; 
+}
+
+/* Leaderboards */
+/* Text Block - Right */
+.textBlockRight {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    text-align: right; 
+    margin-top: 60px !important;
+    margin-bottom: 120px !important;
+    width: 100vh !important;
+    margin-right: 20px !important;
+}
+
+.titleRight {
+    position: absolute;
+    color: white;
+    font-family: glacialIndifferenceBold;
+    font-size: 50px;
+    padding-right: 30px !important;
+}
+
+.subtitleRight {
+    position: absolute;
+    color: white;
+    font-family: glacialIndifferenceBold;
+    font-size: 14px;
+    padding-right: 30px !important;
+    margin-top: 60px !important;
+    text-transform: uppercase;
+}
+
+.descriptionRight {
+    position: absolute;
+    color: white;
+    font-family: glacialIndifference;
+    font-size: 14px;
+    padding-right: 30px !important;
+    margin-top: 90px !important;
+    text-transform: uppercase;
+}
+
+/* View More Button */
+.viewMoreButton {
+    position: absolute;
+    font-size: 14px;
+    font-family: glacialIndifferenceBold;
+    background: transparent;
+    color: white;
+    border: 2px solid white;
+    text-decoration: none;
+    cursor: pointer;
+    transition: 0.3s ease;
+    font-weight:bold;
+    padding: 0px !important;
+    width: 100px !important;
+    margin-top: 150px !important;
+}
+
+/* Button Hover Effect */
+.viewMoreButton:hover {
+    background: white;
+    color: black;
+}
+
+/* Leaderboards */
+/* Leaderboard Box Container */
+.leaderboardBox {
+    border: 2px solid white;
+    padding: 20px;
+    color: white;
+    font-family: glacialIndifferenceBold;
+}
+
+/* Each Row in the Box */
+.leaderboardRow {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 17px;     
+    padding: 10px;
+}
+
+/* Header Row */
+.leaderboardHeader {
+    font-weight: bold;
+    text-transform: uppercase;
+    border-bottom: 1px solid white;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+}
+
+/* Rank Column */
+.leaderboardRank {
+    width: 40px;
+    text-align: center;
+    font-size: 30px;
+}
+
+/* Squad Column */
+.leaderboardSquad {
+    flex: 1;       
+    display: flex;
+    align-items: center;
+    padding-left: 50px;
+    font-size: 30px;
+}
+
+/* Points Column */
+.leaderboardPoints {
+    display: flex;
+    justify-content: flex-start;
+    font-family: gameCube;
+    align-items: center;
+    width: 250px;
+    font-size: 20px;
+}
+
+/* Squad Logo */
+.squadLogo {
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+    margin-right: 30px;
+    border-radius: 50%;
+}
+
+/* Abyss Points */
+.foxIcon {
+    width: 40px;
+    height: 40px;
+    object-fit: contain;
+    margin-right: 15px;
+    vertical-align: middle;
+}
+
+.squadNameContainer {
+    display: flex;
+    flex-direction: column; 
+    gap: 2px; 
+    margin-left: 10px;
+}
+
+.shortName,
+.fullName {
+    margin: 0;
+    padding: 0;
+    line-height: 1;
+}
+
+.shortName {
+    font-family: glacialIndifferenceBold;
+    font-size: 20px;
+    text-transform: uppercase;
+    margin-bottom: 0 !important;
+}
+
+.fullName {
+    font-family: glacialIndifference;
+    font-size: 18px;
+    text-transform: uppercase;
+    margin-top: 0 !important;
+}
+
+/* Simple Divider */
+.simpleDivider {
+    margin-top: 50px !important;
+}
+
+.instructionsContainer {
+    margin-left: 15px !important;
+}
+
+/* Text Block - Left */
+.textBlockLeft {
+    display: flex;
+    justify-content: flex-start; 
+    align-items: center;
+    text-align: left;           
+    margin-top: 30px !important;
+    margin-bottom: 120px !important;
+    width: 100vh !important;
+}
+
+.titleLeft {
+    position: absolute;
+    color: white;
+    font-family: glacialIndifferenceBold;
+    font-size: 50px;
+    padding-left: 50px !important;
+    margin-top: 100px !important;
+}
+
+.subtitleLeft {
+    position: absolute;
+    color: white;
+    font-family: glacialIndifference;
+    font-size: 14px;
+    padding-left: 50px !important;
+    margin-top: 160px !important;
+    text-transform: uppercase;
+}
+
+.descriptionLeft {
+    position: absolute;
+    color: white;
+    font-family: glacialIndifference;
+    font-size: 14px;
+    padding-left: 50px !important;
+    margin-top: 43px !important;
+    text-transform: uppercase;
+}
+
+/* Decorative Divider - Right*/
+.decoDivideRight {
+    display: flex;
+    justify-content: flex-end;
+    width: 100%;
+    position: absolute;
+}
+
+.codeDecoRight {
+    color: white;
+    font-family: glacialIndifference;
+    position: absolute;
+    margin-top: 3.4%;
+    background-color: black !important;
+    padding: 0px 100px 0px 15px;
+    z-index: 10;
+    margin-right: 100px;
+}
+
+.decoLineRight {
+    width: 83%;
+    height: 0.5px;
+    margin-top: 4.2%;
+    background-color: white; 
+    margin-right: 15px; 
+    position: absolute;
+}
+
+.decoBoxRight {
+    height: 15px;
+    width: 15px;
+    background-color: white;
+    position: absolute;
+    z-index: 11;
+    margin-top: 3.7%;
+    margin-left: 35px !important;
+    margin-right: 15px !important;
+}
+
+/* Instructions */
+.instructions {
+    height: 500px !important;
+}
+
+.instructionTitle {
+    font-size: 20px;
+}
+
+.instructionsOne {
+    font-family: glacialIndifference;
+    text-transform: uppercase;
+    color: white;
+    font-size: 14px;
+    line-height: 16px;
+    text-align: right;
+    padding-right: 80px;
+    margin-left: 20px !important;
+    margin-bottom: 50px !important;
+}
+
+.demoOne {
+    background-image: url('../IMG/essentials/instructionOne.png');
+    background-size: cover;
+    background-position: center;
+    width: 360px;
+    height: 270px; 
+    margin-left: 18px !important;
+    z-index: 20 !important;
+}
+
+.instructionsTwo {
+    font-family: glacialIndifference;
+    text-transform: uppercase;
+    color: white;
+    font-size: 14px;
+    line-height: 16px;
+    text-align: left;
+    width: 376px;
+    padding-left: 20px;
+    margin-top: 40px !important;
+}
+
+.demoTwo {
+    background-image: url('../IMG/essentials/instructionTwo.png'); 
+    background-size: cover; 
+    background-position: center; 
+    width: 376px;
+    height: 305px;       
+    z-index: -1 !important;
+}
+
+.instructionsThree {
+    font-family: glacialIndifference;
+    text-transform: uppercase;
+    color: white;
+    font-size: 14px;
+    line-height: 16px;
+    text-align: left;
+    padding: 20px;
+    width: 380px;
+}
+
+.demoThree {
+    background-image: url('../IMG/essentials/instructionThree.png'); 
+    background-size: cover;  
+    background-position: center; 
+    width: 380px;
+    height: 300px;    
+}
+
+.instructionsFour {
+    font-family: glacialIndifference;
+    text-transform: uppercase;
+    color: white;
+    font-size: 14px;
+    line-height: 16px;
+    text-align: left;
+    padding: 20px;
+    margin-right: 30px !important;
+    width: 355px;
+    padding-left: 20px;
+}
+
+.demoFour {
+    background-image: url('../IMG/essentials/instructionFour.png'); 
+    background-size: cover;  
+    background-position: center; 
+    width: 355px;
+    height: 280px;    
+}
+
+/* Advertisment */
+.advertisement {
+    height: 160px;
+    margin-bottom: 20px;
+    margin-top: 50px !important;
+    display: flex;
+    justify-content: flex-end;
+    width: 100%;
+}
+
+.adIMG {
+    height: 120px;
+    width: auto;
+}
+
+/* Modals */
+body.modal-open {
+    position: fixed !important;
+    width: 100% !important;
+    overflow: hidden !important; 
+    padding-right: 0 !important; 
+    border-radius: 0 !important;
+}
+
+.modal-backdrop {
+    background-color: rgba(0, 0, 0, 100) !important;
+}
+
+.modalIcon {
+    display: flex;
+    align-items: center; 
+    justify-content: center; 
+    width: 100%; 
+    text-align: center; 
+    border-bottom: 0px solid rgba(0, 0, 0, 0%)!important; 
+    padding: 10px 0; 
+}
+
+/* Modal Background Cover */
+.modal-content {
+    background: black !important;
+    color: black !important; 
+    text-align: center;
+}
+
+.modal-body button {
+    font-size: 18px;
+    padding: 10px;
+    border-radius: 5px;
+    letter-spacing: 2px;
+    font-family: glacialIndifferenceBold;
+    background: transparent;
+    color: white;
+    border: 2px solid white;
+    border-radius: 0;
+    text-decoration: none;
+    cursor: pointer;
+    transition: 0.3s ease;
+    font-weight:bold;
+}
+
+.modal-body button:hover {
+    background: white;
+    color: black;
+}
+
+.click-outside-text {
+    font-size: 12px;
+    font-family: glacialIndifference;
+    opacity: 50%;
+    color: white;
+    margin-top: 10px;
+}
+
+/* Footer */
+footer .col-12 {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.aboutUsTop {
+    font-family: glacialIndifferenceBold;
+    text-transform: uppercase;
+    color: white;
+    font-size: 14px;
+    line-height: 16px;
+    text-align: center;
+    padding: 20px;
+    width: 650px;
+    margin-top: 50px;
+    padding: 0 !important;
+}
+
+.aboutUsBot {
+    font-family: glacialIndifference;
+    text-transform: uppercase;
+    color: white;
+    font-size: 14px;
+    line-height: 16px;
+    text-align: center;
+    padding: 20px;
+    width: 650px;
+    margin-top: 10px;
+    padding: 0 !important;
+}
+
+.socialMediaIcons {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 45px;
+    gap: 50px;
+}
+
+.socialMediaIcons i {
+    color: white;
+    font-size: 2rem; 
+    transition: transform 0.3s ease, color 0.3s ease; 
+}
+
+.socialMediaIcons i:hover {
+    transform: scale(1.2); 
+    color: #f0f0f0; 
+}
+
+.footIcon {
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
