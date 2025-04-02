@@ -31,17 +31,13 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     try {
         $pdo->beginTransaction();
 
-        // Get hero paths
-        $heroPaths = [];
-        foreach ($heroNames as $heroName) {
-            if (!empty($heroName)) {
-                $stmt = $pdo->prepare("SELECT Path FROM tbl_heroimages WHERE Hero_Name = ?");
-                $stmt->execute([$heroName]);
-                $heroPaths[] = $stmt->fetchColumn() ?? null;
-            } else {
-                $heroPaths[] = null;
-            }
-        }
+        // Get hero names directly from form submission
+        $hero1 = trim($_POST['Hero_1']);
+        $hero2 = trim($_POST['Hero_2']);
+        $hero3 = trim($_POST['Hero_3']);
+
+        // Assign hero names directly
+        $heroNames = [$hero1, $hero2, $hero3];
 
         // Insert player
         $sql = "INSERT INTO tbl_playerprofile (
@@ -49,7 +45,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                     Current_Rank, Current_Star, Highest_Rank, Highest_Star, Role,
                     Hero_1, Hero_2, Hero_3
                 ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-        
+
         $stmt = $pdo->prepare($sql);
         $stmt->execute([
             $_SESSION['user']['Squad_ID'],
@@ -61,17 +57,16 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             $highestRank,
             $highestStar,
             $role,
-            $heroPaths[0],
-            $heroPaths[1],
-            $heroPaths[2]
+            $hero1,  
+            $hero2,
+            $hero3
         ]);
 
         $pdo->commit();
-        
+
         $_SESSION['success'] = "Player added successfully!";
         header("Location: ../squadCreation.php");
         exit();
-
     } catch (PDOException $e) {
         $pdo->rollBack();
         $_SESSION['error'] = "Error adding player: " . $e->getMessage();
