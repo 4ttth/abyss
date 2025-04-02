@@ -1,7 +1,5 @@
 <?php
 session_start();
-$formData = $_SESSION['form_data'] ?? [];
-unset($_SESSION['form_data']);
 require_once 'includes/dbh.inc.php';
 
 // Initialize user data from session
@@ -30,10 +28,11 @@ try {
 $verificationStatus = 'Pending';
 if (isset($_SESSION['user']['Squad_ID']) && !empty($_SESSION['user']['Squad_ID'])) {
     try {
-        $stmt = $pdo->prepare("SELECT Status FROM tbl_verificationrequests WHERE Squad_ID = ? ORDER BY Date_Submitted DESC LIMIT 1");
+        $stmt = $pdo->prepare("SELECT * FROM tbl_verificationrequests WHERE Squad_ID = ? ORDER BY Date_Submitted DESC LIMIT 1");
         $stmt->execute([$_SESSION['user']['Squad_ID']]);
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
         $verificationStatus = $result['Status'] ?? 'Not Submitted';
+        $verificationLevel = $result['Squad_Level'] ?? 'Amateur';
     } catch (PDOException $e) {
         // Handle error if needed
     }
@@ -180,17 +179,22 @@ if (isset($_SESSION['user']['Squad_ID'])) {
                     </div>
 
                     <!-- Title -->
+                    <?php if ($verificationStatus === 'Pending') : ?>
                     <div class="titleLeft">
                         CREATE YOUR SQUAD PROFILE
                     </div>
-
+                    <?php else : ?>
+                        <div class="titleLeft">
+                        VERIFY YOUR SQUAD LEVEL
+                    </div>
+                    <?php endif;?>
                     <form action="includes/squadcreate.inc.php" method="post">
+                        <?php if ($verificationStatus === 'Pending') : ?>
                         <div class="row">
                             <!-- Squad Name Field -->
                             <div class="form-group mt-3 col-8">
                                 <label class="form-label title">SQUAD NAME</label>
                                 <input type="text" name="Squad_Name" class="form-control plchldr"
-                                    value="<?= htmlspecialchars($formData['Squad_Name'] ?? '') ?>"
                                     placeholder="Enter Squad Name">
                             </div>
 
@@ -198,7 +202,6 @@ if (isset($_SESSION['user']['Squad_ID'])) {
                             <div class="form-group mt-3 col-4">
                                 <label class="form-label title">SQUAD ACRONYM</label>
                                 <input type="text" name="Squad_Acronym" class="form-control plchldr"
-                                    value="<?= htmlspecialchars($formData['Squad_Acronym'] ?? '') ?>"
                                     placeholder="Enter Squad Acronym">
                             </div>
                         </div>
@@ -207,27 +210,28 @@ if (isset($_SESSION['user']['Squad_ID'])) {
                         <div class="form-group mt-3">
                             <label class="form-label title">SQUAD DESCRIPTION</label>
                             <input type="text" name="Squad_Description" class="form-control plchldr"
-                                value="<?= htmlspecialchars($formData['Squad_Description'] ?? '') ?>"
                                 placeholder="Enter Squad Description">
                         </div>
-
                         <div class="row align-items-center">
                             <!-- Squad Level Field -->
                             <div class="form-group mt-3 col-4">
                                 <label class="form-label title">SQUAD LEVEL</label>
                                 <div class="verifyLevel d-flex align-items-center">
                                     <!-- Dropdown with Caret -->
+                                    <?php if (!($verificationStatus === 'Pending')) : ?>
                                     <div class="dropdown-wrapper">
-                                        <select name="Squad_Level" class="form-control plchldr squadLevelDropdown" <?= ($verificationStatus === 'Pending') ? 'disabled' : '' ?>>
+                                        <select name="Squad_Level" class="form-control plchldr squadLevelDropdown">
                                             <option value="Amateur">Amateur</option>
                                             <option value="Collegiate">Collegiate</option>
                                             <option value="Professional">Professional</option>
                                         </select>
                                         <i class="bi bi-caret-down-fill dropdown-icon"></i>
                                     </div>
+                                    <?php endif; ?>
 
                                     <?php if ($verificationStatus === 'Pending') : ?>
-                                        <div class="text-muted ms-2">Verification Pending</div>
+                                        <div class="alert alert-warning">Verification Pending - <?= $verificationLevel ?> Level</div>
+                                        <input type="hidden" name="Squad_Level" class="form-control plchldr" value="<?= $verificationLevel ?>">
                                     <?php else : ?>
                                         <button type="button" class="btn verifyButton" data-bs-toggle="modal" data-bs-target="#squadVerificationModal">
                                             VERIFY
@@ -235,14 +239,45 @@ if (isset($_SESSION['user']['Squad_ID'])) {
                                     <?php endif; ?>
                                 </div>
                             </div>
+                        <?php else : ?>
+                        <div class="row align-items-center">
+                            <!-- Squad Level Field -->
+                            <div class="form-group mt-3 col-4">
+                                <label class="form-label title">SQUAD LEVEL</label>
+                                <div class="verifyLevel d-flex align-items-center">
+                                    <!-- Dropdown with Caret -->
+                                    <?php if (!($verificationStatus === 'Pending')) : ?>
+                                    <div class="dropdown-wrapper">
+                                        <select name="Squad_Level" class="form-control plchldr squadLevelDropdown">
+                                            <option value="Amateur">Amateur</option>
+                                            <option value="Collegiate">Collegiate</option>
+                                            <option value="Professional">Professional</option>
+                                        </select>
+                                        <i class="bi bi-caret-down-fill dropdown-icon"></i>
+                                    </div>
+                                    <?php endif; ?>
+
+                                    <?php if ($verificationStatus === 'Pending') : ?>
+                                        <div class="alert alert-warning">Verification Pending - <?= $verificationLevel ?> Level</div>
+                                        <input type="hidden" name="Squad_Level" class="form-control plchldr" value="<?= $verificationLevel ?>">
+                                    <?php else : ?>
+                                        <button type="button" class="btn verifyButton" data-bs-toggle="modal" data-bs-target="#squadVerificationModal">
+                                            VERIFY
+                                        </button>
+                                    <?php endif; ?>
+                                </div>
+                            </div>
+                            <?php endif; ?>
 
                             <!-- Empty Column for Spacing -->
                             <div class="col-4"></div>
 
                             <!-- Signup Button -->
                             <div class="col-4 text-end mt-3">
+                            <?php if ($verificationStatus === 'Pending') : ?>
                                 <form action="includes/squadcreate.inc.php" method="post">
                                     <button type="submit" class="btn loginButton">CREATE SQUAD</button>
+                                    <?php endif; ?>
                                 </form>
                             </div>
                         </div>

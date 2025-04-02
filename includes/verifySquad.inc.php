@@ -41,11 +41,10 @@ if (isset($_FILES['Proof_File']) && $_FILES['Proof_File']['error'] === UPLOAD_ER
 
 // Insert into verification requests
 try {
-    $stmt = $pdo->prepare("INSERT INTO tbl_verificationrequests (Squad_ID, Squad_Name, Squad_Level, Proof_Type, Proof_File, Status) VALUES (?, ?, ?, ?, ?, 'Pending')");
-    $stmt->execute([$squad_id, $squad_id, $squad_level, $proof_type, $proof_file]);
+    $stmt = $pdo->prepare("INSERT INTO tbl_verificationrequests (Squad_ID, Squad_Level, Proof_Type, Proof_File, Status) VALUES (?, ?, ?, ?, 'Pending')");
+    $stmt->execute([$squad_id, $squad_level, $proof_type, $proof_file]);
 
     $_SESSION['success'] = "Verification request submitted successfully!";
-    $_SESSION['form_data'] = $_POST;
     header("Location: ../squadCreation.php");
     exit();
 } catch (PDOException $e) {
