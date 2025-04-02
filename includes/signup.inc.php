@@ -43,8 +43,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
         // IF ERROR, BABALIK SA INDEX (Need ng Prompt)
         if ($errors) {
-            $_SESSION["error_signup"] = $errors;
-            header("Location: ../index.php");
+            $_SESSION["errors_signup"] = $errors;
+            header("Location: ../signupPage.php");
             die();
         }
 

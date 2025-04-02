@@ -17,7 +17,7 @@ function get_username(object $pdo, string $username) {
 
 
 function get_email(object $pdo, string $email) {
-    $query= "SELECT Email_Address FROM tbl_useraccount WHERE Username = :email;";
+    $query = "SELECT Email_Address FROM tbl_useraccount WHERE Email_Address = :email;";
     $stmt = $pdo->prepare($query);
     $stmt->bindParam(":email", $email);
     $stmt->execute();  
