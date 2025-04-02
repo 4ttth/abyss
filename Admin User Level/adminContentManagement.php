@@ -53,7 +53,7 @@ if (!$result) {
             <!-- Vertical Nav Links -->
             <ul class="nav flex-column">
                 <li class="nav-item firstItem">
-                    <a class="nav-link" href="adminIndex.html">
+                    <a class="nav-link" href="adminIndex.php">
                         HOME
                     </a>
                 </li>

@@ -121,7 +121,7 @@ try {
                     <!-- Logo Layer -->
                     <div class="logoLayer">
                         <!-- Logo and Name -->
-                        <a class="navbar-brand" href="userHomepage.html">
+                        <a class="navbar-brand" href="userHomepage.php">
                             <img src="IMG/essentials/whiteVer.PNG" class="logoPicture" alt="ABYSS">
                             <div class="logoText">abyss</div>
                         </a>
@@ -148,7 +148,7 @@ try {
                    
                     <ul class="nav">
                         <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" href="userHomepage.html">HOME</a>
+                            <a class="nav-link active" aria-current="page" href="userHomepage.php">HOME</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="          ">LEADERBOARDS</a>
@@ -376,7 +376,7 @@ try {
 
 
                     <div class="footIcon">
-                        <a class="navbar-brand" href="index.html">
+                        <a class="navbar-brand" href="index.php">
                             <img src="IMG/essentials/whiteVer.PNG" class="logoPicture" alt="ABYSS">
                             <div class="logoText">abyss</div>
                         </a>

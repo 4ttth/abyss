@@ -41,7 +41,7 @@ if (!in_array($_SESSION['user_role'], ['Admin'])) {
             <!-- Vertical Nav Links -->
             <ul class="nav flex-column">
                 <li class="nav-item firstItem">
-                    <a class="nav-link active" href="adminIndex.html">
+                    <a class="nav-link active" href="adminIndex.php">
                         HOME
                     </a>
                 </li>

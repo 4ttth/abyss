@@ -45,7 +45,7 @@ $result = $conn->query($sql);
             <!-- Vertical Nav Links -->
             <ul class="nav flex-column">
                 <li class="nav-item firstItem">
-                    <a class="nav-link" href="modIndex.html">
+                    <a class="nav-link" href="modIndex.php">
                         HOME
                     </a>
                 </li>
