@@ -139,3 +139,6 @@ Also modified the sample code in all iterations for squadCreation.php:
 ```<img src="IMG/hero/Tank/tnk-1.png" class="hero-icon" onclick="selectHero(this)">``` 
 to:
 ```<img src="IMG/hero/Tank/tnk-1.png" class="hero-icon" data-hero-name="Tigreal" onclick="selectHero(this)">```
+
+# April 2, 2025 : 3:29 PM
+Dropped column `Squad_Name` in ```tbl_verificationrequests``` since it only copies the `Squad_ID` upon entering verification.
