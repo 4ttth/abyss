@@ -10,8 +10,9 @@
 > * When clicking on 'verify' after the modal, the fields on the squad profile were left on blank
 > * Upon clicking on adding heroes per player, the backdrop seems to replicate itself.
 
-> ## April 2, 2025 : 1:00 PM
-> New SQL Statements for tbl_heroimages:
+## April 2, 2025 : 1:00 PM
+New SQL Statements for tbl_heroimages:
+>
 > INSERT INTO `tbl_heroimages`(`Hero_Name`, `Hero_Role`, `Path`) VALUES ('Franco','Tank','IMG/hero/Tank/tnk-3.png');
 > INSERT INTO `tbl_heroimages`(`Hero_Name`, `Hero_Role`, `Path`) VALUES ('Akai','Tank','IMG/hero/Tank/tnk-2.png');
 > INSERT INTO `tbl_heroimages`(`Hero_Name`, `Hero_Role`, `Path`) VALUES ('Hylos','Tank','IMG/hero/Tank/tnk-4.png');
@@ -30,6 +31,7 @@
 > INSERT INTO `tbl_heroimages`(`Hero_Name`, `Hero_Role`, `Path`) VALUES ('Edith','Tank','IMG/hero/Tank/tnk-17.png');
 > 
 > -- Fighters
+>
 > INSERT INTO `tbl_heroimages`(`Hero_Name`, `Hero_Role`, `Path`) VALUES ('Balmond','Fighter','IMG/hero/Fighter/ft-1.png');
 > INSERT INTO `tbl_heroimages`(`Hero_Name`, `Hero_Role`, `Path`) VALUES ('Freya','Fighter','IMG/hero/Fighter/ft-2.png');
 > INSERT INTO `tbl_heroimages`(`Hero_Name`, `Hero_Role`, `Path`) VALUES ('Chou','Fighter','IMG/hero/Fighter/ft-3.png');
@@ -53,6 +55,7 @@
 > INSERT INTO `tbl_heroimages`(`Hero_Name`, `Hero_Role`, `Path`) VALUES ('Yu Zhong','Fighter','IMG/hero/Fighter/ft-21.png');
 > 
 > -- Assassin
+>
 > INSERT INTO `tbl_heroimages`(`Hero_Name`, `Hero_Role`, `Path`) VALUES ('Saber','Assassin','IMG/hero/Assassin/ass-1.png');
 > INSERT INTO `tbl_heroimages`(`Hero_Name`, `Hero_Role`, `Path`) VALUES ('Karina','Assassin','IMG/hero/Assassin/ass-2.png');
 > INSERT INTO `tbl_heroimages`(`Hero_Name`, `Hero_Role`, `Path`) VALUES ('Fanny','Assassin','IMG/hero/Assassin/ass-3.png');
@@ -73,6 +76,7 @@
 > INSERT INTO `tbl_heroimages`(`Hero_Name`, `Hero_Role`, `Path`) VALUES ('Suyou','Assassin','IMG/hero/Assassin/ass-18.png');
 > 
 > -- Mage
+>
 > INSERT INTO `tbl_heroimages`(`Hero_Name`, `Hero_Role`, `Path`) VALUES ('Nana','Mage','IMG/hero/Mage/mg-1.png');
 > INSERT INTO `tbl_heroimages`(`Hero_Name`, `Hero_Role`, `Path`) VALUES ('Eudora','Mage','IMG/hero/Mage/mg-2.png');
 > INSERT INTO `tbl_heroimages`(`Hero_Name`, `Hero_Role`, `Path`) VALUES ('Gord','Mage','IMG/hero/Mage/mg-3.png');
@@ -96,6 +100,7 @@
 > INSERT INTO `tbl_heroimages`(`Hero_Name`, `Hero_Role`, `Path`) VALUES ('Xavier','Mage','IMG/hero/Mage/mg-21.png');
 > 
 > -- Marksman
+>
 > INSERT INTO `tbl_heroimages`(`Hero_Name`, `Hero_Role`, `Path`) VALUES ('Miya','Marksman','IMG/hero/Marksman/mm-1.png');
 > INSERT INTO `tbl_heroimages`(`Hero_Name`, `Hero_Role`, `Path`) VALUES ('Bruno','Marksman','IMG/hero/Marksman/mm-2.png');
 > INSERT INTO `tbl_heroimages`(`Hero_Name`, `Hero_Role`, `Path`) VALUES ('Clint','Marksman','IMG/hero/Marksman/mm-3.png');
@@ -117,6 +122,7 @@
 > INSERT INTO `tbl_heroimages`(`Hero_Name`, `Hero_Role`, `Path`) VALUES ('Kimmy','Marksman','IMG/hero/Marksman/mm-19.png');
 > 
 > -- Support
+>
 > INSERT INTO tbl_heroimages(Hero_Name, Hero_Role, Path) VALUES ('Rafaela','Support','IMG/hero/Support/sp-1.png');
 > INSERT INTO tbl_heroimages(Hero_Name, Hero_Role, Path) VALUES ('Estes','Support','IMG/hero/Support/sp-2.png');
 > INSERT INTO tbl_heroimages(Hero_Name, Hero_Role, Path) VALUES ('Diggie','Support','IMG/hero/Support/sp-3.png');
@@ -130,6 +136,6 @@
 > INSERT INTO tbl_heroimages(Hero_Name, Hero_Role, Path) VALUES ('Chip','Support','IMG/hero/Support/sp-11.png');
 
 Also modified the sample code in all iterations for squadCreation.php:
-> <img src="IMG/hero/Tank/tnk-1.png" class="hero-icon" onclick="selectHero(this)">
+```<img src="IMG/hero/Tank/tnk-1.png" class="hero-icon" onclick="selectHero(this)">``` 
 to:
-> <img src="IMG/hero/Tank/tnk-1.png" class="hero-icon" data-hero-name="Tigreal" onclick="selectHero(this)">
+```<img src="IMG/hero/Tank/tnk-1.png" class="hero-icon" data-hero-name="Tigreal" onclick="selectHero(this)">```
