@@ -1,20 +1,7 @@
 <?php
 // Retrieve and sanitize the search query
-$searchQuery = isset($_GET['query']) ? htmlspecialchars($_GET['query']) : '';
-
-// Database connection
-$host = 'localhost';
-$dbname = 'mlofficial_database';
-$dbusername = 'root';
-$dbpassword = '';
-
-// Create connection
-$conn = new mysqli($host, $dbusername, $dbpassword, $dbname);
-
-// Check connection
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
+session_start(); // Start the session
+    require_once 'includes/dbh.inc.php'; 
 
 // Fetch data from tbl_squadprofile based on the search query
 $sql = "SELECT Squad_Acronym, Squad_Name, Squad_ID, Squad_Level, Squad_Description 

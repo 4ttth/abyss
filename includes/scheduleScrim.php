@@ -1,17 +1,7 @@
 <?php
 // Database connection
-$host = 'localhost';
-$dbname = 'mlofficial_database';
-$dbusername = 'root';
-$dbpassword = '';
-
-// Create connection
-$conn = new mysqli($host, $dbusername, $dbpassword, $dbname);
-
-// Check connection
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
+session_start(); // Start the session
+    require_once 'includes/dbh.inc.php'; 
 
 // Get the raw POST data
 $data = json_decode(file_get_contents('php://input'), true);
@@ -23,17 +13,20 @@ $time = $data['time'];
 $notes = $data['notes'];
 
 // Insert the scrim schedule into the database
-$query = "INSERT INTO tbl_scrimschedules (Squad_ID, Scrim_Date, Scrim_Time, Scrim_Notes) VALUES (?, ?, ?, ?)";
-$stmt = $conn->prepare($query);
-$stmt->bind_param("isss", $squadId, $date, $time, $notes);
-$stmt->execute();
+try {
+    $query = "INSERT INTO tbl_scrimschedules (Squad_ID, Scrim_Date, Scrim_Time, Scrim_Notes) VALUES (?, ?, ?, ?)";
+    $stmt = $pdo->prepare($query);
+    $stmt->execute([$squadId, $date, $time, $notes]);
 
-if ($stmt->affected_rows > 0) {
-    echo json_encode(["success" => true]);
-} else {
-    echo json_encode(["success" => false, "error" => "Failed to schedule scrim."]);
+    if ($stmt->rowCount() > 0) {
+        echo json_encode(["success" => true]);
+    } else {
+        echo json_encode(["success" => false, "error" => "Failed to schedule scrim."]);
+    }
+} catch (PDOException $e) {
+    error_log("Database error: " . $e->getMessage());
+    http_response_code(500);
+    echo json_encode(["success" => false, "error" => "Database error"]);
 }
 
-$stmt->close();
-$conn->close();
 ?>
