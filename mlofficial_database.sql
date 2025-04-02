@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 01, 2025 at 10:21 PM
+-- Generation Time: Apr 02, 2025 at 07:21 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -110,6 +110,119 @@ CREATE TABLE `tbl_heroimages` (
   `Path` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+--
+-- Dumping data for table `tbl_heroimages`
+--
+
+INSERT INTO `tbl_heroimages` (`Hero_ID`, `Hero_Name`, `Hero_Role`, `Path`) VALUES
+(1, 'Tigreal', 'Tank', 'IMG/hero/Tank/tnk-1.png'),
+(2, 'Akai', 'Tank', 'IMG/hero/Tank/tnk-2.png'),
+(3, 'Franco', 'Tank', 'IMG/hero/Tank/tnk-3.png'),
+(5, 'Hylos', 'Tank', 'IMG/hero/Tank/tnk-4.png'),
+(6, 'Uranus', 'Tank', 'IMG/hero/Tank/tnk-5.png'),
+(7, 'Belerick', 'Tank', 'IMG/hero/Tank/tnk-6.png'),
+(8, 'Khufra', 'Tank', 'IMG/hero/Tank/tnk-7.png'),
+(9, 'Baxia', 'Tank', 'IMG/hero/Tank/tnk-8.png'),
+(10, 'Atlas', 'Tank', 'IMG/hero/Tank/tnk-9.png'),
+(11, 'Gloo', 'Tank', 'IMG/hero/Tank/tnk-10.png'),
+(12, 'Ghatotkacha', 'Tank', 'IMG/hero/Tank/tnk-11.png'),
+(13, 'Grock', 'Tank', 'IMG/hero/Tank/tnk-12.png'),
+(14, 'Minotaur', 'Tank', 'IMG/hero/Tank/tnk-13.png'),
+(15, 'Johnson', 'Tank', 'IMG/hero/Tank/tnk-14.png'),
+(16, 'Esmeralda', 'Tank', 'IMG/hero/Tank/tnk-15.png'),
+(17, 'Barats', 'Tank', 'IMG/hero/Tank/tnk-16.png'),
+(18, 'Edith', 'Tank', 'IMG/hero/Tank/tnk-17.png'),
+(19, 'Balmond', 'Fighter', 'IMG/hero/Fighter/ft-1.png'),
+(20, 'Freya', 'Fighter', 'IMG/hero/Fighter/ft-2.png'),
+(21, 'Chou', 'Fighter', 'IMG/hero/Fighter/ft-3.png'),
+(22, 'Sun', 'Fighter', 'IMG/hero/Fighter/ft-4.png'),
+(23, 'Alpha', 'Fighter', 'IMG/hero/Fighter/ft-5.png'),
+(24, 'Ruby', 'Fighter', 'IMG/hero/Fighter/ft-6.png'),
+(25, 'Lapu-Lapu', 'Fighter', 'IMG/hero/Fighter/ft-7.png'),
+(26, 'Argus', 'Fighter', 'IMG/hero/Fighter/ft-8.png'),
+(27, 'Jawhead', 'Fighter', 'IMG/hero/Fighter/ft-9.png'),
+(28, 'Martis', 'Fighter', 'IMG/hero/Fighter/ft-10.png'),
+(29, 'Aldous', 'Fighter', 'IMG/hero/Fighter/ft-11.png'),
+(30, 'Leomord', 'Fighter', 'IMG/hero/Fighter/ft-12.png'),
+(31, 'Thamuz', 'Fighter', 'IMG/hero/Fighter/ft-13.png'),
+(32, 'Minsitthar', 'Fighter', 'IMG/hero/Fighter/ft-14.png'),
+(33, 'Badang', 'Fighter', 'IMG/hero/Fighter/ft-15.png'),
+(34, 'Guinevere', 'Fighter', 'IMG/hero/Fighter/ft-16.png'),
+(35, 'X.Borg', 'Fighter', 'IMG/hero/Fighter/ft-17.png'),
+(36, 'Dyrroth', 'Fighter', 'IMG/hero/Fighter/ft-18.png'),
+(37, 'Masha', 'Fighter', 'IMG/hero/Fighter/ft-19.png'),
+(38, 'Silvanna', 'Fighter', 'IMG/hero/Fighter/ft-20.png'),
+(39, 'Yu Zhong', 'Fighter', 'IMG/hero/Fighter/ft-21.png'),
+(40, 'Saber', 'Assassin', 'IMG/hero/Assassin/ass-1.png'),
+(41, 'Karina', 'Assassin', 'IMG/hero/Assassin/ass-2.png'),
+(42, 'Fanny', 'Assassin', 'IMG/hero/Assassin/ass-3.png'),
+(43, 'Hayabusa', 'Assassin', 'IMG/hero/Assassin/ass-4.png'),
+(44, 'Natalia', 'Assassin', 'IMG/hero/Assassin/ass-5.png'),
+(45, 'Lancelot', 'Assassin', 'IMG/hero/Assassin/ass-6.png'),
+(46, 'Helcurt', 'Assassin', 'IMG/hero/Assassin/ass-7.png'),
+(47, 'Gusion', 'Assassin', 'IMG/hero/Assassin/ass-8.png'),
+(48, 'Hanzo', 'Assassin', 'IMG/hero/Assassin/ass-9.png'),
+(49, 'Ling', 'Assassin', 'IMG/hero/Assassin/ass-10.png'),
+(50, 'Aamon', 'Assassin', 'IMG/hero/Assassin/ass-11.png'),
+(51, 'Joy', 'Assassin', 'IMG/hero/Assassin/ass-12.png'),
+(52, 'Nolan', 'Assassin', 'IMG/hero/Assassin/ass-13.png'),
+(53, 'Yi Sun-shin', 'Assassin', 'IMG/hero/Assassin/ass-14.png'),
+(54, 'Harley', 'Assassin', 'IMG/hero/Assassin/ass-15.png'),
+(55, 'Selena', 'Assassin', 'IMG/hero/Assassin/ass-16.png'),
+(56, 'Benedetta', 'Assassin', 'IMG/hero/Assassin/ass-17.png'),
+(57, 'Suyou', 'Assassin', 'IMG/hero/Assassin/ass-18.png'),
+(58, 'Nana', 'Mage', 'IMG/hero/Mage/mg-1.png'),
+(59, 'Eudora', 'Mage', 'IMG/hero/Mage/mg-2.png'),
+(60, 'Gord', 'Mage', 'IMG/hero/Mage/mg-3.png'),
+(61, 'Kagura', 'Mage', 'IMG/hero/Mage/mg-4.png'),
+(63, 'Aurora', 'Mage', 'IMG/hero/Mage/mg-6.png'),
+(64, 'Vexana', 'Mage', 'IMG/hero/Mage/mg-7.png'),
+(65, 'Odette', 'Mage', 'IMG/hero/Mage/mg-8.png'),
+(66, 'Zhask', 'Mage', 'IMG/hero/Mage/mg-9.png'),
+(67, 'Pharsa', 'Mage', 'IMG/hero/Mage/mg-10.png'),
+(68, 'Valir', 'Mage', 'IMG/hero/Mage/mg-11.png'),
+(69, 'Chang\'e', 'Mage', 'IMG/hero/Mage/mg-12.png'),
+(70, 'Vale', 'Mage', 'IMG/hero/Mage/mg-13.png'),
+(71, 'Lunox', 'Mage', 'IMG/hero/Mage/mg-14.png'),
+(72, 'Harith', 'Mage', 'IMG/hero/Mage/mg-15.png'),
+(73, 'Lylia', 'Mage', 'IMG/hero/Mage/mg-16.png'),
+(74, 'Cecilion', 'Mage', 'IMG/hero/Mage/mg-17.png'),
+(75, 'Luo Yi', 'Mage', 'IMG/hero/Mage/mg-18.png'),
+(76, 'Yve', 'Mage', 'IMG/hero/Mage/mg-19.png'),
+(77, 'Valentina', 'Mage', 'IMG/hero/Mage/mg-20.png'),
+(78, 'Xavier', 'Mage', 'IMG/hero/Mage/mg-21.png'),
+(79, 'Miya', 'Marksman', 'IMG/hero/Marksman/mm-1.png'),
+(80, 'Bruno', 'Marksman', 'IMG/hero/Marksman/mm-2.png'),
+(81, 'Clint', 'Marksman', 'IMG/hero/Marksman/mm-3.png'),
+(82, 'Layla', 'Marksman', 'IMG/hero/Marksman/mm-4.png'),
+(83, 'Moskov', 'Marksman', 'IMG/hero/Marksman/mm-5.png'),
+(84, 'Karrie', 'Marksman', 'IMG/hero/Marksman/mm-6.png'),
+(85, 'Irithel', 'Marksman', 'IMG/hero/Marksman/mm-7.png'),
+(86, 'Hanabi', 'Marksman', 'IMG/hero/Marksman/mm-8.png'),
+(87, 'Claude', 'Marksman', 'IMG/hero/Marksman/mm-9.png'),
+(88, 'Granger', 'Marksman', 'IMG/hero/Marksman/mm-10.png'),
+(89, 'Wanwan', 'Marksman', 'IMG/hero/Marksman/mm-11.png'),
+(90, 'Popol and Kupa', 'Marksman', 'IMG/hero/Marksman/mm-12.png'),
+(113, 'Cyclops', 'Mage', 'IMG/hero/Mage/mg-5.png'),
+(143, 'Brody', 'Marksman', 'IMG/hero/Marksman/mm-13.png'),
+(144, 'Beatrix', 'Marksman', 'IMG/hero/Marksman/mm-14.png'),
+(145, 'Natan', 'Marksman', 'IMG/hero/Marksman/mm-15.png'),
+(146, 'Melissa', 'Marksman', 'IMG/hero/Marksman/mm-16.png'),
+(147, 'Ixia', 'Marksman', 'IMG/hero/Marksman/mm-17.png'),
+(148, 'Lesley', 'Marksman', 'IMG/hero/Marksman/mm-18.png'),
+(149, 'Kimmy', 'Marksman', 'IMG/hero/Marksman/mm-19.png'),
+(150, 'Rafaela', 'Support', 'IMG/hero/Support/sp-1.png'),
+(151, 'Estes', 'Support', 'IMG/hero/Support/sp-2.png'),
+(152, 'Diggie', 'Support', 'IMG/hero/Support/sp-3.png'),
+(153, 'Angela', 'Support', 'IMG/hero/Support/sp-4.png'),
+(154, 'Floryn', 'Support', 'IMG/hero/Support/sp-5.png'),
+(155, 'Lolita', 'Support', 'IMG/hero/Support/sp-6.png'),
+(156, 'Kaja', 'Support', 'IMG/hero/Support/sp-7.png'),
+(157, 'Faramis', 'Support', 'IMG/hero/Support/sp-8.png'),
+(158, 'Carmilla', 'Support', 'IMG/hero/Support/sp-9.png'),
+(159, 'Mathilda', 'Support', 'IMG/hero/Support/sp-10.png'),
+(160, 'Chip', 'Support', 'IMG/hero/Support/sp-11.png');
+
 -- --------------------------------------------------------
 
 --
@@ -153,26 +266,10 @@ CREATE TABLE `tbl_playerprofile` (
   `Highest_Rank` varchar(45) DEFAULT NULL,
   `Highest_Star` int(11) DEFAULT NULL,
   `Role` varchar(45) DEFAULT NULL,
-  `Hero_1` varchar(255) DEFAULT NULL,
-  `Hero_2` varchar(255) DEFAULT NULL,
-  `Hero_3` varchar(255) DEFAULT NULL
+  `Hero_1` varchar(100) DEFAULT NULL,
+  `Hero_2` varchar(100) DEFAULT NULL,
+  `Hero_3` varchar(100) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Dumping data for table `tbl_playerprofile`
---
-
-INSERT INTO `tbl_playerprofile` (`Player_ID`, `Squad_ID`, `IGN`, `Full_Name`, `Game_ID`, `Current_Rank`, `Current_Star`, `Highest_Rank`, `Highest_Star`, `Role`, `Hero_1`, `Hero_2`, `Hero_3`) VALUES
-(8, 23679, 'Tartarus', 'Selwyn tolero', '4928231 (4331)', 'Mythical Glory', 142, 'Grandmaster', 111, 'Support', NULL, NULL, NULL),
-(9, 23679, 'xuchii', 'Pauline Toledo', '4928231 (6331)', 'Elite', 3, 'Master', 8, 'Tank', NULL, NULL, NULL),
-(10, 21957, 'Tartarus', 'Selwyn Tolero', '09052700278', 'Mythical Immortal', 100, 'Mythical Immortal', 149, 'Mage', NULL, NULL, NULL),
-(11, 86573, 'Tartarus', 'Selwyn Tolero', '098837832', 'Elite', 23, 'Grandmaster', 34, 'Fighter', NULL, NULL, NULL),
-(12, 60591, 'megurine', 'Pauline Toledo', '4352 5364 (456)', 'Mythic', 23, 'Warrior', 40, 'Assassin', NULL, NULL, NULL),
-(13, 17241, 'rav', 'Aj Langgomez', '8979878798', 'Mythical Immortal', 154, 'Mythical Immortal', 170, 'Mage', NULL, NULL, NULL),
-(14, 14132, 'Tartarus', 'Selwyn Tolero', '8979878798', 'Epic', 1, 'Mythical Immortal', 149, 'Mage', NULL, NULL, NULL),
-(15, 99556, 'xuchii', 'Pauline Toledo', '4928231 (4331)', 'Master', 142, 'Mythical Honor', 200, 'Mage', NULL, NULL, NULL),
-(16, 42668, 'xuchii', 'Selwyn tolero', '4928231 (4331)', 'Grandmaster', 123, 'Mythical Honor', 200, 'Mage', NULL, NULL, NULL),
-(17, 54802, 'Esper', 'Julianne Pena', '4928231 (4331)', 'Epic', 123, 'Mythical Glory', 200, 'Mage', NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -194,14 +291,6 @@ CREATE TABLE `tbl_reports` (
   `Date_Reviewed` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Dumping data for table `tbl_reports`
---
-
-INSERT INTO `tbl_reports` (`Report_ID`, `Reporter_ID`, `Reported_User_ID`, `Report_Category`, `Report_Details`, `Proof_File`, `Report_Status`, `Date_Reported`, `Reviewed_By`, `Sanction_Taken`, `Date_Reviewed`) VALUES
-(1234, 6789, 5432, 'Cheating', 'Maphack', NULL, 'Pending', '2025-03-31 06:18:10', NULL, NULL, NULL),
-(1324, 124314, 2133, 'Absence', 'Nde pumunta', NULL, 'Pending', '2025-03-31 06:43:19', NULL, NULL, NULL);
-
 -- --------------------------------------------------------
 
 --
@@ -219,16 +308,6 @@ CREATE TABLE `tbl_scrimschedules` (
   `Created_At` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Dumping data for table `tbl_scrimschedules`
---
-
-INSERT INTO `tbl_scrimschedules` (`Schedule_ID`, `Challenger_Squad_ID`, `Squad_ID`, `Scrim_Date`, `Scrim_Time`, `Scrim_Notes`, `Status`, `Created_At`) VALUES
-(1, 0, 21957, '2025-03-25', '02:54:00', 'TITE', 'Pending', '2025-04-01 20:02:59'),
-(2, 0, 47255, '2025-03-25', '02:56:00', 'TITE FROM', 'Pending', '2025-04-01 20:02:59'),
-(3, 0, 47255, '2025-03-06', '16:13:00', 'DHDH', 'Pending', '2025-04-01 20:02:59'),
-(4, 0, 47255, '2025-04-02', '16:50:00', 'rgawerg', 'Pending', '2025-04-01 20:02:59');
-
 -- --------------------------------------------------------
 
 --
@@ -244,13 +323,6 @@ CREATE TABLE `tbl_squadposts` (
   `Post_Type` enum('Private','Public') NOT NULL,
   `Timestamp` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `tbl_squadposts`
---
-
-INSERT INTO `tbl_squadposts` (`Post_ID`, `Squad_ID`, `Post_Label`, `Content`, `Image_URL`, `Post_Type`, `Timestamp`) VALUES
-(17, 1, 'BITCH NA PEKE', 'This is my first post! AHH DADII!', '/uploads/R.jpg', 'Private', '2025-03-24 13:11:01');
 
 -- --------------------------------------------------------
 
@@ -270,24 +342,6 @@ CREATE TABLE `tbl_squadprofile` (
   `Player_Count` int(255) NOT NULL,
   `Average_Star` float(15,4) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `tbl_squadprofile`
---
-
-INSERT INTO `tbl_squadprofile` (`Squad_Index`, `Squad_ID`, `Squad_Name`, `Squad_Acronym`, `Squad_Description`, `Squad_Level`, `Squad_Logo`, `Total_Stars`, `Player_Count`, `Average_Star`) VALUES
-(1, 23679, 'VESTA HEAVEN', 'VST', 'HELLO WORLD', 'ANIMO LASALLE', NULL, 220, 5, 44.0000),
-(2, 21957, 'LSB SHARKS', 'LSB', 'HELLO PHILIPPINES', 'ANIMO LASALLE', NULL, 180, 4, 45.0000),
-(3, 47255, 'BLACKLIST', 'BLCK', 'WORLD CHAMPIONS', 'PROFESSIONAL', NULL, 275, 6, 45.8300),
-(4, 21957, 'VAESPA KARINA', 'VST', 'EWAN Q SAU BAKS', 'PROFESSIONAL', NULL, 260, 5, 52.0000),
-(5, NULL, 'VSSST', 'heven', 'jdhcdhciehc', 'Amateur', NULL, 0, 0, 0.0000),
-(6, NULL, 'LSBSharks', 'lsbShhhh', 'Strong', 'Professional', NULL, 0, 0, 0.0000),
-(7, NULL, 'Masisikip', 'MSK', 'Super Sikip', 'Amateur', NULL, 0, 0, 0.0000),
-(8, NULL, 'Masisikip', 'MSK', 'Super Sikip', 'Amateur', NULL, 0, 0, 0.0000),
-(9, 14132, 'OLAKOMOTALE', 'OLA', 'I2 ANG PINAKAMAGALING SA LAHAT', 'Amateur', NULL, 0, 0, 0.0000),
-(10, 99556, 'ARMAINES', 'ARM', 'HUHUEHIHA', 'Amateur', NULL, 200, 1, 200.0000),
-(11, 42668, 'AESPAWS', 'AES', 'Hi! We are AESPAWS', 'Amateur', NULL, 200, 1, 200.0000),
-(12, 54802, 'JULIESBAKESHOP', 'JBS', 'yummers', 'Amateur', NULL, 200, 1, 200.0000);
 
 -- --------------------------------------------------------
 
@@ -318,25 +372,8 @@ CREATE TABLE `tbl_useraccount` (
   `Email_Address` varchar(100) DEFAULT NULL,
   `Password` varchar(100) DEFAULT NULL,
   `Username` varchar(100) DEFAULT NULL,
-  `Squad_ID` int(255) NOT NULL,
-  `Role` enum('Admin','Moderator','User') NOT NULL DEFAULT 'User'
+  `Squad_ID` int(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `tbl_useraccount`
---
-
-INSERT INTO `tbl_useraccount` (`User_ID`, `Email_Address`, `Password`, `Username`, `Squad_ID`, `Role`) VALUES
-(51, 'paulinetoledoo026@gmail.com', '$2y$12$X6/vVo.Q63xxeq7UFxaOE.Y14aRIb8vZ398fUhJUnojhvpURNUwp6', 'xuchip', 47255, 'User'),
-(52, 'charlesadrian@gmail.com', '$2y$12$1cdc48BCLyb.aaiBjrr4S.e0.fzIlUFZbFeXRGF3hAndzC5Rph2LW', 'charlieboi', 23679, 'User'),
-(53, 'lexi.loregomez@gmail.com', '$2y$12$CwNqK/28qwx/QI9LHhc3V.W1cbk9qeh31S8r03Ox1UuNr9OjwrOVK', 'selwyntlr', 21957, 'User'),
-(54, 'slwyntlr05@gmail.com', '$2y$12$9CqEHW7Frw2p2F9Hdw1/h.eL7weV8MGWqakURwTzuJrUfzcWwBcQq', 'slwyntlr', 86573, 'User'),
-(55, 'col.2023010205@lsb.edu.ph', '$2y$12$5agdk9mLMtVz4RNpf5cdeuJdPcgGCkhkn/4OlWai8BzvTgg/zD4M2', 'xuchi', 60591, 'User'),
-(56, 'ajlanggomez123@gmail.com', '$2y$12$MBi8uKn4ikx9MbgyuRKVo.ZjOvdbv9/sNO.yZH31e53uhrd7dqYVO', 'ajlangz', 17241, 'User'),
-(57, 'lexi.loregomez@gmail.com', '$2y$12$Ty85Xmbw1Zr2pjM43bYYy.92N3I1pGV5FSijtUf1J1NiXoM8snTzy', 'Tartarus', 14132, 'User'),
-(58, 'fourtholpindooo@gmail.com', '$2y$12$MQDYvj/lVZci4J/5zbD/Hez1GC9VgIWySNY8bUwHVoh9tvCxA9dpe', 'fourth', 99556, 'Admin'),
-(59, 'jijijijajajaj@gmail.com', '$2y$12$YiEZht/G2UTdv4JFq00lhO8CkQ0rfstlSZKYhiWLDijRwxKiaiOAi', 'cucu', 42668, 'User'),
-(60, 'mememe123@gmail.com', '$2y$12$LetQVFFv6vraW8HLx69ZM.Umm8e3DnmvjCiWc9gIrjzC6C/Qeg9z.', 'juliecakes', 54802, 'User');
 
 -- --------------------------------------------------------
 
@@ -369,13 +406,6 @@ CREATE TABLE `tbl_verificationrequests` (
   `Date_Submitted` timestamp NOT NULL DEFAULT current_timestamp(),
   `Date_Reviewed` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `tbl_verificationrequests`
---
-
-INSERT INTO `tbl_verificationrequests` (`Request_ID`, `Squad_ID`, `Squad_Name`, `Squad_Level`, `Proof_Type`, `Proof_File`, `Status`, `Date_Submitted`, `Date_Reviewed`) VALUES
-(1234, 1234, 1234, 'Collegiate', 'anjing', 'desktop/anjing', 'Pending', '2025-04-01 06:29:26', NULL);
 
 --
 -- Indexes for dumped tables
@@ -517,7 +547,7 @@ ALTER TABLE `tbl_feedbacks`
 -- AUTO_INCREMENT for table `tbl_heroimages`
 --
 ALTER TABLE `tbl_heroimages`
-  MODIFY `Hero_ID` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `Hero_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=161;
 
 --
 -- AUTO_INCREMENT for table `tbl_modaccount`
@@ -535,31 +565,31 @@ ALTER TABLE `tbl_pendingverif`
 -- AUTO_INCREMENT for table `tbl_playerprofile`
 --
 ALTER TABLE `tbl_playerprofile`
-  MODIFY `Player_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+  MODIFY `Player_ID` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `tbl_reports`
 --
 ALTER TABLE `tbl_reports`
-  MODIFY `Report_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1325;
+  MODIFY `Report_ID` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `tbl_scrimschedules`
 --
 ALTER TABLE `tbl_scrimschedules`
-  MODIFY `Schedule_ID` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `Schedule_ID` int(255) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `tbl_squadposts`
 --
 ALTER TABLE `tbl_squadposts`
-  MODIFY `Post_ID` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+  MODIFY `Post_ID` int(255) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `tbl_squadprofile`
 --
 ALTER TABLE `tbl_squadprofile`
-  MODIFY `Squad_Index` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `Squad_Index` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `tbl_squadverification`
@@ -571,7 +601,7 @@ ALTER TABLE `tbl_squadverification`
 -- AUTO_INCREMENT for table `tbl_useraccount`
 --
 ALTER TABLE `tbl_useraccount`
-  MODIFY `User_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=61;
+  MODIFY `User_ID` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `tbl_useractivitylog`
@@ -583,7 +613,7 @@ ALTER TABLE `tbl_useractivitylog`
 -- AUTO_INCREMENT for table `tbl_verificationrequests`
 --
 ALTER TABLE `tbl_verificationrequests`
-  MODIFY `Request_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1235;
+  MODIFY `Request_ID` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- Constraints for dumped tables
