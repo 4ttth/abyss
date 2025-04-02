@@ -181,7 +181,7 @@ INSERT INTO `tbl_heroimages` (`Hero_ID`, `Hero_Name`, `Hero_Role`, `Path`) VALUE
 (66, 'Zhask', 'Mage', 'IMG/hero/Mage/mg-9.png'),
 (67, 'Pharsa', 'Mage', 'IMG/hero/Mage/mg-10.png'),
 (68, 'Valir', 'Mage', 'IMG/hero/Mage/mg-11.png'),
-(69, 'Chang\'e', 'Mage', 'IMG/hero/Mage/mg-12.png'),
+(69, "Chang'e", 'Mage', 'IMG/hero/Mage/mg-12.png'),
 (70, 'Vale', 'Mage', 'IMG/hero/Mage/mg-13.png'),
 (71, 'Lunox', 'Mage', 'IMG/hero/Mage/mg-14.png'),
 (72, 'Harith', 'Mage', 'IMG/hero/Mage/mg-15.png'),
