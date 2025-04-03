@@ -17,11 +17,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         require_once 'signup_contr.inc.php';
         require_once 'signup_model.inc.php';
 
-<<<<<<< Updated upstream
-        // ERROR HANDLERS Development 1 Commit Try
-=======
         // ERROR HANDLERS Development 1 Commit Tryess
->>>>>>> Stashed changes
         $errors = [];
 
         if (is_input_empty($username, $pwd, $email)) {
