@@ -13,7 +13,7 @@ declare(strict_types=1);
 // }
 
 function get_user(object $pdo, string $username) {
-    $query = "SELECT User_ID, Username, Password, Role FROM tbl_useraccount WHERE Username = :username;";
+    $query = "SELECT * FROM tbl_useraccount WHERE Username = :username;";
     $stmt = $pdo->prepare($query);
     $stmt->bindParam(":username", $username);
     $stmt->execute();
