@@ -2,7 +2,8 @@
 session_start(); // Start the session
 require_once 'includes/dbh.inc.php'; // Database connection
 require_once 'includes/userHomepage.inc.php'; // Squad details logic
-
+require_once 'includes/session_handler.php';
+setcookie(session_name(),session_id(),time()+$config['COOKIE_LIFETIME']);
 
 // Initialize user data from session
 $user = $_SESSION['user'] ?? ['username' => 'Guest', 'Squad_ID' => 'N/A'];
@@ -29,6 +30,29 @@ if (isset($_SESSION['user']['Squad_ID']) && !empty($_SESSION['user']['Squad_ID']
         // Handle error if needed
     }
 }
+
+// Replace the existing verification check with this
+$enableScrimButton = ($verificationStatus === 'Approved') || 
+                    (strcasecmp($squadDetails['Squad_Level'], 'Amateur') === 0);
+
+// Check verification status
+if ($verificationStatus === 'Approved') {
+    $enableScrimButton = true;
+}
+
+// Check squad level (case-insensitive)
+if (strtoupper($squadDetails['Squad_Level']) === 'AMATEUR') {
+    $enableScrimButton = true;
+}
+
+// Debug output (remove after testing)
+echo '<script>console.log("Scrim Button State:", ' 
+    . json_encode([
+        'status' => $verificationStatus,
+        'level' => $squadDetails['Squad_Level'],
+        'enabled' => $enableScrimButton
+    ]) 
+    . ');</script>';
 
 // Initialize players array
 $players = [];

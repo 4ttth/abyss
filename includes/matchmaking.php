@@ -1,7 +1,7 @@
 <?php
-// Ensure no output before headers
 session_start();
 header('Content-Type: application/json');
+$config = include('config.php');
 require_once 'dbh.inc.php';
 
 try {
@@ -28,7 +28,7 @@ try {
     $custom_range = filter_var(
         $_GET['range'] ?? 10,
         FILTER_VALIDATE_INT,
-        ['options' => ['min_range' => 1, 'max_range' => 50, 'default' => 10]] //Fixed Range ^-^
+        ['options' => ['min_range' => $config['MIN_STARS'], 'max_range' => $config['MAX_STARS'], 'default' => $config['DEFAULT_STARS']]] //Fixed Range ^-^
     );
 
     // Get squad data
