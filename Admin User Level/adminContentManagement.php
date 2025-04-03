@@ -124,7 +124,7 @@ if (!$result) {
                     </tr>
                 </thead>
                 <tbody>
-                    <?php while ($row = $result->fetch_assoc()): ?>
+                    <?php while ($row = $result->fetch(PDO::FETCH_ASSOC)): ?>
                         <tr>
                             <td><?= $row['Content_ID'] ?></td>
                             <td><?= $row['Event_Name'] ?></td>
