@@ -37,7 +37,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             ':squadLevel' => $squadLevel
         ]);
 
-        // Calculations for PLayer Count and Total Stars
+        // Calculations for PLayer Count and Total Stars Testing Pull Requests
         $query = "SELECT COUNT(*) AS Player_Count, SUM(Highest_Star) AS Total_Stars FROM tbl_playerprofile WHERE Squad_ID = :squadID";
         $stmt = $pdo->prepare($query);
         $stmt->execute([':squadID' => $squadID]);

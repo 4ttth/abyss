@@ -60,6 +60,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 break;
             default:
                 $_SESSION['user_role'] = 'User';
+                $_SESSION['user']['Squad_ID'] = $result['Squad_ID'];
                 header("Location: ../userHomepage.php");
         }
         $pdo = null;
