@@ -15,7 +15,7 @@
 
 return array(
     // Database requirements
-        // Database hostname, can resolve or point to any host that serves the database
+        // Database hostname, can resolve or point to any host that serves the databases
     'DB_HOST' => 'localhost',
         // Database name, by default it is 'mlofficial_database'
     'DB_NAME' => 'mlofficial_database',
