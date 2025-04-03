@@ -17,6 +17,18 @@ $squadDetails = $_SESSION['squad_details'] ?? [
     'Squad_Description' => 'N/A'
 ];
 
+$verificationStatus = 'Pending';
+if (isset($_SESSION['user']['Squad_ID']) && !empty($_SESSION['user']['Squad_ID'])) {
+    try {
+        $stmt = $pdo->prepare("SELECT * FROM tbl_verificationrequests WHERE Squad_ID = ? ORDER BY Date_Submitted DESC LIMIT 1");
+        $stmt->execute([$_SESSION['user']['Squad_ID']]);
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+        $verificationStatus = $result['Status'] ?? 'Not Submitted';
+        $verificationLevel = $result['Squad_Level'] ?? 'Amateur';
+    } catch (PDOException $e) {
+        // Handle error if needed
+    }
+}
 
 // Initialize players array
 $players = [];
