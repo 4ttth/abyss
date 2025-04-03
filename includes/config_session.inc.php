@@ -1,11 +1,11 @@
 <?php
-
+$config = include('config.php');
 ini_set('session.use_only_cookies', 1);
 ini_set('session.use_strict_mode', 1);
 
 session_set_cookie_params([
-    'lifetime' => 1800,
-    'domain' => 'localhost',
+    'lifetime' => $config['COOKIE_LIFETIME'],
+    'domain' => $config['COOKIE_DOMAIN'],
     'path' => '/',
     'secure' => true,
     'httponly' => true
@@ -36,8 +36,9 @@ if (isset($_SESSION["user_id"])) {
 }
 
 function regenerate_session_id_loggedin() {
+    $tempSession = $_SESSION; // BKUP
     session_regenerate_id(true);
-
+    $_SESSION = $tempSession; // RSTOR
     $userId = $_SESSION["user_id"];
     $newSessionId = session_create_id();
     $sessionId = $newSessionId . "_" . $userId;
