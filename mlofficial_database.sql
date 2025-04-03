@@ -372,7 +372,8 @@ CREATE TABLE `tbl_useraccount` (
   `Email_Address` varchar(100) DEFAULT NULL,
   `Password` varchar(100) DEFAULT NULL,
   `Username` varchar(100) DEFAULT NULL,
-  `Squad_ID` int(255) NOT NULL
+  `Squad_ID` int(255) DEFAULT NULL,
+  `Role` enum('User','Admin','Moderator','Coach','Player') DEFAULT 'User'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
