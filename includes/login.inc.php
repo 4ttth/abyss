@@ -52,15 +52,18 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         switch ($result["Role"]) {
             case 'Admin':
                 $_SESSION['user_role'] = 'Admin';
+                $_SESSION['user']['User_ID'] = $result['User_ID'];
                 header("Location: ../Admin User Level/adminIndex.php");
                 break;
             case 'Moderator':
                 $_SESSION['user_role'] = 'Moderator';
+                $_SESSION['user']['User_ID'] = $result['User_ID'];
                 header("Location: ../Moderator User Level/modIndex.php");
                 break;
             default:
                 $_SESSION['user_role'] = 'User';
                 $_SESSION['user']['Squad_ID'] = $result['Squad_ID'];
+                $_SESSION['user']['User_ID'] = $result['User_ID'];
                 header("Location: ../userHomepage.php");
         }
         $pdo = null;
