@@ -1,5 +1,6 @@
 <?php
 session_start();
+require_once 'includes/config_session.inc.php';
 require_once 'includes/dbh.inc.php';
 
 // Initialize user data from sessions
