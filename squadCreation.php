@@ -1,6 +1,7 @@
 <?php
-require_once 'includes/config_session.inc.php';
+session_start();
 require_once 'includes/dbh.inc.php';
+
 
 // Initialize user data from sessions
 $user = $_SESSION['user'] ?? ['username' => 'Guest', 'Squad_ID' => 'N/A'];

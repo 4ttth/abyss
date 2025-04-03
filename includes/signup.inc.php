@@ -39,7 +39,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             $errors["confirm_password"] = "Passwords do not match!";
         }
 
-        require_once 'config_session.inc.php';
 
         // IF ERROR, BABALIK SA INDEX (Need ng Prompt)
         if ($errors) {
