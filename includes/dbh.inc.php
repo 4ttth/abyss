@@ -1,8 +1,9 @@
 <?php
-$host = 'localhost';
-$dbname = 'mlofficial_database';
-$dbusername = 'root';
-$dbpassword = '';
+$config = include('config.php');
+$host = $config['DB_HOST'];
+$dbname = $config['DB_NAME'];
+$dbusername = $config['DB_USERNAME'];
+$dbpassword = $config['DB_PASSWORD'];
 
 try {
     $pdo = new PDO(
