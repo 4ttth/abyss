@@ -56,7 +56,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 break;
             case 'Moderator':
                 $_SESSION['user_role'] = 'Moderator';
-                header("Location: ../modIndex.php");
+                header("Location: ../Moderator User Level/modIndex.php");
                 break;
             default:
                 $_SESSION['user_role'] = 'User';

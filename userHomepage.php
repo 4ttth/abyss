@@ -86,18 +86,14 @@ try {
         // Fetch posts for the squad
         if (isset($_SESSION['user']['Squad_ID'])) {
             $squadID = $_SESSION['user']['Squad_ID'];
+            // Fetch posts for the squad
             $stmtPosts = $pdo->prepare("SELECT * FROM tbl_squadposts WHERE Squad_ID = ? ORDER BY Timestamp DESC");
             $stmtPosts->execute([$squadID]);
             $posts = $stmtPosts->fetchAll(PDO::FETCH_ASSOC);
+        } else {
+            $posts = []; // Handle no Squad_ID case
         }
-    }
-
-    $squadID = 1; // HARDCODED FOR TESTING
-        
-    // For testing ang i2 teh tatanggalin din
-    $stmtPosts = $pdo->prepare("SELECT * FROM tbl_squadposts WHERE Squad_ID = ? ORDER BY Timestamp DESC");
-    $stmtPosts->execute([$squadID]);
-    $posts = $stmtPosts->fetchAll(PDO::FETCH_ASSOC);    
+    } 
     
 } catch (PDOException $e) {
     // Handle database errors
@@ -217,14 +213,12 @@ try {
         </div>
 
 
-        <!-- Scrim Button -->
-        <!--button id="findScrimButton">Find <br> Scrim</button>
-
-
-        Main Body -->
+        <!-- Main Body -->
         <div class="row mainBody">
             <!-- Fixed "Find Scrim" Button -->
-            <a href="scrimMatchmakingPage.php" class="findScrimButton">
+            <a href="<?= $enableScrimButton ? 'scrimMatchmakingPage.php' : '#' ?>" 
+                class="findScrimButton <?= !$enableScrimButton ? 'disabled' : '' ?>"
+                <?= !$enableScrimButton ? 'onclick="showScrimError()"' : '' ?>>
                 Find Scrim
             </a>
 
@@ -400,6 +394,11 @@ try {
 
 
     <!-- Javascript -->
+    <script>
+    // Convert PHP variables to JS
+    const verificationStatus = <?= json_encode($verificationStatus) ?>;
+    const squadLevel = <?= json_encode($squadDetails['Squad_Level']) ?>;
+    </script>
     <script src="JS/userHomepageScript.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 </body>

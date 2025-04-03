@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once 'includes/dbh.inc.php';
+require_once '../includes/dbh.inc.php';
 
 if (!in_array($_SESSION['user_role'], ['Moderator'])) {
     exit("Access Denied!");

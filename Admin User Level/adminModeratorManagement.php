@@ -119,7 +119,7 @@ if (!$result) {
                     </tr>
                 </thead>
                 <tbody>
-                    <?php while ($row = $result->fetch_assoc()): ?>
+                    <?php while ($row = $result->fetch(PDO::FETCH_ASSOC)): ?>
                         <tr>
                             <td><?= $row['Report_ID'] ?></td>
                             <td><?= $row['Reporter_ID'] ?></td>
