@@ -791,6 +791,17 @@ strong {
     animation: glow 1.5s infinite alternate ease-in-out;
 }
 
+.findScrimButton.disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    pointer-events: none;
+}
+
+.findScrimButton:not(.disabled):hover {
+    transform: scale(1.02);
+    transition: transform 0.2s ease;
+}
+
 /* Glowing Animation */
 @keyframes glow {
     0% {

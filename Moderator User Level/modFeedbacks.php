@@ -1,13 +1,13 @@
 <?php
 session_start();
-require_once 'includes/dbh.inc.php';
+require_once '../includes/dbh.inc.php';
 
 if (!in_array($_SESSION['user_role'], ['Moderator'])) {
     exit("Access Denied!");
 }
 
 $sql = "SELECT User_ID, Feedback_Category, Feedback_Details, Date_Submitted FROM tbl_feedbacks";
-$result = $conn->query($sql);
+$result = $pdo->query($sql);
 ?>
 
 <!doctype html>
@@ -105,7 +105,7 @@ $result = $conn->query($sql);
                     </tr>
                 </thead>
                 <tbody>
-                    <?php while ($row = $result->fetch_assoc()): ?>
+                    <?php while ($row = $result->fetch(PDO::FETCH_ASSOC)): ?>
                         <tr>
                             <td><?= $row['User_ID'] ?></td>
                             <td><?= $row['Feedback_Category'] ?></td>

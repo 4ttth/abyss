@@ -1,15 +1,29 @@
 <?php
 session_start();
-require_once 'includes/dbh.inc.php';
+require_once '../includes/dbh.inc.php';
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
 
 if (!in_array($_SESSION['user_role'], ['Moderator'])) {
     exit("Access Denied!");
 }
 
-$sql = "SELECT Request_ID, Squad_ID, Squad_Name, Squad_Level, Proof_Type, Proof_File, Date_Submitted, Status, Date_Reviewed 
-        FROM tbl_verificationrequests";
-$result = $conn->query($sql);
+// AJAX handling for DataTables
+if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') {
+    $sql = "SELECT Request_ID, Squad_ID, Squad_Name, Squad_Level, Proof_Type, 
+            Proof_File, Date_Submitted, Status, Date_Reviewed 
+            FROM tbl_verificationrequests";
+    $result = $pdo->query($sql);
+    $data = $result->fetchAll(PDO::FETCH_ASSOC);
+    echo json_encode($data);
+    exit();
+}
 
+// Regular page load initialization
+$sql = "SELECT Request_ID, Squad_ID, Squad_Name, Squad_Level, Proof_Type, 
+        Proof_File, Date_Submitted, Status, Date_Reviewed 
+        FROM tbl_verificationrequests";
+$result = $pdo->query($sql);
 ?>
 
 <!doctype html>
@@ -112,7 +126,7 @@ $result = $conn->query($sql);
                     </tr>
                 </thead>
                 <tbody>
-                    <?php while ($row = $result->fetch_assoc()): ?>
+                    <?php while ($row = $result->fetch(PDO::FETCH_ASSOC)): ?>
                         <tr>
                         <td><?= $row['Squad_ID'] ?></td>
                         <td><?= $row['Squad_Name'] ?></td>
@@ -129,9 +143,10 @@ $result = $conn->query($sql);
                         <td><?= $row['Status'] ?></td>
                         <td><?= $row['Date_Reviewed'] ? $row['Date_Reviewed'] : 'Pending' ?></td>
                         <td class="buttonColumn">
-                            <button class="approve" onclick="approveRequest(<?= $row['Request_ID'] ?>)">Approve</button>
-                            <button class="reject" onclick="rejectRequest(<?= $row['Request_ID'] ?>)">Reject</button>
-                        </td>                        </tr>
+                            <button class="approve" onclick="handleRequest(<?= $row['Request_ID'] ?>, 'approve')">Approve</button>
+                            <button class="reject" onclick="handleRequest(<?= $row['Request_ID'] ?>, 'reject')">Reject</button>
+                        </td>                    
+                        </tr>
                     <?php endwhile; ?>
                 </tbody>
             </table>

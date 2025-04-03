@@ -1,13 +1,13 @@
 <?php
 session_start();
-require_once 'includes/dbh.inc.php';
+require_once '../includes/dbh.inc.php';
 
 if (!in_array($_SESSION['user_role'], ['Moderator'])) {
     exit("Access Denied!");
 }
 
 $sql = "SELECT Report_ID, Reporter_ID, Reported_User_ID, Report_Category, Proof_File, Report_Status, Date_Reported FROM tbl_reports";
-$result = $conn->query($sql);
+$result = $pdo->query($sql);
 ?>
 
 <!doctype html>
@@ -109,7 +109,7 @@ $result = $conn->query($sql);
                     </tr>
                 </thead>
                 <tbody>
-                    <?php while ($row = $result->fetch_assoc()): ?>
+                    <?php while ($row = $result->fetch(PDO::FETCH_ASSOC)): ?>
                         <tr>
                             <td><?= $row['Report_ID'] ?></td>
                             <td><?= $row['Reporter_ID'] ?></td>
