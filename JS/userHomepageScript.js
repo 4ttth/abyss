@@ -141,3 +141,26 @@ function loadPosts() {
     });
 }
 
+// NEW ADDITION
+
+function showScrimError() {
+    const reason = [];
+    
+    // Check verification status
+    if (verificationStatus !== 'Approved') {
+        reason.push(`Verification Status: ${verificationStatus}`);
+    }
+    
+    // Check squad level (case-insensitive)
+    if (squadLevel.toUpperCase() !== 'AMATEUR') {
+        reason.push(`Squad Level: ${squadLevel}`);
+    }
+    
+    alert(`Scrim access requires:
+- Approved verification status
+OR
+- Amateur squad level
+
+Current status:
+${reason.join('\n')}`);
+}

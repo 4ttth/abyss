@@ -1,7 +1,6 @@
 <?php
 require_once 'dbh.inc.php';
 
-
 // Check if the user is logged in and has a Squad_ID
 if (!isset($_SESSION['user']['Squad_ID']) || empty($_SESSION['user']['Squad_ID'])) {
     // If no squad, set default values
@@ -34,7 +33,6 @@ if (!isset($_SESSION['user']['Squad_ID']) || empty($_SESSION['user']['Squad_ID']
         die("Database error: " . $e->getMessage());
     }
 }
-
 
 // Pass squad details to the session for use in userHomepage.php
 $_SESSION['squad_details'] = $squadDetails;
