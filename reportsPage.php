@@ -1,42 +1,98 @@
 <?php
-session_start(); // Essential for maintaining user session
-require_once 'includes/dbh.inc.php'; // Database connection (same as homepage)
+session_start();
+require_once 'includes/dbh.inc.php';
 
+// Check if user is logged in
+if (!isset($_SESSION['user'])) {
+    header("Location: login.php");
+    exit();
+}
 
-// Initialize user data from session (same as homepage)
-$user = $_SESSION['user'] ?? ['username' => 'Guest', 'Squad_ID' => 'N/A'];
+// Get reported squad ID
+$reportedSquadID = $_GET['reported_id'] ?? null;
+if (!$reportedSquadID || !is_numeric($reportedSquadID)) {
+    header("Location: discoverPage.php?error=invalid_report");
+    exit();
+}
 
+// Get reporter (logged-in user) and reported squad details
+try {
+    // Reporter info (logged-in user)
+    $reporterID = $_SESSION['user']['User_ID']; // Assuming you have User_ID in session
+    
+    // Reported squad info
+    $stmt = $pdo->prepare("SELECT Squad_Name FROM tbl_squadprofile WHERE Squad_ID = ?");
+    $stmt->execute([$reportedSquadID]);
+    $reportedSquad = $stmt->fetch(PDO::FETCH_ASSOC);
+    
+    if (!$reportedSquad) {
+        header("Location: discoverPage.php?error=squad_not_found");
+        exit();
+    }
 
-// Initialize squad details if needed (similar to homepage)
-$squadDetails = $_SESSION['squad_details'] ?? [
-    'Squad_Acronym' => 'N/A',
-    'Squad_Name' => 'N/A',
-    'Squad_ID' => 'N/A',
-    'Squad_Level' => 'N/A'
+} catch (PDOException $e) {
+    die("Database error: " . $e->getMessage());
+}
+
+$reportCategories = [
+    'Cheating',
+    'Toxicity',
+    'Account Sharing',
+    'Impersonation',
+    'Harassment',
+    'Other'
 ];
 
-
-// try {
-//     // Verify user has a squad (optional - depends on your requirements)
-//     if (isset($_SESSION['user']['Squad_ID'])) {
-//         $squadID = $_SESSION['user']['Squad_ID'];
-       
-//         // Add any scrim-specific queries here
-//         // For example:
-//         $stmtScrims = $pdo->prepare("SELECT * FROM tbl_scrims WHERE Squad_ID = ? OR Opponent_ID = ? ORDER BY Scrim_Date DESC");
-//         $stmtScrims->execute([$squadID, $squadID]);
-//         $scrims = $stmtScrims->fetchAll(PDO::FETCH_ASSOC);
-       
-//         // Or to find available scrims:
-//         $stmtAvailable = $pdo->prepare("SELECT * FROM tbl_scrims WHERE Status = 'Looking' AND Squad_ID != ?");
-//         $stmtAvailable->execute([$squadID]);
-//         $availableScrims = $stmtAvailable->fetchAll(PDO::FETCH_ASSOC);
-//     }
-
-
-// } catch (PDOException $e) {
-//     die("Database error: " . htmlspecialchars($e->getMessage()));
-// }
+// Handle form submission
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $category = $_POST['report_category'] ?? '';
+    $details = $_POST['report_details'] ?? '';
+    
+    try {
+        // Handle file upload
+        $proofFile = null;
+        if (isset($_FILES['proof_file']) && $_FILES['proof_file']['error'] === UPLOAD_ERR_OK) {
+            $uploadDir = 'uploads/reports/';
+            if (!is_dir($uploadDir)) {
+                mkdir($uploadDir, 0755, true);
+            }
+            
+            $fileExt = pathinfo($_FILES['proof_file']['name'], PATHINFO_EXTENSION);
+            $proofFile = $uploadDir . uniqid('report_', true) . '.' . $fileExt;
+            
+            if (!move_uploaded_file($_FILES['proof_file']['tmp_name'], $proofFile)) {
+                throw new Exception("Failed to upload file");
+            }
+        }
+        
+        // Insert report
+        $stmt = $pdo->prepare("
+            INSERT INTO tbl_reports (
+                Reporter_ID,
+                Reported_User_ID,
+                Report_Category,
+                Report_Details,
+                Proof_File,
+                Date_Reported
+            ) VALUES (?, ?, ?, ?, ?, NOW())
+        ");
+        
+        $stmt->execute([
+            $reporterID,
+            $reportedSquadID,
+            $category,
+            $details,
+            $proofFile
+        ]);
+        
+        // Redirect after successful submission
+        header("Location: reportSuccess.php");
+        exit();
+        
+    } catch (Exception $e) {
+        $error = "Error submitting report: " . $e->getMessage();
+    }
+}
 
 
 // Replace the existing invite query with:
@@ -93,18 +149,6 @@ function getVerificationNotifications($pdo, $squadID) {
 
 // Usage:
 $verificationNotifs = getVerificationNotifications($pdo, $_SESSION['user']['Squad_ID']);
-
-// Get all invites for the logged-in squad
-$invites = [];
-if (isset($_SESSION['user']['Squad_ID'])) {
-    $stmt = $pdo->prepare("SELECT i.*, s.Squad_Name 
-                          FROM tbl_inviteslog i
-                          JOIN tbl_squadprofile s ON i.Challenger_Squad_ID = s.Squad_ID
-                          WHERE i.Squad_ID = ?
-                          ORDER BY i.Created_At DESC");
-    $stmt->execute([$_SESSION['user']['Squad_ID']]);
-    $invites = $stmt->fetchAll(PDO::FETCH_ASSOC);
-}
 ?>
 
 
@@ -113,20 +157,19 @@ if (isset($_SESSION['user']['Squad_ID'])) {
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>ABYSS — Invites</title>
-    <link rel="stylesheet" type="text/css" href="CSS/invitesStyle.css">
+    <title>ABYSS — Report User</title>
+    <link rel="stylesheet" type="text/css" href="CSS/reportsStyle.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <link rel="icon" type="image/x-icon" href="IMG/essentials/whiteVer.PNG">
 </head>
 
 
-
-
 <body class="customPageBackground">
     <div class="introScreen">
         <div class="loadingAnimation"></div>
     </div>
+
 
     <div class="pageContent hiddenContent">
         <!-- Navigation Bar -->
@@ -143,8 +186,8 @@ if (isset($_SESSION['user']['Squad_ID'])) {
                        
                         <!-- Search Bar -->
                         <form class="searchBar" action="searchResultsPage.php" method="GET">
-                            <input class="searchInput" type="search" name="query" placeholder="Search Squads" aria-label="Search">
-                            <button class="searchButton" type="submit">
+                            <input class="searchInput" type="search" name="query" placeholder="Search Squads" aria-label="Search" disabled>
+                            <button class="searchButton" type="submit" disabled>
                                 <img src="IMG/essentials/whiteVer.PNG" alt="Search">
                             </button>
                         </form>
@@ -172,7 +215,7 @@ if (isset($_SESSION['user']['Squad_ID'])) {
                             <a class="nav-link" href="scrimsPage.php">SCRIMS</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link active" href="invitesPage.php">MY INVITES</a>
+                            <a class="nav-link" href="invitesPage.php">MY INVITES</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="invitesSentPage.php">SENT INVITES</a>
@@ -183,7 +226,7 @@ if (isset($_SESSION['user']['Squad_ID'])) {
                             <li class="nav-item">
                                 <a class="nav-linkIcon" href="#" data-bs-toggle="modal" data-bs-target="#notificationModal">
                                     <i class="bi bi-app-indicator"></i>
-                                    <?php if ($newInvitesCount > 0): ?>
+                                    <?php if ($totalNotifications > 0): ?>
                                         <span class="notifCount"><?= $totalNotifications ?></span>
                                     <?php endif; ?>
                                 </a>
@@ -201,75 +244,112 @@ if (isset($_SESSION['user']['Squad_ID'])) {
             </div>
         </div>
 
-
         <!-- Main Body -->
-        <div class="mainBody">
-            <div class="filter">
-                <div class="scrim-filter-dropdown">
-                    <button class="btn dropdown-toggle scrimFilter" type="button" id="scrimFilterDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                        <span id="currentFilter">All Invites</span>
-                    </button>
-                    <ul class="dropdown-menu scrimFilterDropdown" aria-labelledby="scrimFilterDropdown">
-                        <li><a class="dropdown-item filter-option active" href="#" data-status="all">All Invites</a></li>
-                        <li><a class="dropdown-item filter-option" href="#" data-status="pending">Pending</a></li>
-                        <li><a class="dropdown-item filter-option" href="#" data-status="accepted">Accepted</a></li>
-                        <li><a class="dropdown-item filter-option" href="#" data-status="declined">Declined</a></li>
-                    </ul>
+        <div class="container-fluid mainBody">
+            <div class="uploadForm">
+                <!-- Title -->
+                <div class="row textBlockLeft">
+                    <div class="descriptionLeft">
+                        SUBMIT A REPORT AGAINST <?= htmlspecialchars($reportedSquad['Squad_Name']) ?> (ID: <?= htmlspecialchars($reportedSquadID) ?>)
+                    </div>
+                    <div class="titleLeft">
+                        REPORT <?= htmlspecialchars($reportedSquad['Squad_Name']) ?>
+                    </div>
+                    <div class="subtitleLeft">
+                        HELP US KEEP ABYSS FAIR AND SAFE
+                    </div>
                 </div>
-            </div>
 
-            <!-- Result -->
-            <div class="results">
-                <div class="filters-container">
-                    <!-- Invites Rows -->
-                    <div class="invites-rows" id="invitesRows">    
-                        <div class="invites-rows-container" id="invitesContainer">
-                            <?php foreach ($invites as $invite): ?>
-                                <div class="scrim-card" data-status="<?= strtolower($invite['Response']) ?>">
-                                    <div class="scrim-card-content">
-                                        <!-- Status -->
-                                        <div class="status <?= strtolower($invite['Response']) ?>">
-                                            <?= strtoupper($invite['Response']) ?>
-                                        </div>
-                                        <!-- Opponent -->
-                                        <div class="opponent">
-                                            <div class="squadName">
-                                                <span>VS</span> <strong><?= htmlspecialchars($invite['Squad_Name']) ?></strong>
-                                            </div>
-                                        </div>
-                                        <!-- Notes -->
-                                        <?php if (!empty($invite['Scrim_Notes'])): ?>
-                                            <div class="noGames">
-                                                <?= htmlspecialchars($invite['Scrim_Notes']) ?>
-                                            </div>
-                                        <?php endif; ?>
-                                        <!-- Scheduled Time -->
-                                        <div class="timeAndDate">
-                                            <div class="Time">
-                                                <?= date('g:i A', strtotime($invite['Scrim_Time'])) ?>
-                                            </div>
-                                            <div class="Date">
-                                                <?= date('Y-m-d', strtotime($invite['Scrim_Date'])) ?>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            <?php endforeach; ?>
+                <form action="includes/reportUser.inc.php" method="post" enctype="multipart/form-data">
+                    <!-- Hidden field for the reported squad ID -->
+                    <input type="hidden" name="reported_squad_id" value="<?= htmlspecialchars($reportedSquadID) ?>">
+                    
+                    <!-- Report Category -->
+                    <div class="row line">
+                        <div class="form-group mt-3 col-12">
+                            <label class="form-label title">REPORT CATEGORY</label>
+                            <select name="report_category" class="form-control plchldr" required>
+                                <option value="" disabled selected>Select a category</option>
+                                <?php foreach ($reportCategories as $category): ?>
+                                    <option value="<?= htmlspecialchars($category) ?>"><?= htmlspecialchars($category) ?></option>
+                                <?php endforeach; ?>
+                            </select>
                         </div>
                     </div>
+                    
+                    <!-- Report Details -->
+                    <div class="row line">
+                        <div class="form-group mt-3 col-12">
+                            <label class="form-label title">REPORT DETAILS</label>
+                            <textarea name="report_details" class="form-control plchldr" rows="4"
+                                placeholder="Please provide detailed information about the incident" required></textarea>
+                        </div>
+                    </div>
+                    
+                    <!-- File Upload -->
+                    <div class="row line">
+                        <div class="mb-3">
+                            <label class="form-label">ATTACH PROOF (SCREENSHOTS, ETC.)</label>
+                            <div class="custom-file-upload">
+                                <input type="file" name="proof_file" id="fileInput" accept="image/*,.pdf,.doc,.docx">
+                                <button type="button" class="modalButtons" onclick="document.getElementById('fileInput').click()">CHOOSE FILE</button>
+                                <span class="fileName" id="fileName">No file chosen</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Error Message Display -->
+                    <?php if (isset($_GET['error'])): ?>
+                        <div class="alert alert-danger">
+                            <?php
+                            switch ($_GET['error']) {
+                                case 'invalid_input':
+                                    echo "Please fill all required fields correctly.";
+                                    break;
+                                case 'file_upload':
+                                    echo "Error uploading file. Please try again.";
+                                    break;
+                                case 'db_error':
+                                    echo "Database error. Please try again later.";
+                                    break;
+                                default:
+                                    echo "An error occurred. Please try again.";
+                            }
+                            ?>
+                        </div>
+                    <?php endif; ?>
+                    
+                    <!-- Submit Button -->
+                    <div class="verifyButton">
+                        <button type="submit" name="submit_report" class="btn loginButton">SUBMIT REPORT</button>
+                    </div>
+                </form>
+            </div>
+        </div>
 
+        <!-- Advertisment -->
+        <div class="container">
+            <div class="row d-flex advertisement">
+                <a href="https://play.google.com/store/apps/details?id=com.hhgame.mlbbvn&hl=en-US&pli=1">
+                    <img src="IMG/essentials/advertisement.png" class="adIMG" alt="advertissement">
+                </a>
+            </div>
+        </div>
 
-                    <!-- Pagination Controls Bottom -->
-                    <div class="scrim-pagination">
-                        <button class="page-btn prev-btn" disabled>Previous</button>
-                        <span class="page-indicator">Page 1 of 3</span>
-                        <button class="page-btn next-btn">Next</button>
+        <!-- Decorative Divider-->
+        <div class="container-fluid">
+            <div class="row divider">
+                <div class="decoDivide">
+                    <div class="decoBox"></div>
+                    <div class="codeDeco">0905270     //</div>
+                    <div class="decoLine"></div>  
+                    <div class="decoFoxDivide">
+                        <div class="glowingFox"></div>
                     </div>
                 </div>
             </div>
         </div>
-
-
+       
         <footer>
             <div class="row">
                 <div class="col-12">
@@ -277,8 +357,6 @@ if (isset($_SESSION['user']['Squad_ID'])) {
                         <div class="aboutUsTop">
                             Welcome to abyss, a student-developed initiative from Lyceum of Subic Bay, created to revolutionize Mobile Legends scrimmage matchmaking. As passionate IT students and gamers, we recognized the challenges squads face in finding, organizing, and managing scrims efficiently. Our goal is to provide a faster, more centralized platform where teams can seamlessly connect, compete, and improve their gameplay.
                         </div>
-
-
 
 
                         <div class="aboutUsBot">
@@ -289,15 +367,11 @@ if (isset($_SESSION['user']['Squad_ID'])) {
                     </div>  
 
 
-
-
                     <div class="socialMediaIcons">
                         <i class="bi bi-facebook"></i>
                         <i class="bi bi-twitter-x"></i>
                         <i class="bi bi-instagram"></i>
                     </div>
-
-
 
 
                     <div class="footIcon">
@@ -310,7 +384,8 @@ if (isset($_SESSION['user']['Squad_ID'])) {
             </div>
         </footer>
     </div>
-
+    
+    
     <!-- Notification Modal -->
     <div class="modal fade" id="notificationModal" tabindex="-1" aria-labelledby="squadVerificationModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-end">
@@ -353,9 +428,9 @@ if (isset($_SESSION['user']['Squad_ID'])) {
                                         </div>
 
                                         <!-- Scrim Notes (if available) -->
-                                        <?php if (!empty($invite['No_Of_Games'])): ?>
+                                        <?php if (!empty($invite['Scrim_Notes'])): ?>
                                             <div class="noGamesOnNotif">
-                                                BEST OF <?= htmlspecialchars($invite['No_Of_Games']) ?>
+                                                <?= htmlspecialchars($invite['Scrim_Notes']) ?>
                                             </div>
                                         <?php endif; ?>
 
@@ -374,18 +449,11 @@ if (isset($_SESSION['user']['Squad_ID'])) {
                                 </div>
                             </div>
                         <?php endforeach; ?>
-                    <?php endif; ?>   
+                    <?php endif; ?>     
 
                     <!-- Verification Automated Message -->
-                    <?php foreach ($verificationNotifs as $scrim): 
-                        // Check if verification was already submitted
-                        $stmt = $pdo->prepare("SELECT * FROM tbl_matchverifications 
-                                            WHERE Match_ID = ? AND Squad_ID = ?");
-                        $stmt->execute([$scrim['Match_ID'], $_SESSION['user']['Squad_ID']]);
-                        $verificationSubmitted = $stmt->fetch();
-                    ?>
-
-                        <div class="notification <?= $verificationSubmitted ? '' : 'new' ?>" data-scrim-id="<?= $scrim['Match_ID'] ?>">
+                    <?php foreach ($verificationNotifs as $scrim): ?>
+                        <div class="notification new" data-scrim-id="<?= $scrim['Match_ID'] ?>">
                             <div class="time">
                                 <?= date('n/j/Y g:i', strtotime($scrim['Scheduled_Time'])) ?>
                             </div>
@@ -394,17 +462,11 @@ if (isset($_SESSION['user']['Squad_ID'])) {
                                 <div class="scrim-card-contentOnNotif">
                                     <!-- Single Verify Button -->
                                     <div class="scrimButtons">
-                                        <?php if ($verificationSubmitted): ?>
-                                            <button class="pendingOnNotif" disabled>
-                                                PENDING
+                                        <a href="matchVerificationPage.php">
+                                            <button class="verifyOnNotif">
+                                                VERIFY
                                             </button>
-                                        <?php else: ?>
-                                            <a href="matchVerificationPage.php?scrim_id=<?= $scrim['Match_ID'] ?>">
-                                                <button class="verifyOnNotif">
-                                                    VERIFY
-                                                </button>
-                                            </a>
-                                        <?php endif; ?>
+                                        </a>
                                     </div>
                                     
                                     <!-- Opponent Info -->
@@ -444,8 +506,15 @@ if (isset($_SESSION['user']['Squad_ID'])) {
         </div>
     </div>
 
+
+
     <!-- Javascript -->
-    <script src="JS/invitesScript.js"></script>
+    <script>
+    // Convert PHP variables to JS
+    const verificationStatus = <?= json_encode($verificationStatus) ?>;
+    const squadLevel = <?= json_encode($squadDetails['Squad_Level']) ?>;
+    </script>
+    <script src="JS/reportsScript.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 </body>
 </html>

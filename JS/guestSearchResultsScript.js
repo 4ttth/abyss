@@ -65,7 +65,7 @@ document.addEventListener('DOMContentLoaded', function () {
                             <div class="tabs">${squad.Squad_Level}</div>
                         </div>
                         <div class="squadDescription">${squad.Squad_Description}</div>
-                        <a href="squadDetailsPage.php?id=${squad.Squad_ID}" class="viewDetailsButton">VIEW SQUAD</a>
+                        <a href="guestSquadDetailsPage.php?id=${squad.Squad_ID}" class="viewDetailsButton">VIEW SQUAD</a>
                     </div>
                 `;
                 row.appendChild(col);
@@ -116,109 +116,4 @@ document.addEventListener('DOMContentLoaded', function () {
     } else {
         // Display the results as before
     }
-});
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-function respondToInvite(scheduleId, action) {
-    const buttons = document.querySelectorAll(`.notification[data-invite-id="${scheduleId}"] .scrimButtons button`);
-    
-    // Show loading state
-    buttons.forEach(btn => {
-        btn.disabled = true;
-        btn.innerHTML = '<i class="bi bi-arrow-repeat spin"></i>';
-    });
-
-    fetch('includes/handleInviteResponse.php', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ 
-            schedule_id: scheduleId, 
-            action: action 
-        })
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.success) {
-            const notification = document.querySelector(`.notification[data-invite-id="${scheduleId}"]`);
-            const buttonsContainer = notification.querySelector('.scrimButtons');
-
-            // Update buttons to show final response
-            buttonsContainer.innerHTML = `
-                <button class="${action === 'Accepted' ? 'acceptedOnNotif' : 'declinedOnNotif'}" disabled>
-                    ${action.toUpperCase()}
-                </button>
-            `;
-
-            // Remove 'new' status
-            notification.classList.remove('new');
-
-            // Update notification count
-            updateNotificationCount();
-        } else {
-            throw new Error(data.message || 'Action failed');
-        }
-    })
-    .catch(error => {
-        console.error('Error:', error);
-        buttons.forEach(btn => {
-            btn.disabled = false;
-            btn.innerHTML = btn.classList.contains('acceptOnNotif') ? 'ACCEPT' : 'DECLINE';
-        });
-        alert(error.message);
-    });
-}
-
-function fetchNotificationModal() {
-    fetch('includes/getNotifications.php')
-        .then(response => response.text())
-        .then(html => {
-            document.querySelector('.modal-body').innerHTML = html;
-        });
-}
-
-// Update the counter
-function updateNotificationCount() {
-    fetch('includes/getNotificationCount.php')
-        .then(response => response.json())
-        .then(data => {
-            const counter = document.querySelector('.notifCount');
-            if (data.count > 0) {
-                if (!counter) {
-                    const badge = document.createElement('span');
-                    badge.className = 'notifCount';
-                    document.querySelector('.nav-linkIcon').appendChild(badge);
-                }
-                document.querySelector('.notifCount').textContent = data.count;
-            } else if (counter) {
-                counter.remove();
-            }
-        });
-}
-
-// // Call this periodically (e.g., every 30 seconds)
-// setInterval(updateNotificationCount, 30000);
-
-// File name display script
-document.getElementById('fileInput').addEventListener('change', function() {
-    document.getElementById('fileName').textContent = this.files[0] ? this.files[0].name : 'No file chosen';
 });

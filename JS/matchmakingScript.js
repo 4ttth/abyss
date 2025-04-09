@@ -315,5 +315,5 @@ function updateNotificationCount() {
       });
 }
 
-// Call this periodically (e.g., every 30 seconds)
-setInterval(updateNotificationCount, 30000);
+// // Call this periodically (e.g., every 30 seconds)
+// setInterval(updateNotificationCount, 30000);

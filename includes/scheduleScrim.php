@@ -20,7 +20,7 @@ $createdAt = date('Y-m-d H:i:s'); // Current timestamp
 
 try {
     $query = "INSERT INTO tbl_inviteslog 
-              (Challenger_Squad_ID, Squad_ID, Scrim_Date, Scrim_Time, Scrim_Notes, Status, Created_At) 
+              (Challenger_Squad_ID, Squad_ID, Scrim_Date, Scrim_Time, No_Of_Games, Status, Created_At) 
               VALUES (?, ?, ?, ?, ?, ?, ?)";
               
     $stmt = $pdo->prepare($query);

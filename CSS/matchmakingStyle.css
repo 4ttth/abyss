@@ -100,16 +100,15 @@
 .searchBar {
     display: flex;
     align-items: center;
-    border: 1px solid white;
+    border: 1px solid white; 
     border-radius: 30px;
-    padding: 5px 15px;
-    background: transparent;
-    width: 90vw;
+    padding: 5px 15px !important;
+    background: transparent; 
+    width: 90vw; 
     height: 40px;
     position: relative;
     margin-left: 5px;
 }
-
 
 /* Input Field */
 .searchInput {
@@ -120,8 +119,9 @@
     color: white;
     font-size: 16px;
     padding: 5px;
+    font-family: glacialIndifference;
+    font-size: 18px !important;
 }
-
 
 /* Search Button */
 .searchButton {
@@ -133,19 +133,18 @@
     right: 10px;
 }
 
-
 /* Search Button Icon */
 .searchButton img {
     width: 25px;
     height: 25px;
 }
 
-
 /* Placeholder Color */
 .searchInput::placeholder {
     color: rgba(255, 255, 255, 0.7);
+    font-family: glacialIndifference;
+    font-size: 18px !important;
 }
-
 
 /* Account Logo Placeholder */
 .accountLogo {

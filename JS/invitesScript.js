@@ -52,9 +52,57 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 // Handle Accept/Decline
+// function respondToInvite(scheduleId, action) {
+//     // Disable buttons and show loading state
+//     const buttons = document.querySelectorAll(`.notification[data-invite-id="${scheduleId}"] .scrimButtons button`);
+//     buttons.forEach(btn => {
+//         btn.disabled = true;
+//         btn.innerHTML = '<i class="bi bi-arrow-repeat spin"></i>';
+//     });
+
+//     fetch('includes/handleInviteResponse.php', {
+//         method: 'POST',
+//         headers: { 'Content-Type': 'application/json' },
+//         body: JSON.stringify({ 
+//             schedule_id: scheduleId, 
+//             action: action 
+//         })
+//     })
+//     .then(response => response.json())
+//     .then(data => {
+//         if (data.success) {
+//             // Update the UI dynamically
+//             const notification = document.querySelector(`.notification[data-invite-id="${scheduleId}"]`);
+            
+//             // 1. Change buttons to show response status
+//             const buttonsContainer = notification.querySelector('.scrimButtons');
+//             buttonsContainer.innerHTML = `
+//                 <button class="${action === 'Accepted' ? 'acceptedOnNotif' : 'declinedOnNotif'}" disabled>
+//                     ${action.toUpperCase()}
+//                 </button>
+//             `;
+            
+//             // 2. Remove 'new' class if it exists
+//             notification.classList.remove('new');
+            
+//             // 3. Update the notification counter
+//             updateNotificationCount();
+//         }
+//     })
+//     .catch(error => {
+//         console.error('Error:', error);
+//         // Reset buttons if failed
+//         buttons.forEach(btn => {
+//             btn.disabled = false;
+//             btn.innerHTML = btn.classList.contains('acceptOnNotif') ? 'ACCEPT' : 'DECLINE';
+//         });
+//     });
+// }
+
 function respondToInvite(scheduleId, action) {
-    // Disable buttons and show loading state
     const buttons = document.querySelectorAll(`.notification[data-invite-id="${scheduleId}"] .scrimButtons button`);
+    
+    // Show loading state
     buttons.forEach(btn => {
         btn.disabled = true;
         btn.innerHTML = '<i class="bi bi-arrow-repeat spin"></i>';
@@ -71,31 +119,32 @@ function respondToInvite(scheduleId, action) {
     .then(response => response.json())
     .then(data => {
         if (data.success) {
-            // Update the UI dynamically
             const notification = document.querySelector(`.notification[data-invite-id="${scheduleId}"]`);
-            
-            // 1. Change buttons to show response status
             const buttonsContainer = notification.querySelector('.scrimButtons');
+
+            // Update buttons to show final response
             buttonsContainer.innerHTML = `
                 <button class="${action === 'Accepted' ? 'acceptedOnNotif' : 'declinedOnNotif'}" disabled>
                     ${action.toUpperCase()}
                 </button>
             `;
-            
-            // 2. Remove 'new' class if it exists
+
+            // Remove 'new' status
             notification.classList.remove('new');
-            
-            // 3. Update the notification counter
+
+            // Update notification count
             updateNotificationCount();
+        } else {
+            throw new Error(data.message || 'Action failed');
         }
     })
     .catch(error => {
         console.error('Error:', error);
-        // Reset buttons if failed
         buttons.forEach(btn => {
             btn.disabled = false;
             btn.innerHTML = btn.classList.contains('acceptOnNotif') ? 'ACCEPT' : 'DECLINE';
         });
+        alert(error.message);
     });
 }
 
@@ -126,8 +175,13 @@ function updateNotificationCount() {
         });
 }
 
-// Call this periodically (e.g., every 30 seconds)
-setInterval(updateNotificationCount, 30000);XMLDocument
+// // Call this periodically (e.g., every 30 seconds)
+// setInterval(updateNotificationCount, 10000);
+
+// File name display script
+document.getElementById('fileInput').addEventListener('change', function() {
+    document.getElementById('fileName').textContent = this.files[0] ? this.files[0].name : 'No file chosen';
+});
 
 document.addEventListener('DOMContentLoaded', function() {
     const filterOptions = document.querySelectorAll('.filter-option');

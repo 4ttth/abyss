@@ -38,6 +38,7 @@ $squadDetails = $_SESSION['squad_details'] ?? [
 //     die("Database error: " . htmlspecialchars($e->getMessage()));
 // }
 
+
 // Replace the existing invite query with:
 $stmt = $pdo->prepare("SELECT i.*, s.Squad_Name 
                       FROM tbl_inviteslog i
@@ -46,7 +47,23 @@ $stmt = $pdo->prepare("SELECT i.*, s.Squad_Name
                       ORDER BY i.Created_At DESC");
 $stmt->execute([$_SESSION['user']['Squad_ID']]);
 $invites = $stmt->fetchAll(PDO::FETCH_ASSOC);
+// $newInvitesCount = count(array_filter($invites, fn($invite) => $invite['Response'] === 'Pending'));
+
+// // ADD THE NEW CODE RIGHT HERE:
+$verificationNotifs = getVerificationNotifications($pdo, $_SESSION['user']['Squad_ID']);
 $newInvitesCount = count(array_filter($invites, fn($invite) => $invite['Response'] === 'Pending'));
+$verificationCount = count($verificationNotifs);
+$totalNotifications = $newInvitesCount + $verificationCount;
+
+// Replace your existing notification count code with:
+    $verificationCount = count(array_filter($verificationNotifs, function($scrim) use ($pdo) {
+        $stmt = $pdo->prepare("SELECT * FROM tbl_matchverifications 
+                              WHERE Match_ID = ? AND Squad_ID = ?");
+        $stmt->execute([$scrim['Match_ID'], $_SESSION['user']['Squad_ID']]);
+        return !$stmt->fetch();
+    }));
+    
+    $totalNotifications = $newInvitesCount + $verificationCount;
 
 // Add this near where you fetch the invites
 $pendingInvitesCount = 0;
@@ -55,6 +72,27 @@ if (!empty($invites)) {
         return $invite['Status'] === 'Pending';
     }));
 }
+
+// Add this near your other notification queries
+function getVerificationNotifications($pdo, $squadID) {
+    $currentTime = date('Y-m-d H:i:s');
+    $stmt = $pdo->prepare("SELECT s.*, 
+                          sp1.Squad_Name as Squad1_Name,
+                          sp2.Squad_Name as Squad2_Name
+                          FROM tbl_scrimslog s
+                          JOIN tbl_squadprofile sp1 ON s.Squad1_ID = sp1.Squad_ID
+                          JOIN tbl_squadprofile sp2 ON s.Squad2_ID = sp2.Squad_ID
+                          WHERE (s.Squad1_ID = ? OR s.Squad2_ID = ?)
+                          AND s.Scheduled_Time < ?
+                          AND s.OCR_Validated = 0
+                          AND s.Winner_Squad_ID IS NULL
+                          ORDER BY s.Scheduled_Time DESC");
+    $stmt->execute([$squadID, $squadID, $currentTime]);
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+
+// Usage:
+$verificationNotifs = getVerificationNotifications($pdo, $_SESSION['user']['Squad_ID']);
 
 // Fetch scrims for the logged-in squad
 $scrims = [];
@@ -119,8 +157,8 @@ if (isset($_SESSION['user']['Squad_ID'])) {
                         </a>
                        
                         <!-- Search Bar -->
-                        <form class="searchBar">
-                            <input class="searchInput" type="search" placeholder=" " aria-label="Search">
+                        <form class="searchBar" action="searchResultsPage.php" method="GET">
+                            <input class="searchInput" type="search" name="query" placeholder="Search Squads" aria-label="Search">
                             <button class="searchButton" type="submit">
                                 <img src="IMG/essentials/whiteVer.PNG" alt="Search">
                             </button>
@@ -149,7 +187,10 @@ if (isset($_SESSION['user']['Squad_ID'])) {
                             <a class="nav-link active" href="scrimsPage.php">SCRIMS</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="invitesPage.php">INVITES</a>
+                            <a class="nav-link" href="invitesPage.php">MY INVITES</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="invitesSentPage.php">SENT INVITES</a>
                         </li>
                         <!-- Icon Bars -->
                         <div class="iconsBar">
@@ -157,8 +198,8 @@ if (isset($_SESSION['user']['Squad_ID'])) {
                             <li class="nav-item">
                                 <a class="nav-linkIcon" href="#" data-bs-toggle="modal" data-bs-target="#notificationModal">
                                     <i class="bi bi-app-indicator"></i>
-                                    <?php if ($newInvitesCount > 0): ?>
-                                        <span class="notifCount"><?= $newInvitesCount ?></span>
+                                    <?php if ($totalNotifications > 0): ?>
+                                        <span class="notifCount"><?= $totalNotifications ?></span>
                                     <?php endif; ?>
                                 </a>
                             </li>
@@ -189,6 +230,7 @@ if (isset($_SESSION['user']['Squad_ID'])) {
                         <li><a class="dropdown-item filter-option" href="#" data-status="victory">Victories</a></li>
                         <li><a class="dropdown-item filter-option" href="#" data-status="defeat">Defeats</a></li>
                         <li><a class="dropdown-item filter-option" href="#" data-status="unverified">Unverified</a></li>
+                        <li><a class="dropdown-item filter-option" href="#" data-status="pendingVerification">Pending</a></li>
                     </ul>
                 </div>
             </div>
@@ -204,21 +246,30 @@ if (isset($_SESSION['user']['Squad_ID'])) {
                                 <?php 
                                 // Determine card status
                                 $statusClass = '';
-                                // Determine card status
                                 $currentTime = time();
                                 $scheduledTime = strtotime($scrim['Scheduled_Time']);
-                                $isPastDue = ($currentTime > $scheduledTime);
 
-                                if ($scrim['OCR_Validated']) {
-                                    // If results are validated
-                                    $statusClass = ($scrim['Winner_Squad_ID'] == $_SESSION['user']['Squad_ID']) 
-                                        ? 'victory' 
-                                        : 'defeat';
-                                } elseif ($isPastDue) {
-                                    // If match is past due but not validated
-                                    $statusClass = 'unverified'; // Needs validation
+                                // Four possible statuses:
+                                // 1. OCR Validated (with winner/loser status)
+                                // 2. Pending Verification (submitted but not validated)
+                                // 3. Needs Verification (past due but not submitted)
+                                // 4. Upcoming (not yet occurred)
+
+                                if ($scrim['OCR_Validated'] == 1) {
+                                    // Case 1: Results are fully validated
+                                    if ($scrim['Winner_Squad_ID'] == $_SESSION['user']['Squad_ID']) {
+                                        $statusClass = 'victory';
+                                    } else {
+                                        $statusClass = 'defeat';
+                                    }
+                                } elseif ($scrim['Verification_Submitted'] == 1 && $scrim['OCR_Validated'] == 0) {
+                                    // Case 2: Verification submitted but not yet validated
+                                    $statusClass = 'pendingVerification';
+                                } elseif (time() > $scheduledTime) {
+                                    // Case 3: Match is past due but no verification submitted
+                                    $statusClass = 'unverified';
                                 } else {
-                                    // Upcoming match
+                                    // Case 4: Match hasn't happened yet
                                     $statusClass = 'upcoming';
                                 }
                                 ?>
@@ -227,7 +278,25 @@ if (isset($_SESSION['user']['Squad_ID'])) {
                                     <div class="scrim-card-content">
                                         <!-- Status -->
                                         <div class="status <?= $statusClass ?>">
-                                            <?= strtoupper($statusClass) ?>
+                                            <?php 
+                                                switch($statusClass) {
+                                                    case 'victory': 
+                                                        echo 'VICTORY'; 
+                                                        break;
+                                                    case 'defeat': 
+                                                        echo 'DEFEAT'; 
+                                                        break;
+                                                    case 'pendingVerification': 
+                                                        echo 'PENDING VERIFICATION';  // Display with space
+                                                        break;
+                                                    case 'unverified': 
+                                                        echo 'UNVERIFIED'; 
+                                                        break;
+                                                    case 'upcoming': 
+                                                        echo 'UPCOMING'; 
+                                                        break;
+                                                }
+                                            ?>
                                         </div>
                                         
                                         <!-- Score -->
@@ -363,9 +432,9 @@ if (isset($_SESSION['user']['Squad_ID'])) {
                                         </div>
 
                                         <!-- Scrim Notes (if available) -->
-                                        <?php if (!empty($invite['Scrim_Notes'])): ?>
+                                        <?php if (!empty($invite['No_Of_Games'])): ?>
                                             <div class="noGamesOnNotif">
-                                                <?= htmlspecialchars($invite['Scrim_Notes']) ?>
+                                                BEST OF <?= htmlspecialchars($invite['No_Of_Games']) ?>
                                             </div>
                                         <?php endif; ?>
 
@@ -384,13 +453,72 @@ if (isset($_SESSION['user']['Squad_ID'])) {
                                 </div>
                             </div>
                         <?php endforeach; ?>
-                    <?php else: ?>
+                    <?php endif; ?>   
+
+                    <!-- Verification Automated Message -->
+                    <?php foreach ($verificationNotifs as $scrim): 
+                        // Check if verification was already submitted
+                        $stmt = $pdo->prepare("SELECT * FROM tbl_matchverifications 
+                                            WHERE Match_ID = ? AND Squad_ID = ?");
+                        $stmt->execute([$scrim['Match_ID'], $_SESSION['user']['Squad_ID']]);
+                        $verificationSubmitted = $stmt->fetch();
+                    ?>
+
+                        <div class="notification <?= $verificationSubmitted ? '' : 'new' ?>" data-scrim-id="<?= $scrim['Match_ID'] ?>">
+                            <div class="time">
+                                <?= date('n/j/Y g:i', strtotime($scrim['Scheduled_Time'])) ?>
+                            </div>
+                            <strong>Scrim match finished!</strong> Time to verify and earn Abyss Points!
+                            <div class="scrim-cardOnNotif">
+                                <div class="scrim-card-contentOnNotif">
+                                    <!-- Single Verify Button -->
+                                    <div class="scrimButtons">
+                                        <?php if ($verificationSubmitted): ?>
+                                            <button class="pendingOnNotif" disabled>
+                                                PENDING
+                                            </button>
+                                        <?php else: ?>
+                                            <a href="matchVerificationPage.php?scrim_id=<?= $scrim['Match_ID'] ?>">
+                                                <button class="verifyOnNotif">
+                                                    VERIFY
+                                                </button>
+                                            </a>
+                                        <?php endif; ?>
+                                    </div>
+                                    
+                                    <!-- Opponent Info -->
+                                    <div class="opponentOnNotif">
+                                        <div class="squadNameOnNotif">
+                                            <span>VS</span> <strong>
+                                                <?= htmlspecialchars($scrim['Squad1_ID'] == $_SESSION['user']['Squad_ID'] 
+                                                    ? $scrim['Squad2_Name'] 
+                                                    : $scrim['Squad1_Name']) ?>
+                                            </strong>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Scheduled Time -->
+                                    <div class="timeAndDateOnNotif">
+                                        <div class="TimeOnNotif">
+                                            <?= date('g:i A', strtotime($scrim['Scheduled_Time'])) ?>
+                                        </div>
+                                        <div class="DateOnNotif">
+                                            <?= date('Y-m-d', strtotime($scrim['Scheduled_Time'])) ?>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    <?php endforeach; ?>
+                    
+                    <?php if (empty($invites) && empty($verificationNotifs)): ?>
                         <div class="notification">
-                            <div class="noNotifications">No invites yet</div>
+                            <div class="noNotifications">No new notifications</div>
                         </div>
                     <?php endif; ?>
+                    
                     <div class="notifEnd">End of Feed</div>
-                </div>
+                </div>                        
             </div>
         </div>
     </div>

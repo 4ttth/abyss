@@ -105,6 +105,18 @@ if (isset($_SESSION['user']['Squad_ID'])) {
     $stmt->execute([$_SESSION['user']['Squad_ID']]);
     $invites = $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
+
+// Get all invites SENT by the logged-in squad
+$sentInvites = [];
+if (isset($_SESSION['user']['Squad_ID'])) {
+    $stmt = $pdo->prepare("SELECT i.*, s.Squad_Name 
+                          FROM tbl_inviteslog i
+                          JOIN tbl_squadprofile s ON i.Squad_ID = s.Squad_ID
+                          WHERE i.Challenger_Squad_ID = ?
+                          ORDER BY i.Created_At DESC");
+    $stmt->execute([$_SESSION['user']['Squad_ID']]);
+    $sentInvites = $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
 ?>
 
 
@@ -172,10 +184,10 @@ if (isset($_SESSION['user']['Squad_ID'])) {
                             <a class="nav-link" href="scrimsPage.php">SCRIMS</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link active" href="invitesPage.php">MY INVITES</a>
+                            <a class="nav-link" href="invitesPage.php">MY INVITES</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="invitesSentPage.php">SENT INVITES</a>
+                            <a class="nav-link active" href="invitesSentPage.php">SENT INVITES</a>
                         </li>
                         <!-- Icon Bars -->
                         <div class="iconsBar">
@@ -218,23 +230,23 @@ if (isset($_SESSION['user']['Squad_ID'])) {
                 </div>
             </div>
 
-            <!-- Result -->
+            <!-- Results -->
             <div class="results">
                 <div class="filters-container">
                     <!-- Invites Rows -->
                     <div class="invites-rows" id="invitesRows">    
                         <div class="invites-rows-container" id="invitesContainer">
-                            <?php foreach ($invites as $invite): ?>
+                            <?php foreach ($sentInvites as $invite): ?>
                                 <div class="scrim-card" data-status="<?= strtolower($invite['Response']) ?>">
                                     <div class="scrim-card-content">
                                         <!-- Status -->
                                         <div class="status <?= strtolower($invite['Response']) ?>">
                                             <?= strtoupper($invite['Response']) ?>
                                         </div>
-                                        <!-- Opponent -->
+                                        <!-- Opponent (now showing who we invited) -->
                                         <div class="opponent">
                                             <div class="squadName">
-                                                <span>VS</span> <strong><?= htmlspecialchars($invite['Squad_Name']) ?></strong>
+                                                <span>TO</span> <strong><?= htmlspecialchars($invite['Squad_Name']) ?></strong>
                                             </div>
                                         </div>
                                         <!-- Notes -->
@@ -252,21 +264,27 @@ if (isset($_SESSION['user']['Squad_ID'])) {
                                                 <?= date('Y-m-d', strtotime($invite['Scrim_Date'])) ?>
                                             </div>
                                         </div>
+                                        <!-- Response Time (if responded) -->
+                                        <?php if ($invite['Response'] !== 'Pending'): ?>
+                                            <div class="responseTime">
+                                                Responded: <?= date('M j, Y g:i A', strtotime($invite['Response_Time'] ?? $invite['Updated_At'])) ?>
+                                            </div>
+                                        <?php endif; ?>
                                     </div>
                                 </div>
                             <?php endforeach; ?>
                         </div>
                     </div>
 
-
-                    <!-- Pagination Controls Bottom -->
+                    <!-- Pagination -->
                     <div class="scrim-pagination">
                         <button class="page-btn prev-btn" disabled>Previous</button>
-                        <span class="page-indicator">Page 1 of 3</span>
+                        <span class="page-indicator">Page 1 of 1</span>
                         <button class="page-btn next-btn">Next</button>
                     </div>
                 </div>
             </div>
+        </div>
         </div>
 
 

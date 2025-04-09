@@ -40,12 +40,13 @@ try {
             
             // Insert into scrims log
             $stmtScrim = $pdo->prepare("INSERT INTO tbl_scrimslog 
-                (Squad1_ID, Squad2_ID, Scheduled_Time, Status) 
-                VALUES (?, ?, ?, ?)");
+                (Squad1_ID, Squad2_ID, Scheduled_Time, No_Of_Games, Status) 
+                VALUES (?, ?, ?, ?, ?)");
             $stmtScrim->execute([
                 $invite['Challenger_Squad_ID'],
                 $invite['Squad_ID'],
-                $invite['Scrim_Date'] . ' ' . $invite['Scrim_Time'],
+                $invite['Scrim_Date'],
+                $invite['No_Of_Games'] . ' ' .$invite['Scrim_Time'],
                 $status
             ]);
         }

@@ -156,7 +156,7 @@ function showScrimError() {
         reason.push(`Squad Level: ${squadLevel}`);
     }
     
-    alert(`Scrim acceass requires:
+    alert(`Scrim access requires:
 - Approved verification status
 OR
 - Amateur squad level
@@ -326,7 +326,76 @@ function updateNotificationCount() {
 // // Call this periodically (e.g., every 30 seconds)
 // setInterval(updateNotificationCount, 30000);
 
-// File name display script
 document.getElementById('fileInput').addEventListener('change', function() {
-    document.getElementById('fileName').textContent = this.files[0] ? this.files[0].name : 'No file chosen';
+    const fileName = this.files[0] ? this.files[0].name : 'No file chosen';
+    document.getElementById('fileName').textContent = fileName;
+});
+
+function validateScores() {
+    const yourScore = parseInt(document.getElementById('yourScore').value) || 0;
+    const opponentScore = parseInt(document.getElementById('opponentScore').value) || 0;
+    const numberOfGames = parseInt(document.getElementById('numberOfGames').value);
+    const maxScore = parseInt(document.getElementById('maxScore').value);
+    const errorElement = document.getElementById('scoreError');
+    const submitButton = document.querySelector('button[type="submit"]');
+    
+    // Reset error and enable button by default
+    errorElement.style.display = 'none';
+    submitButton.disabled = false;
+    
+    // 1. Check if scores exceed maximum possible score
+    if (yourScore > maxScore || opponentScore > maxScore) {
+        errorElement.textContent = `In a best of ${numberOfGames} series, no team can win more than ${maxScore} games!`;
+        errorElement.style.display = 'block';
+        submitButton.disabled = true;
+        return;
+    }
+    
+    // 2. Check if sum of scores exceeds number of games
+    if ((yourScore + opponentScore) > numberOfGames) {
+        errorElement.textContent = `The total games played (${yourScore + opponentScore}) cannot exceed the series length (best of ${numberOfGames})!`;
+        errorElement.style.display = 'block';
+        submitButton.disabled = true;
+        return;
+    }
+    
+    // 3. Check if one team has the winning score
+    const hasWinner = (yourScore === maxScore) || (opponentScore === maxScore);
+    
+    if (!hasWinner) {
+        errorElement.textContent = `One team must have ${maxScore} wins to complete the series!`;
+        errorElement.style.display = 'block';
+        submitButton.disabled = true;
+        return;
+    }
+    
+    // 4. Check if both teams have winning score (impossible)
+    if (yourScore === maxScore && opponentScore === maxScore) {
+        errorElement.textContent = 'Both teams cannot have the winning score!';
+        errorElement.style.display = 'block';
+        submitButton.disabled = true;
+        return;
+    }
+    
+    // 5. Check for negative values
+    if (yourScore < 0 || opponentScore < 0) {
+        errorElement.textContent = 'Scores cannot be negative!';
+        errorElement.style.display = 'block';
+        submitButton.disabled = true;
+        return;
+    }
+    
+    // 6. Additional check: If series should be complete (sum should be at least maxScore)
+    if ((yourScore + opponentScore) < maxScore) {
+        errorElement.textContent = `The series should have at least ${maxScore} games played to have a winner!`;
+        errorElement.style.display = 'block';
+        submitButton.disabled = true;
+        return;
+    }
+}
+document.querySelector('form').addEventListener('submit', function(e) {
+    validateScores();
+    if (document.querySelector('button[type="submit"]').disabled) {
+        e.preventDefault();
+    }
 });

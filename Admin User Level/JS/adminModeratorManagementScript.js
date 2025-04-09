@@ -180,15 +180,3 @@ $(document).on('click', '.show-logs', function() {
         }
     });
 });
-
-// For ANM alert
-document.addEventListener("DOMContentLoaded", function () {
-    const alertBox = document.getElementById("success-alert");
-    if (alertBox) {
-        setTimeout(() => {
-            alertBox.style.transition = "opacity 0.5s ease";
-            alertBox.style.opacity = 0;
-            setTimeout(() => alertBox.remove(), 500); // remove from DOM after fade out
-        }, 3000); // Show for 3 seconds
-    }
-});
