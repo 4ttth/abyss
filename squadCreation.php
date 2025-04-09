@@ -318,12 +318,39 @@ if (isset($_SESSION['user']['Squad_ID'])) {
                                                 <div class="dropdown-wrapper">
                                                     <select name="Current_Rank" class="squadLevelDropdown">
                                                         <option selected disabled>Select Rank</option>
-                                                        <option>Warrior</option>
-                                                        <option>Elite</option>
-                                                        <option>Master</option>
-                                                        <option>Grandmaster</option>
-                                                        <option>Epic</option>
-                                                        <option>Legend</option>
+                                                        <!-- Warrior -->
+                                                        <option>Warrior I</option>
+                                                        <option>Warrior II</option>
+                                                        <option>Warrior III</option>
+                                                        <!-- Elite -->
+                                                        <option>Elite I</option>
+                                                        <option>Elite II</option>
+                                                        <option>Elite III</option>
+                                                        <option>Elite IV</option>
+                                                        <!-- Master -->
+                                                        <option>Master I</option>
+                                                        <option>Master II</option>
+                                                        <option>Master III</option>
+                                                        <option>Master IV</option>
+                                                        <!-- Grandmaster -->
+                                                        <option>Grandmaster I</option>
+                                                        <option>Grandmaster II</option>
+                                                        <option>Grandmaster III</option>
+                                                        <option>Grandmaster IV</option>
+                                                        <option>Grandmaster V</option>
+                                                        <!-- Epic -->
+                                                        <option>Epic I</option>
+                                                        <option>Epic II</option>
+                                                        <option>Epic III</option>
+                                                        <option>Epic IV</option>
+                                                        <option>Epic V</option>
+                                                        <!-- Legend -->
+                                                        <option>Legend I</option>
+                                                        <option>Legend II</option>
+                                                        <option>Legend III</option>
+                                                        <option>Legend IV</option>
+                                                        <option>Legend V</option>
+                                                        <!-- Mythic -->
                                                         <option>Mythic</option>
                                                         <option>Mythical Honor</option>
                                                         <option>Mythical Glory</option>
@@ -338,19 +365,46 @@ if (isset($_SESSION['user']['Squad_ID'])) {
                                             <div class="col-md-6">
                                                 <label class="form-label">HIGHEST RANK</label>
                                                 <div class="dropdown-wrapper">
-                                                    <select name="Highest_Rank" class="squadLevelDropdown">
-                                                        <option selected disabled>Select Rank</option>
-                                                        <option>Warrior</option>
-                                                        <option>Elite</option>
-                                                        <option>Master</option>
-                                                        <option>Grandmaster</option>
-                                                        <option>Epic</option>
-                                                        <option>Legend</option>
-                                                        <option>Mythic</option>
-                                                        <option>Mythical Honor</option>
-                                                        <option>Mythical Glory</option>
-                                                        <option>Mythical Immortal</option>
-                                                    </select>
+                                                <select name="Highest_Rank" class="squadLevelDropdown">
+                                                    <option selected disabled>Select Rank</option>
+                                                    <!-- Warrior -->
+                                                    <option>Warrior I</option>
+                                                    <option>Warrior II</option>
+                                                    <option>Warrior III</option>
+                                                    <!-- Elite -->
+                                                    <option>Elite I</option>
+                                                    <option>Elite II</option>
+                                                    <option>Elite III</option>
+                                                    <option>Elite IV</option>
+                                                    <!-- Master -->
+                                                    <option>Master I</option>
+                                                    <option>Master II</option>
+                                                    <option>Master III</option>
+                                                    <option>Master IV</option>
+                                                    <!-- Grandmaster -->
+                                                    <option>Grandmaster I</option>
+                                                    <option>Grandmaster II</option>
+                                                    <option>Grandmaster III</option>
+                                                    <option>Grandmaster IV</option>
+                                                    <option>Grandmaster V</option>
+                                                    <!-- Epic -->
+                                                    <option>Epic I</option>
+                                                    <option>Epic II</option>
+                                                    <option>Epic III</option>
+                                                    <option>Epic IV</option>
+                                                    <option>Epic V</option>
+                                                    <!-- Legend -->
+                                                    <option>Legend I</option>
+                                                    <option>Legend II</option>
+                                                    <option>Legend III</option>
+                                                    <option>Legend IV</option>
+                                                    <option>Legend V</option>
+                                                    <!-- Mythic -->
+                                                    <option>Mythic</option>
+                                                    <option>Mythical Honor</option>
+                                                    <option>Mythical Glory</option>
+                                                    <option>Mythical Immortal</option>
+                                                </select>
                                                     <span class="dropdown-icon">▼</span>
                                                 </div>
                                                 <input name="Highest_Star" type="text" class="form-control plchldr mt-2" placeholder="Enter Stars">
@@ -570,7 +624,7 @@ if (isset($_SESSION['user']['Squad_ID'])) {
                         <div class="modal-dialog">
                             <div class="modal-content customModal">
                                 <div class="modal-header">
-                                    <h5 class="modal-title" id="squadVerificationModalLabel">SQUAD VERIFICATION</h5>
+                                    <h5 class="modal-title" id="squadVerificationModalLabel">SQUAD LEVEL UPDATE</h5>
                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body">
@@ -588,42 +642,157 @@ if (isset($_SESSION['user']['Squad_ID'])) {
                                             </div>
                                         </div>
 
-                                        <div class="mb-3">
-                                            <label class="form-label">TYPE OF PROOF</label>
-                                            <div class="dropdown-wrapper">
-                                                <select name="Proof_Type" class="squadLevelDropdown" required>
-                                                    <option selected disabled>Select Proof</option>
-                                                    <option value="Certificate of Enrollment">Certificate of Enrollment</option>
-                                                    <option value="Official Team Registration">Official Team Registration</option>
-                                                    <option value="Tournament Participation">Tournament Participation</option>
-                                                </select>
-                                                <span class="dropdown-icon">▼</span>
+                                        <!-- Conditional Fields -->
+                                        <div id="verificationFields">
+                                            <div class="mb-3">
+                                                <label class="form-label">TYPE OF PROOF</label>
+                                                <div class="dropdown-wrapper">
+                                                    <select name="Proof_Type" class="squadLevelDropdown">
+                                                        <option selected disabled>Select Proof</option>
+                                                        <option value="Certificate of Enrollment">Certificate of Enrollment</option>
+                                                        <option value="Official Team Registration">Official Team Registration</option>
+                                                        <option value="Tournament Participation">Tournament Participation</option>
+                                                    </select>
+                                                    <span class="dropdown-icon">▼</span>
+                                                </div>
                                             </div>
-                                        </div>
 
-                                        <div class="mb-3">
-                                            <label class="form-label">ATTACH FILE</label>
-                                            <div class="custom-file-upload">
-                                                <input type="file" name="Proof_File" id="fileInput" hidden required>
-                                                <button type="button" class="modalButtons" id="chooseFileBtn">CHOOSE FILE</button>
-                                                <span id="fileName">No file chosen</span>
+                                            <div class="mb-3">
+                                                <label class="form-label">ATTACH FILE</label>
+                                                <div class="custom-file-upload">
+                                                    <input type="file" name="Proof_File" id="fileInput" hidden>
+                                                    <button type="button" class="modalButtons" id="chooseFileBtn">CHOOSE FILE</button>
+                                                    <span id="fileName">No file chosen</span>
+                                                </div>
                                             </div>
                                         </div>
 
                                         <div class="modal-footer">
-                                            <button type="submit" class="modalButtons">VERIFY</button>
+                                            <button type="submit" class="modalButtons">SUBMIT</button>
                                         </div>
                                     </form>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-            </div>
-        </div>
-    </div>
 
     <!-- Javascript -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const rankStars = {
+                // Warrior
+                'Warrior I': { min: 0, max: 3 },
+                'Warrior II': { min: 0, max: 3 },
+                'Warrior III': { min: 0, max: 3 },
+                // Elite
+                'Elite I': { min: 0, max: 3 },
+                'Elite II': { min: 0, max: 3 },
+                'Elite III': { min: 0, max: 3 },
+                'Elite IV': { min: 0, max: 3 },
+                // Master
+                'Master I': { min: 0, max: 4 },
+                'Master II': { min: 0, max: 4 },
+                'Master III': { min: 0, max: 4 },
+                'Master IV': { min: 0, max: 4 },
+                // Grandmaster
+                'Grandmaster I': { min: 0, max: 5 },
+                'Grandmaster II': { min: 0, max: 5 },
+                'Grandmaster III': { min: 0, max: 5 },
+                'Grandmaster IV': { min: 0, max: 5 },
+                'Grandmaster V': { min: 0, max: 5 },
+                // Epic
+                'Epic I': { min: 0, max: 5 },
+                'Epic II': { min: 0, max: 5 },
+                'Epic III': { min: 0, max: 5 },
+                'Epic IV': { min: 0, max: 5 },
+                'Epic V': { min: 0, max: 5 },
+                // Legend
+                'Legend I': { min: 0, max: 5 },
+                'Legend II': { min: 0, max: 5 },
+                'Legend III': { min: 0, max: 5 },
+                'Legend IV': { min: 0, max: 5 },
+                'Legend V': { min: 0, max: 5 },
+                // Mythic
+                'Mythic': { min: 0, max: 24 },
+                'Mythical Honor': { min: 25, max: 49 },
+                'Mythical Glory': { min: 50, max: 99 },
+                'Mythical Immortal': { min: 100, max: Infinity }
+            };
+
+            function validateStars(input, rank) {
+                const value = parseInt(input.value);
+                const config = rankStars[rank];
+                if (!config) {
+                    input.setCustomValidity('Select a valid rank first.');
+                    return;
+                }
+                if (isNaN(value) || value < config.min || value > config.max) {
+                    input.setCustomValidity(`Stars must be between ${config.min} and ${config.max}.`);
+                } else {
+                    input.setCustomValidity('');
+                }
+                input.reportValidity();
+            }
+
+            // Current Rank Validation
+            const currentRank = document.querySelector('select[name="Current_Rank"]');
+            const currentStar = document.querySelector('input[name="Current_Star"]');
+            currentRank.addEventListener('change', () => validateStars(currentStar, currentRank.value));
+            currentStar.addEventListener('input', () => validateStars(currentStar, currentRank.value));
+
+            // Highest Rank Validation
+            const highestRank = document.querySelector('select[name="Highest_Rank"]');
+            const highestStar = document.querySelector('input[name="Highest_Star"]');
+            highestRank.addEventListener('change', () => validateStars(highestStar, highestRank.value));
+            highestStar.addEventListener('input', () => validateStars(highestStar, highestRank.value));
+        });
+
+        document.querySelector('form').addEventListener('submit', function(e) {
+            const currentRank = document.querySelector('[name="Current_Rank"]').value;
+            const highestRank = document.querySelector('[name="Highest_Rank"]').value;
+            
+            if (currentRank === highestRank) {
+                const currentStar = parseInt(document.querySelector('[name="Current_Star"]').value);
+                const highestStar = parseInt(document.querySelector('[name="Highest_Star"]').value);
+                if (highestStar < currentStar) {
+                    alert("Highest stars cannot be less than current stars for the same rank!");
+                    e.preventDefault();
+                }
+            }
+        });
+
+        // Squad Verification Modal Field Toggling
+        document.addEventListener('DOMContentLoaded', function() {
+        const squadLevelSelect = document.querySelector('#squadVerificationModal select[name="Squad_Level"]');
+        const verificationFields = document.getElementById('verificationFields');
+        const proofTypeSelect = verificationFields.querySelector('select[name="Proof_Type"]');
+        const fileInput = verificationFields.querySelector('input[name="Proof_File"]');
+        const chooseFileBtn = document.getElementById('chooseFileBtn');
+        const fileNameSpan = document.getElementById('fileName');
+
+        function toggleVerificationFields() {
+            const isAmateur = squadLevelSelect.value === 'Amateur';
+            
+            verificationFields.style.display = isAmateur ? 'none' : 'block';
+            proofTypeSelect.required = !isAmateur;
+            fileInput.required = !isAmateur;
+        }
+
+        if (squadLevelSelect) {
+            toggleVerificationFields();
+            squadLevelSelect.addEventListener('change', toggleVerificationFields);
+        }
+
+        // File input handling
+        chooseFileBtn.addEventListener('click', function() {
+            fileInput.click();
+        });
+
+        fileInput.addEventListener('change', function() {
+            fileNameSpan.textContent = this.files[0] ? this.files[0].name : 'No file chosen';
+        });
+    });
+    </script>
     <script src="JS/creatingSquadScript.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 </body>

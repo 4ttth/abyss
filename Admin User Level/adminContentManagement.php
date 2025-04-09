@@ -2,7 +2,8 @@
 session_start();
 require_once '../includes/dbh.inc.php';
 
-if (!in_array($_SESSION['user_role'], ['Admin'])) {
+if (!in_array($_SESSION['user']['Role'], ['Admin'])) {
+    header("Location: ../loginPage.php");
     exit("Access Denied!");
 }
 
@@ -51,34 +52,69 @@ if (!$result) {
             </div>
             
             <!-- Vertical Nav Links -->
-            <ul class="nav flex-column">
-                <li class="nav-item firstItem">
-                    <a class="nav-link" href="adminIndex.php">
-                        HOME
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link active" href="adminContentManagement.php">
-                        <span class="nav-text">CONTENT MANAGEMENT</span>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="adminModeratorManagement.php">
-                        <span class="nav-text">MODERATOR MANAGEMENT</span>
-                    </a>
-                </li>
-                <li class="nav-item lastItem">
-                    <a class="nav-link" href="adminAccountManagement.php">
-                        <span class="nav-text">ACCOUNT MANAGEMENT</span>
-                    </a>
-                </li>
-            </ul>
+            <div class="navBarOverflow">
+                <ul class="nav flex-column">
+                    <li class="nav-item firstItem">
+                        <a class="nav-link" href="adminIndex.php">
+                            HOME
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="adminContentManagement.php">
+                            <span class="nav-text">CONTENT MANAGEMENT</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="adminModeratorAccounts.php">
+                            <span class="nav-text">MODERATOR ACCOUNTS</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="../Admin User Level/Moderator Functions/modSquadAccounts.php">
+                            <span class="nav-text">SQUAD ACCOUNTS</span>
+                        </a>
+                    </li>
+                    <!-- Moderator Priivileges -->
+                    <li class="nav-item">
+                    <a class="nav-link" href="../Admin User Level/Moderator Functions/modIndex.php">
+                            <span class="nav-text">MODERATOR INDEX</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="../Admin User Level/Moderator Functions/modReports.php">
+                            REPORTS
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="../Admin User Level/Moderator Functions/modFeedbacks.php">
+                            FEEDBACKS
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="../Admin User Level/Moderator Functions/modRequests.php">
+                            <span class="nav-text">VERIFICATION REQUESTS</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="../Admin User Level/Moderator Functions/modScrimsLog.php">
+                            <span class="nav-text">SCRIMS LOG</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="../Admin User Level/Moderator Functions/modInvitesLog.php">
+                            <span class="nav-text">INVITES LOG</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
             
             <!-- Account Logo (at bottom) -->
             <div class="nav-footer">
-                <button class="accountLogo" data-bs-toggle="modal" data-bs-target="#loginSignupModal">
-                    <i class="bi bi-box-arrow-left"></i>
-                </button>
+                <form action="../includes/logout.inc.php" method="post">
+                    <button class="accountLogo" data-bs-toggle="modal" data-bs-target="#loginSignupModal">
+                            <i class="bi bi-box-arrow-left"></i>
+                    </button>
+                </form>
             </div>
         </div>
 
@@ -167,11 +203,14 @@ if (!$result) {
                             </td>
                             <td class="buttonColumn">
                                 <?php if ($row['Is_Displayed'] == 1): ?>
-                                    <button class="buttons" style="opacity: 0.5; pointer-events: none;" disabled>
-                                        <i class="bi bi-eye-fill"></i>
+                                    <button class="buttons" style="opacity: 0.5;" disabled>
+                                        <i class="bi bi-eye-fill"></i> Active
                                     </button>
                                 <?php else: ?>
-                                    <button class="buttons" onclick="toggleDisplay(<?= $row['Content_ID'] ?>, <?= $row['Is_Displayed'] ?>)">Show</button>
+                                    <button class="buttons" 
+                                            onclick="toggleDisplay(<?= $row['Content_ID'] ?>, <?= $row['Is_Displayed'] ?>)">
+                                        Show
+                                    </button>
                                 <?php endif; ?>
                             </td>
                         </tr>

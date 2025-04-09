@@ -68,10 +68,10 @@
                             <a class="nav-link active" aria-current="page" href="index.php">HOME</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="          ">LEADERBOARDS</a>
+                            <a class="nav-link" href="guestDiscoverPage.php">DISCOVER</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="          ">ABOUT US</a>
+                            <a class="nav-link" href="aboutUsPage.php">ABOUT US</a>
                         </li>
                     </ul>
                 </div>
@@ -112,44 +112,64 @@
         <!-- Events & Leaderboard Layer-->
         <div class="container-fluid">
             <div class="row d-flex eventsLeaderboard">
-                <!-- Events Column -->
-                <div class="col-xl-6 eventsColumn">
-                    <!-- Text Block -->
-                    <div class="row textBlockCenter">
-                        <div class="titleCenter">
-                            KISHIN DENSETU
-                        </div>
-                        <div class="subtitleCenter">
-                            draw event will be available on 02/03/2025
-                        </div>
-                        <div class="descriptionCenter">
-                            Obtain event-exclusive items such as Chat Bubble and more!
-                        </div>
-                        <a href="#" class="viewMoreButton">VIEW MORE</a>
-                    </div>
+                <!-- Admin Content Start -->
+                    <?php
+                    require_once 'includes/dbh.inc.php';
 
-                    <div class="row d-flex skinBlocks gx-3">
-                        <div class="col-4 skinBlock">
-                            <img src="IMG/skins/karrieSkin.PNG" class="img-fluid" alt="Skin 1">
-                        </div>
-                        <div class="col-4 skinBlock">
-                            <img src="IMG/skins/angelaSkin.PNG" class="img-fluid" alt="Skin 2">
-                        </div>
-                        <div class="col-4 skinBlock">
-                            <img src="IMG/skins/lancelotSkin.PNG" class="img-fluid" alt="Skin 3">
-                        </div>
-                    </div>
+                    // Fetch active content
+                    $activeContent = $pdo->query("
+                        SELECT Event_Name, Event_Duration, Event_Details, 
+                            Promotional_Content, Youtube_Link, Youtube_Banner 
+                        FROM tbl_contentmanagement 
+                        WHERE Is_Displayed = 1 
+                        LIMIT 1
+                    ")->fetch(PDO::FETCH_ASSOC);
+                    ?>
 
-                    <!-- Video Preview Card -->
-                    <div class="videoCard">
-                        <!-- Clickable link wrapping the thumbnail + overlays -->
-                        <a href="https://www.youtube.com/watch?v=aYlB6u7YOWQ" target="_blank">
-                        
-                            <!-- Thumbnail as a background via CSS -->
-                            <div class="thumbnail"></div>  
-                        </a>
-                    </div>                      
-                </div>
+                    <div class="col-xl-6 eventsColumn">
+                        <?php if ($activeContent): ?>
+                            <!-- Text Block -->
+                            <div class="row textBlockCenter">
+                                <div class="titleCenter">
+                                    <?= htmlspecialchars($activeContent['Event_Name']) ?>
+                                </div>
+                                <div class="subtitleCenter">
+                                    <?= htmlspecialchars($activeContent['Event_Duration']) ?>
+                                </div>
+                                <div class="descriptionCenter">
+                                    <?= htmlspecialchars($activeContent['Event_Details']) ?>
+                                </div>
+                                <a href="#" class="viewMoreButton">VIEW MORE</a>
+                            </div>
+
+                            <!-- Promotional Content -->
+                            <div class="row d-flex skinBlocks gx-3">
+                                <?php if (!empty($activeContent['Promotional_Content'])): ?>
+                                    <div class="col-4 skinBlock">
+                                        <img src="<?= htmlspecialchars($activeContent['Promotional_Content']) ?>" 
+                                            class="img-fluid" alt="Promotional Banner">
+                                    </div>
+                                <?php endif; ?>
+                            </div>
+
+                            <!-- YouTube Video -->
+                            <div class="videoCard">
+                                <?php if (!empty($activeContent['Youtube_Link'])): ?>
+                                    <a href="<?= htmlspecialchars($activeContent['Youtube_Link']) ?>" target="_blank">
+                                        <div class="thumbnail" 
+                                            style="background-image: url('<?= htmlspecialchars($activeContent['Youtube_Banner']) ?>')">
+                                        </div>
+                                    </a>
+                                <?php endif; ?>
+                            </div>
+                        <?php else: ?>
+                            <div class="row textBlockCenter">
+                                <div class="titleCenter">NO ACTIVE EVENT</div>
+                                <div class="subtitleCenter">Check back later!</div>
+                            </div>
+                        <?php endif; ?>
+                    </div>
+                <!-- Admin Content End -->
                 
                 
                 <!-- Leaderboard Column -->

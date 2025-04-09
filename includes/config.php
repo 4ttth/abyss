@@ -26,7 +26,7 @@ return array(
     // Minimum stars that the user can only search: matchmaking.php
     'MIN_STARS' => 0,
     // Maximum stars that the user can only search: matchmaking.php
-    'MAX_STARS' => 50,
+    'MAX_STARS' => 100,
     // Default stars that the search starts at (upon clicking 'Find Scrim'): matchmaking.php
     'DEFAULT_STARS' => 10,
 );

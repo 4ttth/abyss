@@ -28,6 +28,94 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         exit();
     }
 
+    // ====== VALIDATION CONFIGURATION ======
+    $rankConfig = [
+        // Warrior
+        'Warrior I' => ['min' => 0, 'max' => 3, 'tier' => 1],
+        'Warrior II' => ['min' => 0, 'max' => 3, 'tier' => 1],
+        'Warrior III' => ['min' => 0, 'max' => 3, 'tier' => 1],
+        // Elite
+        'Elite I' => ['min' => 0, 'max' => 3, 'tier' => 2],
+        'Elite II' => ['min' => 0, 'max' => 3, 'tier' => 2],
+        'Elite III' => ['min' => 0, 'max' => 3, 'tier' => 2],
+        'Elite IV' => ['min' => 0, 'max' => 3, 'tier' => 2],
+        // Master
+        'Master I' => ['min' => 0, 'max' => 4, 'tier' => 3],
+        'Master II' => ['min' => 0, 'max' => 4, 'tier' => 3],
+        'Master III' => ['min' => 0, 'max' => 4, 'tier' => 3],
+        'Master IV' => ['min' => 0, 'max' => 4, 'tier' => 3],
+        // Grandmaster
+        'Grandmaster I' => ['min' => 0, 'max' => 5, 'tier' => 4],
+        'Grandmaster II' => ['min' => 0, 'max' => 5, 'tier' => 4],
+        'Grandmaster III' => ['min' => 0, 'max' => 5, 'tier' => 4],
+        'Grandmaster IV' => ['min' => 0, 'max' => 5, 'tier' => 4],
+        'Grandmaster V' => ['min' => 0, 'max' => 5, 'tier' => 4],
+        // Epic
+        'Epic I' => ['min' => 0, 'max' => 5, 'tier' => 5],
+        'Epic II' => ['min' => 0, 'max' => 5, 'tier' => 5],
+        'Epic III' => ['min' => 0, 'max' => 5, 'tier' => 5],
+        'Epic IV' => ['min' => 0, 'max' => 5, 'tier' => 5],
+        'Epic V' => ['min' => 0, 'max' => 5, 'tier' => 5],
+        // Legend
+        'Legend I' => ['min' => 0, 'max' => 5, 'tier' => 6],
+        'Legend II' => ['min' => 0, 'max' => 5, 'tier' => 6],
+        'Legend III' => ['min' => 0, 'max' => 5, 'tier' => 6],
+        'Legend IV' => ['min' => 0, 'max' => 5, 'tier' => 6],
+        'Legend V' => ['min' => 0, 'max' => 5, 'tier' => 6],
+        // Mythic
+        'Mythic' => ['min' => 0, 'max' => 24, 'tier' => 7],
+        'Mythical Honor' => ['min' => 25, 'max' => 49, 'tier' => 8],
+        'Mythical Glory' => ['min' => 50, 'max' => 99, 'tier' => 9],
+        'Mythical Immortal' => ['min' => 100, 'max' => PHP_INT_MAX, 'tier' => 10]
+    ];
+
+    // Validate Current Rank
+    if (!isset($rankConfig[$currentRank])) {
+        $_SESSION['error'] = "Invalid current rank: $currentRank";
+        header("Location: ../squadCreation.php");
+        exit();
+    }
+
+    // Validate Current Stars
+    $currentConf = $rankConfig[$currentRank];
+    if ($currentStar < $currentConf['min'] || ($currentConf['max'] !== PHP_INT_MAX && $currentStar > $currentConf['max'])) {
+        $_SESSION['error'] = "Current stars for $currentRank must be {$currentConf['min']}-{$currentConf['max']}";
+        header("Location: ../squadCreation.php");
+        exit();
+    }
+
+    // Validate Highest Rank
+    if (!isset($rankConfig[$highestRank])) {
+        $_SESSION['error'] = "Invalid highest rank: $highestRank";
+        header("Location: ../squadCreation.php");
+        exit();
+    }
+
+    // Validate Highest Stars
+    $highestConf = $rankConfig[$highestRank];
+    if ($highestStar < $highestConf['min'] || ($highestConf['max'] !== PHP_INT_MAX && $highestStar > $highestConf['max'])) {
+        $_SESSION['error'] = "Highest stars for $highestRank must be {$highestConf['min']}-{$highestConf['max']}";
+        header("Location: ../squadCreation.php");
+        exit();
+    }
+
+    // Tier Validation: Highest rank cannot be lower than current rank NEEDED BA TO
+    if ($rankConfig[$highestRank]['tier'] < $rankConfig[$currentRank]['tier']) {
+        $_SESSION['error'] = "Highest rank ($highestRank) cannot be lower than current rank ($currentRank)";
+        header("Location: ../squadCreation.php");
+        exit();
+    }
+
+    // Same-Tier Star Validation
+    if ($rankConfig[$highestRank]['tier'] == $rankConfig[$currentRank]['tier']) {
+        if ($highestStar < $currentStar) {
+            $_SESSION['error'] = "Highest stars ($highestStar) cannot be less than current stars ($currentStar) for the same tier";
+            header("Location: ../squadCreation.php");
+            exit();
+        }
+    }
+    // ====== VALIDATION END ======
+
     try {
         $pdo->beginTransaction();
 

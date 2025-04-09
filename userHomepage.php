@@ -3,13 +3,17 @@ session_start(); // Start the session
 require_once 'includes/dbh.inc.php'; // Database connection
 require_once 'includes/userHomepage.inc.php'; // Squad details logic
 
+// ====== NEW CODE START ======
+// Initialize user data from session with proper fallback values
+$user = isset($_SESSION['user']) ? $_SESSION['user'] : [
+    'User_ID' => 'N/A',
+    'Username' => 'Guest',
+    'Squad_ID' => 'N/A',
+    'Role' => 'Guest'
+];
 
-// Initialize user data from session
-$user = $_SESSION['user'] ?? ['username' => 'Guest', 'Squad_ID' => 'N/A'];
-
-
-// Initialize squad details from session or default values
-$squadDetails = $_SESSION['squad_details'] ?? [
+// Initialize squad details with default values
+$squadDetails = [
     'Squad_Acronym' => 'N/A',
     'Squad_Name' => 'N/A',
     'Squad_ID' => 'N/A',
@@ -17,22 +21,36 @@ $squadDetails = $_SESSION['squad_details'] ?? [
     'Squad_Description' => 'N/A'
 ];
 
-$verificationStatus = 'Pending';
-if (isset($_SESSION['user']['Squad_ID']) && !empty($_SESSION['user']['Squad_ID'])) {
+// Fetch squad details only if Squad_ID exists
+if (isset($user['Squad_ID']) && $user['Squad_ID'] !== 'N/A') {
     try {
-        $stmt = $pdo->prepare("SELECT * FROM tbl_verificationrequests WHERE Squad_ID = ? ORDER BY Date_Submitted DESC LIMIT 1");
-        $stmt->execute([$_SESSION['user']['Squad_ID']]);
-        $result = $stmt->fetch(PDO::FETCH_ASSOC);
-        $verificationStatus = $result['Status'] ?? 'Not Submitted';
-        $verificationLevel = $result['Squad_Level'] ?? 'Amateur';
+        $stmtSquad = $pdo->prepare("SELECT Squad_Acronym, Squad_Name, Squad_ID, Squad_Level, Squad_Description FROM tbl_squadprofile WHERE Squad_ID = ?");
+        $stmtSquad->execute([$user['Squad_ID']]);
+        $squadDetails = $stmtSquad->fetch(PDO::FETCH_ASSOC) ?: $squadDetails; // Fallback to defaults if no results
+        $_SESSION['squad_details'] = $squadDetails;
     } catch (PDOException $e) {
-        // Handle error if needed
+        // Handle error silently
     }
 }
 
-// Replace the existing verification check with this
+// Verification check (updated with null coalescing)
+$verificationStatus = 'Not Submitted';
+if ($user['Squad_ID'] !== 'N/A') {
+    try {
+        $stmt = $pdo->prepare("SELECT Status FROM tbl_verificationrequests WHERE Squad_ID = ? ORDER BY Date_Submitted DESC LIMIT 1");
+        $stmt->execute([$user['Squad_ID']]);
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+        $verificationStatus = $result['Status'] ?? 'Not Submitted';
+    } catch (PDOException $e) {
+        // Handle error silently
+    }
+}
+
+// Enable scrim button logic (simplified)
 $enableScrimButton = ($verificationStatus === 'Approved') || 
                     (strcasecmp($squadDetails['Squad_Level'], 'Amateur') === 0);
+
+// ====== NEW CODE END =======
 
 // Check verification status
 if ($verificationStatus === 'Approved') {
@@ -122,6 +140,24 @@ try {
     // Handle database errors
     die("Database error: " . htmlspecialchars($e->getMessage()));
 }
+
+// Replace the existing invite query with:
+$stmt = $pdo->prepare("SELECT i.*, s.Squad_Name 
+                      FROM tbl_inviteslog i
+                      JOIN tbl_squadprofile s ON i.Challenger_Squad_ID = s.Squad_ID
+                      WHERE i.Squad_ID = ?
+                      ORDER BY i.Created_At DESC");
+$stmt->execute([$_SESSION['user']['Squad_ID']]);
+$invites = $stmt->fetchAll(PDO::FETCH_ASSOC);
+$newInvitesCount = count(array_filter($invites, fn($invite) => $invite['Response'] === 'Pending'));
+
+// Add this near where you fetch the invites
+$pendingInvitesCount = 0;
+if (!empty($invites)) {
+    $pendingInvitesCount = count(array_filter($invites, function($invite) {
+        return $invite['Status'] === 'Pending';
+    }));
+}
 ?>
 
 
@@ -182,21 +218,31 @@ try {
                             <a class="nav-link active" aria-current="page" href="userHomepage.php">HOME</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="          ">LEADERBOARDS</a>
+                            <a class="nav-link" href="discoverPage.php">DISCOVER</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="          ">ABOUT US</a>
+                            <a class="nav-link" href="scrimsPage.php">SCRIMS</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="          ">SCRIMS</a>
+                            <a class="nav-link" href="invitesPage.php">INVITES</a>
                         </li>
                         <!-- Icon Bars -->
                         <div class="iconsBar">
+                            <!-- Notifications -->
                             <li class="nav-item">
-                                <a class="nav-linkIcon" href="          "><i class="bi bi-app-indicator"></i></a>
+                                <a class="nav-linkIcon" href="#" data-bs-toggle="modal" data-bs-target="#notificationModal">
+                                    <i class="bi bi-app-indicator"></i>
+                                    <?php if ($newInvitesCount > 0): ?>
+                                        <span class="notifCount"><?= $newInvitesCount ?></span>
+                                    <?php endif; ?>
+                                </a>
                             </li>
+                            <!-- Inbox -->
                             <li class="nav-item">
-                                <a class="nav-linkIcon" href="          "><i class="bi bi-chat-left-fill"></i></a>
+                                <a class="nav-linkIcon ju" href="inboxPage.php">
+                                    <i class="bi bi-chat-left-fill"></i>
+                                    <span class="notifCount">3</span>
+                                </a>
                             </li>
                         </div>
                     </ul>
@@ -209,8 +255,8 @@ try {
         <div class="squadDetails">
             <div class="squadDetailsContent">
                 <div class="buttons">
-                    <a href="#" class="editAccount">EDIT ACCOUNT</a>
-                    <form action="includes/logout.inc.php" method="post">
+                    <a href="editSquad.php" class="editAccount">EDIT ACCOUNT</a>
+                    <form class="logout" action="includes/logout.inc.php" method="post">
                         <button class="editAccount"> LOGOUT </button>
                     </form>  
                 </div>
@@ -414,6 +460,82 @@ try {
             </div>
         </footer>
     </div>
+    
+    
+    <!-- Notification Modal -->
+    <div class="modal fade" id="notificationModal" tabindex="-1" aria-labelledby="squadVerificationModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-end">
+            <div class="modal-content customModal" style="height: 100vh;">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="squadVerificationModalLabel">NOTIFICATIONS</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <?php if (!empty($invites)): ?>
+                        <?php foreach ($invites as $invite): ?>
+                            <div class="notification <?= $invite['Response'] === 'Pending' ? 'new' : '' ?>" data-invite-id="<?= $invite['Schedule_ID'] ?>">
+                                <div class="time">
+                                    <?= date('n/j/Y g:i', strtotime($invite['Created_At'])) ?>
+                                </div>
+                                <strong><?= htmlspecialchars($invite['Squad_Name']) ?></strong> invites you to a scrim match!
+                                <div class="scrim-cardOnNotif">
+                                    <div class="scrim-card-contentOnNotif">
+                                        <div class="scrimButtons">
+                                            <?php if ($invite['Response'] === 'Pending'): ?>
+                                                <!-- Interactive buttons for pending invites -->
+                                                <button class="acceptOnNotif" onclick="respondToInvite(<?= $invite['Schedule_ID'] ?>, 'Accepted')">
+                                                    ACCEPT
+                                                </button>
+                                                <button class="declineOnNotif" onclick="respondToInvite(<?= $invite['Schedule_ID'] ?>, 'Declined')">
+                                                    DECLINE
+                                                </button>
+                                            <?php else: ?>
+                                                <!-- Non-clickable status for responded invites -->
+                                                <button class="<?= $invite['Response'] === 'Accepted' ? 'acceptedOnNotif' : 'declinedOnNotif' ?>" disabled>
+                                                    <?= strtoupper($invite['Response']) ?>
+                                                </button>
+                                            <?php endif; ?>
+                                        </div>
+                                        <!-- Opponent Squad Name -->
+                                        <div class="opponentOnNotif">
+                                            <div class="squadNameOnNotif">
+                                                <span class="vs">VS</span> <strong><?= htmlspecialchars($invite['Squad_Name']) ?></strong>
+                                            </div>
+                                        </div>
+
+                                        <!-- Scrim Notes (if available) -->
+                                        <?php if (!empty($invite['Scrim_Notes'])): ?>
+                                            <div class="noGamesOnNotif">
+                                                <?= htmlspecialchars($invite['Scrim_Notes']) ?>
+                                            </div>
+                                        <?php endif; ?>
+
+                                        <!-- Date and Time -->
+                                        <div class="timeAndDateOnNotif">
+                                            <!-- Time -->
+                                            <div class="TimeOnNotif">
+                                                <?= date('g:i A', strtotime($invite['Scrim_Time'])) ?>
+                                            </div>
+                                            <!-- Date -->
+                                            <div class="DateOnNotif">
+                                                <?= date('Y-m-d', strtotime($invite['Scrim_Date'])) ?>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        <?php endforeach; ?>
+                    <?php else: ?>
+                        <div class="notification">
+                            <div class="noNotifications">No invites yet</div>
+                        </div>
+                    <?php endif; ?>
+                    <div class="notifEnd">End of Feed</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
 
 
     <!-- Javascript -->

@@ -65,43 +65,35 @@ async function initializeDataTable() {
     });
 }
 
-// Handle approval/rejection requests
+// Handle approval/rejection requests with fixed alert
 function handleRequest(requestId, action) {
     if (confirm(`Are you sure you want to ${action} this request?`)) {
+       
+
         $.ajax({
             url: 'updateRequest.php',
             method: 'POST',
-            data: {
-                request_id: requestId,
-                action: action
+            data: { 
+                request_id: requestId, 
+                action: action 
             },
             dataType: 'json',
-            success: function(response) {
-                if (response.success) {
-                    // Refresh the DataTable without reloading the page
-                    const table = $('#reportsTable').DataTable();
-                    table.ajax.reload(null, false);
-                    
-                    // Show success feedback
-                    alert(`Request ${action}d successfully!`);
+            success: (response) => {
+        
+                if (response && response.success) {
+                    alert(`Action Successful!`);
+                    location.reload(); // Force fresh reload
                 } else {
-                    alert('Error: ' + (response.error || 'Unknown error occurred'));
+                    const errorMsg = response?.error || 'Action failed without explanation';
+                    alert(`Error: ${errorMsg}`);
                 }
             },
-            
-
-            // GINAWA KO NALANG COMMENT KASI KAHIT SUCCESSFUL NAMAN, NAGSHSHOW YUNG ALERT NA ERROR ^_^
-            // error: function(xhr) {
-            //     // Custom user-friendly message
-            //     alert('Action failed. Please check your internet connection and try again.');
-                
-            //     // Optional: Keep the technical details in console
-            //     console.error('Technical details:', {
-            //         status: xhr.status,
-            //         response: xhr.responseText,
-            //         error: xhr.statusText
-            //     });
-            // }
+            error: (xhr) => {
+                document.querySelector(".introScreen").style.display = "none";
+                document.querySelector(".pageContent").classList.remove("hiddenContent");
+                alert('Network error. Check console.');
+                console.error('AJAX Error:', xhr.status, xhr.responseText);
+            }
         });
     }
 }

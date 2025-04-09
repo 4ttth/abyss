@@ -1,3 +1,10 @@
+document.addEventListener("DOMContentLoaded", function () {
+  setTimeout(() => {
+      document.querySelector(".introScreen").style.display = "none";
+      document.querySelector(".pageContent").classList.add("showContent");
+  }, 500); // Matches animation duration
+});
+
 const showLoading = () => {
     resultsGrid.innerHTML = `
         <div class="text-center py-5">
@@ -169,41 +176,144 @@ function submitScrimSchedule() {
   const scrimTime = document.getElementById("scrimTime").value;
   const scrimNotes = document.getElementById("scrimNotes").value;
 
-  // Validate the form
   if (!scrimDate || !scrimTime) {
-    alert("Please fill out the date and time.");
+    alert("Date and time are required!");
     return;
   }
 
-  // Send the data to the server (you can use fetch() or another method)
-  const scrimData = {
-    squadId: squadId,
-    date: scrimDate,
-    time: scrimTime,
-    notes: scrimNotes,
-  };
-
-  console.log("Scrim Data:", scrimData); // For testing
-
-  // Example: Send data to the server
   fetch("includes/scheduleScrim.php", {
     method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(scrimData),
-  })
-    .then((response) => response.json())
-    .then((data) => {
-      alert("Scrim scheduled successfully!");
-      // Close the modal
-      const modal = bootstrap.Modal.getInstance(
-        document.getElementById("challengeModal")
-      );
-      modal.hide();
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      squadId: squadId,      // Opponent's Squad_ID
+      date: scrimDate,        // Scrim_Date
+      time: scrimTime,        // Scrim_Time
+      notes: scrimNotes       // Scrim_Notes
     })
-    .catch((error) => {
-      console.error("Error scheduling scrim:", error);
-      alert("Failed to schedule scrim. Please try again.");
-    });
+  })
+  .then(response => response.json())
+  .then(data => {
+    if (data.success) {
+      alert("Scrim scheduled!");
+      bootstrap.Modal.getInstance(document.getElementById("challengeModal")).hide();
+    } else {
+      throw new Error(data.error || "Failed to schedule scrim.");
+    }
+  })
+  .catch(error => {
+    console.error("Error:", error);
+    alert(error.message);
+  });
 }
+
+// Notification modal handling
+document.addEventListener('DOMContentLoaded', function() {
+  // Update notification badge count
+  function updateNotificationBadge() {
+      fetch('includes/getUnreadNotifications.php')
+          .then(response => response.json())
+          .then(data => {
+              const badge = document.querySelector('.notification-badge');
+              if (data.count > 0) {
+                  badge.textContent = data.count;
+                  badge.style.display = 'block';
+              } else {
+                  badge.style.display = 'none';
+              }
+          });
+  }
+
+  // Mark all as read
+  document.querySelector('.markAllRead')?.addEventListener('click', function() {
+      fetch('includes/markNotificationsRead.php', {
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/json',
+          }
+      })
+      .then(() => {
+          updateNotificationBadge();
+      });
+  });
+
+  // Initial load
+  updateNotificationBadge();
+});s
+
+// Handle Accept/Decline
+function respondToInvite(scheduleId, action) {
+  // Disable buttons and show loading state
+  const buttons = document.querySelectorAll(`.notification[data-invite-id="${scheduleId}"] .scrimButtons button`);
+  buttons.forEach(btn => {
+      btn.disabled = true;
+      btn.innerHTML = '<i class="bi bi-arrow-repeat spin"></i>';
+  });
+
+  fetch('includes/handleInviteResponse.php', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ 
+          schedule_id: scheduleId, 
+          action: action 
+      })
+  })
+  .then(response => response.json())
+  .then(data => {
+      if (data.success) {
+          // Update the UI dynamically
+          const notification = document.querySelector(`.notification[data-invite-id="${scheduleId}"]`);
+          
+          // 1. Change buttons to show response status
+          const buttonsContainer = notification.querySelector('.scrimButtons');
+          buttonsContainer.innerHTML = `
+              <button class="${action === 'Accepted' ? 'acceptedOnNotif' : 'declinedOnNotif'}" disabled>
+                  ${action.toUpperCase()}
+              </button>
+          `;
+          
+          // 2. Remove 'new' class if it exists
+          notification.classList.remove('new');
+          
+          // 3. Update the notification counter
+          updateNotificationCount();
+      }
+  })
+  .catch(error => {
+      console.error('Error:', error);
+      // Reset buttons if failed
+      buttons.forEach(btn => {
+          btn.disabled = false;
+          btn.innerHTML = btn.classList.contains('acceptOnNotif') ? 'ACCEPT' : 'DECLINE';
+      });
+  });
+}
+
+function fetchNotificationModal() {
+  fetch('includes/getNotifications.php')
+      .then(response => response.text())
+      .then(html => {
+          document.querySelector('.modal-body').innerHTML = html;
+      });
+}
+
+// Update the counter
+function updateNotificationCount() {
+  fetch('includes/getNotificationCount.php')
+      .then(response => response.json())
+      .then(data => {
+          const counter = document.querySelector('.notifCount');
+          if (data.count > 0) {
+              if (!counter) {
+                  const badge = document.createElement('span');
+                  badge.className = 'notifCount';
+                  document.querySelector('.nav-linkIcon').appendChild(badge);
+              }
+              document.querySelector('.notifCount').textContent = data.count;
+          } else if (counter) {
+              counter.remove();
+          }
+      });
+}
+
+// Call this periodically (e.g., every 30 seconds)
+setInterval(updateNotificationCount, 30000);

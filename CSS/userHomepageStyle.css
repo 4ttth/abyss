@@ -231,8 +231,16 @@ strong {
 
 .navigationBar .nav-linkIcon {
     color: white;
-    margin-right: 30px;
+    margin-right: 15px;
     line-height: 30px !important;
+    display: inline-flex;
+    align-items: start;
+    gap: 5px;
+    text-decoration: none !important;
+}
+
+.ju{
+    gap: 6.5px !important;
 }
 
 .nav-linkIcon.active {
@@ -277,6 +285,11 @@ strong {
 }
 
 /* Buttons for the Edit Account and Logout */
+form {
+    padding: 0px !important;
+    margin-bottom: 0px !important;
+}
+
 .buttons {
     display: flex;
     align-items: end;
@@ -366,6 +379,7 @@ strong {
     font-weight:bold;
     padding: 0px !important;
     width: 200px !important;
+    text-transform: uppercase !important;
 }
 
 .abyssPoints {
@@ -1635,5 +1649,340 @@ footer .col-12 {
 .footIcon {
     margin-top: 20px;
     margin-bottom: 20px;
+}
+
+/* NEW modal */
+.customModal {
+    background: rgba(0, 0, 0) !important;
+    color: white !important;
+    font-family: glacialIndifference;
+    padding: 20px;
+    box-shadow: 0 0 10px white;
+    height: 70vh !important;
+}
+
+.modal-header h5 {
+    color: white;
+    font-family: glacialIndifferenceBold;
+    font-size: 50px;
+    line-height: 40px;
+    text-transform: capitalize !important;
+}
+
+.modal-footer {
+    display: flex;
+    justify-content: space-between;
+}
+
+.form-label {
+    font-family: glacialIndifferenceBold !important;
+    text-transform: uppercase !important;
+    color: white;
+    font-family: glacialIndifferenceBold;
+    font-size: 16px;
+    margin-top: 10px;
+}
+
+/* Buttons */
+.modalButtons {
+    font-size: 14px;
+    font-family: glacialIndifferenceBold;
+    background: transparent;
+    color: white;
+    border: 2px solid white;
+    text-decoration: none;
+    cursor: pointer;
+    transition: 0.3s ease;
+    font-weight: bold;
+    padding: 5px 20px;
+}
+
+.modalButtons:hover {
+    background: white;
+    color: black;
+}
+
+.customModal .modal-header,
+.customModal .modal-footer {
+    border: none !important;
+}
+
+.modal-dialog.modal-dialog-end {
+    margin-left: auto;
+    margin-right: 50px;
+    margin-top: 50px;
+    margin-bottom: 0;
+    max-width: 800px; /* Adjust width as needed */
+}
+
+/* Stop Bootstrap from forcing scroll to top */
+.modal.fade .modal-dialog {
+    transition: none !important;
+}
+
+/* Allow background scrolling */
+body.modal-open {
+    overflow: auto !important;
+    padding-right: 0 !important;
+}
+
+.notification {
+    border-top: solid white 2px;
+    margin: 0px;
+    padding: 20px;
+    font-size: 20px;
+    font-family: glacialIndifference;
+}
+
+/* Squad Design */
+.scrim-cardOnNotif {
+    border: 1px solid white;
+    border-radius: 8px;
+    height: 130px; /* Fixed height for uniform cards */
+    background-color: rgba(0, 0, 0, 0.3);
+    transition: all 0.1s ease;
+    overflow: hidden;
+    margin-bottom: 10px;
+    padding: 10px;
+    margin-top: 5px;
+}
+
+.opponentOnNotif {
+    line-height: 20px;
+}
+
+.squadNameOnNotif {
+    color: white;
+    font-family: glacialIndifference;
+    text-align: end;
+    font-size: 30px;
+    line-height: 32px;
+}
+
+/* Status */
+.scrimButtons {
+    position: absolute !important;
+    gap: 5px !important;
+    display: flex !important;
+    justify-self: center !important;
+    align-items: center !important; 
+    flex-direction: column !important;
+}
+
+.acceptOnNotif {
+    text-align: center !important;
+    font-size: 14px !important;
+    font-family: glacialIndifferenceBold !important;
+    background: #33CC33 !important;
+    color: black !important;
+    border: 2px solid #33CC33 !important;
+    text-decoration: none !important;
+    cursor: pointer !important;
+    transition: 0.3s ease !important;
+    font-weight:bold !important;
+    padding: 0px !important;
+    width: 200px !important;
+    /* padding: 3px 10px 3px 10px !important;  */
+    margin-bottom: 5px !important;
+}
+
+.acceptOnNotif:hover {
+    transform: scale(1.05) !important; 
+    transition: transform 0.2s ease-in-out !important; 
+}
+
+/* Changed */
+.acceptedOnNotif {
+    text-align: center !important;
+    font-size: 14px !important;
+    font-family: glacialIndifferenceBold !important;
+    background: #33CC33 !important;
+    color: black !important;
+    border: 2px solid #33CC33 !important;
+    text-decoration: none !important;
+    transition: 0.3s ease !important;
+    font-weight:bold !important;
+    padding: 0px !important;
+    width: 200px !important;
+    /* padding: 3px 10px 3px 10px !important;  */
+    margin-bottom: 5px !important;
+    opacity: 50%;
+}
+
+.declinedOnNotif {
+    text-align: center !important;
+    font-size: 14px !important;
+    font-family: glacialIndifferenceBold !important;
+    background: #FF3300 !important;
+    color: black !important;
+    border: 2px solid #FF3300 !important;
+    text-decoration: none !important;
+    transition: 0.3s ease !important;
+    font-weight:bold !important;
+    padding: 0px !important;
+    width: 200px !important;
+    margin-bottom: 5px !important;
+    opacity: 50%;
+}
+
+.declineOnNotif {
+    text-align: center !important;
+    font-size: 14px !important;
+    font-family: glacialIndifferenceBold !important;
+    background: #FF3300 !important;
+    color: black !important;
+    border: 2px solid #FF3300 !important;
+    text-decoration: none !important;
+    cursor: pointer !important;
+    transition: 0.3s ease !important;
+    font-weight:bold !important;
+    padding: 0px !important;
+    width: 200px !important;
+    margin-bottom: 5px !important;
+}
+
+.declineOnNotif:hover {
+    transform: scale(1.05) !important; 
+    transition: transform 0.2s ease-in-out !important; 
+}
+
+.verifyOnNotif {
+    text-align: center;
+    font-size: 14px;
+    font-family: glacialIndifferenceBold;
+    background: white;
+    color: black;
+    border: 2px solid white;
+    text-decoration: none;
+    cursor: pointer;
+    transition: 0.3s ease;
+    font-weight:bold;
+    padding: 0px !important;
+    width: 200px !important;
+    padding: 3px 10px 3px 10px !important; 
+    margin-bottom: 5px;
+}
+
+.verifyOnNotif:hover {
+    transform: scale(1.05); 
+    transition: transform 0.2s ease-in-out; 
+}
+
+.new {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+/* .scrimAccept, .scrimDecline {
+    text-align: center;
+    font-size: 14px;
+    font-family: glacialIndifferenceBold;
+    background: transparent;
+    color: white;
+    border: 2px solid white;
+    text-decoration: none;
+    cursor: pointer;
+    transition: 0.3s ease;
+    font-weight:bold;
+    padding: 0px !important;
+    width: 200px !important;
+    padding: 3px 10px 3px 10px !important; 
+} */
+
+.rejected {
+    background: #FF3300;
+    color: black;
+    border: 2px solid #FF3300;
+}
+
+.timeAndDateOnNotif {
+    color: white;
+    display: flex;
+    gap: 10px;
+    text-align: end;
+    justify-content: end;
+    font-family: glacialIndifference;
+    font-size: 16px;
+    line-height: 15px;
+}
+
+.noGamesOnNotif {
+    color: white;
+    display: flex;
+    gap: 20px;
+    text-align: end;
+    justify-content: end;
+    font-family: glacialIndifferenceBold;
+    font-size: 16px;
+    line-height: 15px;
+}
+
+.modal-body {
+    overflow-y: auto; 
+    overflow-x: hidden;
+    margin-bottom: 20px;
+}
+
+/* Design ng Scrollbar */
+.modal-body::-webkit-scrollbar {
+    width: 6px;
+}
+.modal-body::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.3);
+}
+.modal-body::-webkit-scrollbar-thumb {
+    background: white;
+    border-radius: 3px;
+}
+.modal-body::-webkit-scrollbar-thumb:hover {
+    background: white;
+}
+
+.notifEnd {
+    color: white;
+    font-family: glacialIndifference;
+    padding-bottom: 5px;
+    text-align: center;
+    font-size: 10px;
+    line-height: 14px;
+    text-transform: uppercase;
+    opacity: 50%; 
+}
+
+.time {
+    color: white;
+    font-family: glacialIndifference;
+    font-size: 15px;
+    line-height: 14px;
+    text-transform: uppercase;
+    opacity: 50%;  
+}
+
+.notifCount {
+    background-color: #FF3300;
+    border-radius: 20%;
+    color: white;
+    font-family: glacialIndifference;
+    font-size: 15px;
+    line-height: 10px !important;
+    padding: 5px;
+    text-decoration: none !important;
+}
+
+span {
+    text-decoration: none;
+    margin: 0 !important;
+    text-decoration: none !important;
+}
+
+.scrim-card-contentOnNotif {
+    padding: 15px 15px 20px 15px !important;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center !important;
+}
+
+.vs {
+    font-size: 14px !important;
 }
 

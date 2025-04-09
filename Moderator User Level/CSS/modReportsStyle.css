@@ -3,20 +3,24 @@
     src: url(../CSS/fonts/planet_kosmos/PLANK___.TTF);
 }
 
+
 @font-face {
     font-family: glacialIndifference;
     src: url(../CSS/fonts/glacial-indifference/GlacialIndifference-Regular.otf);
 }
+
 
 @font-face {
     font-family: glacialIndifferenceBold;
     src: url(../CSS/fonts/glacial-indifference/GlacialIndifference-Bold.otf);
 }
 
+
 @font-face {
     font-family: gameCube;
     src: url(../CSS/fonts/gamecuben/GameCube.ttf);
 }
+
 
 body {
     background-color: black !important;
@@ -24,9 +28,12 @@ body {
     width: 100vw;
 }
 
+
 strong {
     font-family: glacialIndifferenceBold;
 }
+
+
 
 
 /* Intro Animation */
@@ -41,21 +48,25 @@ strong {
     z-index: 9999;
 }
 
+
 .loadingAnimation {
-    width: 400px; 
+    width: 400px;
     height: 400px;
-    background-image: url('../IMG/essentials/loadingAnimation.gif'); 
+    background-image: url('../IMG/essentials/loadingAnimation.gif');
     background-size: cover;
 }
+
 
 .hiddenContent {
     opacity: 0;
 }
 
+
 .showContent {
     opacity: 1;
     transition: opacity .5s ease-in-out;
 }
+
 
 /* Navigation Bar - Logo Layer */
 /* Logo & Name */
@@ -64,6 +75,7 @@ strong {
     align-items: center;
 }
 
+
 .logoLayer {
     display: flex;
     flex-direction: column;
@@ -71,6 +83,7 @@ strong {
     width: 100%;
     margin-bottom: 10px;
 }
+
 
 .logo-stack {
     display: flex;
@@ -81,17 +94,19 @@ strong {
     margin-top: 20px;
 }
 
+
 .logoPicture {
     width: 80px;
     height: auto;
     margin-right: 16px;
-    object-fit: contain; 
+    object-fit: contain;
 }
+
 
 .logoText {
     font-size: 50px;
     padding-top: 5px;
-    color: white; 
+    color: white;
     font-family: planetKosmos;
     margin-right: 40px;
     letter-spacing: 2px;
@@ -100,19 +115,21 @@ strong {
     text-align: center;
 }
 
+
 /* Search Bar */
 .searchBar {
     display: flex;
     align-items: center;
-    border: 1px solid white; 
+    border: 1px solid white;
     border-radius: 30px;
     padding: 5px 15px;
-    background: transparent; 
-    width: 90vw; 
+    background: transparent;
+    width: 90vw;
     height: 40px;
     position: relative;
     margin-left: 5px;
 }
+
 
 /* Input Field */
 .searchInput {
@@ -127,6 +144,7 @@ strong {
     font-size: 18px !important;
 }
 
+
 /* Search Button */
 .searchButton {
     background: transparent;
@@ -137,11 +155,13 @@ strong {
     right: 10px;
 }
 
+
 /* Search Button Icon */
 .searchButton img {
     width: 25px;
     height: 25px;
 }
+
 
 /* Placeholder Color */
 .searchInput::placeholder {
@@ -149,6 +169,7 @@ strong {
     font-family: glacialIndifference;
     font-size: 18px !important;
 }
+
 
 /* Account Logo Placeholder */
 .accountLogo {
@@ -164,15 +185,19 @@ strong {
     transition: background-color 0.3s ease;
 }
 
+
 .accountLogo i {
-    font-size: 32px; 
+    font-size: 32px;
     color: white;
 }
+
 
 /* Hover effect */
 .accountLogo:hover {
     size: 120% !important;
 }
+
+
 
 
 /* Navigation Bar - Options Layer */
@@ -193,6 +218,7 @@ strong {
     border-right: solid white 1px;
 }
 
+
 .navigationBar .nav-link {
     display: flex;
     color: white;
@@ -203,6 +229,7 @@ strong {
     align-items: center;
 }
 
+
 .nav-text {
     flex: 1;
     text-align: left;
@@ -211,41 +238,48 @@ strong {
     line-height: 18px;
 }
 
+
 /* Icon positioning */
 .nav-icon {
     flex-shrink: 0;
     font-size: 1.2rem;
 }
 
+
 .firstItem {
     margin-top: 50px !important;
 }
 
+
 .lastItem {
-    margin-bottom: 22rem !important;
+    margin-bottom: 8rem !important;
 }
+
 
 .nav-link.active {
     color: white !important;
 }
 
+
 .nav-link.active {
     color: white !important;
-    text-shadow: 
+    text-shadow:
         0 0 10px rgba(255, 255, 255),  
         0 0 15px rgba(255, 255, 255),  
         0 0 20px rgba(255, 255, 255);
     font-weight: bold;
 }
+
 
 .nav-link:hover {
     color: white !important;
-    text-shadow: 
+    text-shadow:
         0 0 10px rgba(255, 255, 255),  
         0 0 15px rgba(255, 255, 255),  
         0 0 20px rgba(255, 255, 255);
     font-weight: bold;
 }
+
 
 /* Main Body */
 .header {
@@ -254,13 +288,15 @@ strong {
     padding: 30px !important;
 }
 
+
 /* Text Block - Left */
 .textBlockLeft {
     display: flex;
-    justify-content: flex-start; 
+    justify-content: flex-start;
     align-items: center;
-    text-align: left;       
+    text-align: left;      
 }
+
 
 .titleLeft {
     position: relative;
@@ -270,6 +306,7 @@ strong {
     line-height: 40px;
 }
 
+
 .descriptionLeft {
     position: relative;
     color: white;
@@ -278,12 +315,14 @@ strong {
     text-transform: uppercase;
 }
 
+
 .mainBody {
     display: flex;
     padding-left: 350px !important;
     margin-top: 50px !important;
     max-width: 100% !important;
 }
+
 
 /* Decorative Divider - Right*/
 .decoDivideRight {
@@ -293,6 +332,7 @@ strong {
     position: absolute;
     margin-top: .5rem;
 }
+
 
 .codeDecoRight {
     color: white;
@@ -306,14 +346,16 @@ strong {
     margin-left: 60rem;
 }
 
+
 .decoLineRight {
     width: 100%;
     height: 1px;
     margin-top: 5rem;
-    background-color: white; 
-    margin-right: 15px; 
+    background-color: white;
+    margin-right: 15px;
     position: absolute;
 }
+
 
 .decoBoxRight {
     height: 15px;
@@ -326,9 +368,11 @@ strong {
     margin-right: 15px !important;
 }
 
+
 .adminNotes {
     margin-top: 20px !important;
 }
+
 
 .titleRight {
     color: white;
@@ -338,12 +382,14 @@ strong {
     right: 0;
 }
 
+
 /* Table */
 .reportsTable {
     color: white;
     font-family: glacialIndifference;
     font-size: 18px;
 }
+
 
 table.dataTable thead {
     background-color: white;
@@ -353,13 +399,16 @@ table.dataTable thead {
     text-transform: uppercase;
 }
 
+
 table.dataTable tbody td {
     border: solid white .5px;
 }
 
+
 table.dataTable tbody tr:hover {
     background-color: gray;
 }
+
 
 /* DataTable Elements */
 label {
@@ -371,6 +420,7 @@ label {
     margin-left: 10px;
     margin-right: 10px;
 }
+
 
 div.dt-container .dt-search input {
     border: 1px solid #aaa;
@@ -384,11 +434,13 @@ div.dt-container .dt-search input {
     font-size: 16px;
 }
 
+
 .dt-info, .dt-input {
     color: white !important;
     font-family: glacialIndifference;
     font-size: 16px;
 }
+
 
 .dt-paging {
     background-color: white !important;
@@ -397,13 +449,16 @@ div.dt-container .dt-search input {
     text-transform: uppercase;
 }
 
+
 .dt-layout-table {
     border: solid .1px white;
 }
 
+
 option {
     color: black !important;
 }
+
 
 /* Buttons */
 .buttonColumn {
@@ -411,6 +466,7 @@ option {
     vertical-align: middle; /* Vertically centers content */
     align-items: center;
 }
+
 
 .buttons {
     text-align: center;
@@ -427,10 +483,12 @@ option {
     text-transform: uppercase;
 }
 
+
 .buttons:hover {
     background-color: white;
     color: black;
 }
+
 
 /* Penalize Button */
 .penalize {
@@ -449,10 +507,12 @@ option {
     background-color: #ff3300;
 }
 
+
 .penalize:hover {
-    transform: scale(1.1); 
-    transition: transform 0.2s ease-in-out; 
+    transform: scale(1.1);
+    transition: transform 0.2s ease-in-out;
 }
+
 
 /* Modal */
 /* Add Player Modal */
@@ -464,6 +524,7 @@ option {
     box-shadow: 0 0 10px white;
 }
 
+
 .modal-header h5 {
     color: white;
     font-family: glacialIndifferenceBold;
@@ -472,10 +533,12 @@ option {
     text-transform: capitalize !important;
 }
 
+
 .modal-footer {
     display: flex;
     justify-content: space-between;
 }
+
 
 .form-label {
     font-family: glacialIndifferenceBold !important;
@@ -485,6 +548,7 @@ option {
     font-size: 16px;
     margin: 10px 0 0 0;
 }
+
 
 /* Buttons */
 .modalButtons {
@@ -500,15 +564,18 @@ option {
     padding: 5px 20px;
 }
 
+
 .modalButtons:hover {
     background: white;
     color: black;
 }
 
+
 .customModal .modal-header,
 .customModal .modal-footer {
     border: none !important;
 }
+
 
 /* Style Select Dropdown */
 .squadLevelDropdown {
@@ -525,12 +592,14 @@ option {
     appearance: none;
 }
 
+
 /* Dropdown Options */
 .squadLevelDropdown:focus,
 .squadLevelDropdown option {
     color: white !important;
     background-color: black !important;
 }
+
 
 /* Drop Icon */
 .dropdown-icon-penalty {
@@ -543,6 +612,7 @@ option {
     pointer-events: none;
 }
 
+
 .dropdown-icon-timeout {
     position: absolute;
     right: 2rem;
@@ -551,4 +621,15 @@ option {
     transform: translateY(-50%);
     color: white;
     pointer-events: none;
+}
+
+
+.alert {
+    font-family: glacialIndifference !important;
+    font-size: 16px !important;
+}
+
+
+.alert-danger, .alert-success {
+    margin-top: 20px;
 }

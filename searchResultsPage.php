@@ -87,10 +87,10 @@ echo "<script>const squadData = " . json_encode($squads) . ";</script>";
                             <a class="nav-link" aria-current="page" href="index.php">HOME</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="          ">LEADERBOARDS</a>
+                            <a class="nav-link" href="guestDiscoverPage.php">DISCOVER</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="          ">ABOUT US</a>
+                            <a class="nav-link" href="aboutUsPage.php">ABOUT US</a>
                         </li>
                     </ul>
                 </div>

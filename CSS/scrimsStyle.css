@@ -1,0 +1,898 @@
+@font-face {
+    font-family: planetKosmos;
+    src: url(../CSS/fonts/planet_kosmos/PLANK___.TTF);
+}
+
+@font-face {
+    font-family: glacialIndifference;
+    src: url(../CSS/fonts/glacial-indifference/GlacialIndifference-Regular.otf);
+}
+
+@font-face {
+    font-family: glacialIndifferenceBold;
+    src: url(../CSS/fonts/glacial-indifference/GlacialIndifference-Bold.otf);
+}
+
+@font-face {
+    font-family: gameCube;
+    src: url(../CSS/fonts/gamecuben/GameCube.ttf);
+}
+
+/* Entire Page */
+body {
+    overflow-x: hidden; 
+    width: 100vw;
+    max-width: 100%;
+}
+
+.customPageBackground {
+    background-color: black;
+}
+
+strong {
+    font-family: glacialIndifferenceBold;
+}
+
+/* Intro Animation */
+.introScreen {
+    position: fixed;
+    width: 100%;
+    height: 100vh;
+    background-color: black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+
+.loadingAnimation {
+    width: 400px; 
+    height: 400px;
+    background-image: url('../IMG/essentials/loadingAnimation.gif'); 
+    background-size: cover;
+}
+
+.hiddenContent {
+    opacity: 0;
+}
+
+.showContent {
+    opacity: 1;
+    transition: opacity .5s ease-in-out;
+}
+
+/* Guin Background */
+.topBackground {
+    background: url('../IMG/backgrounds/guinBackground.jpg') no-repeat center center;
+    background-size: cover;
+    background-attachment: scroll; 
+    width: 100%;
+    height: auto; 
+    min-height: 100vh;
+    margin-top: 40px;
+    opacity: 100%;
+    z-index: 0;
+    position: relative;
+}
+
+/* Navigation Bar - Logo Layer */
+/* Logo & Name */
+.navbar-brand {
+    display: flex;
+    align-items: center;
+}
+
+.logoLayer {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+.logoPicture {
+    width: 80px;
+    height: auto;
+    margin-right: 16px; 
+}
+
+.logoText {
+    font-size: 50px;
+    padding-top: 20px;
+    color: white; 
+    font-family: planetKosmos;
+    margin-right: 40px;
+    letter-spacing: 2px;
+}
+
+/* Search Bar */
+.searchBar {
+    display: flex;
+    align-items: center;
+    border: 1px solid white; 
+    border-radius: 30px;
+    padding: 5px 15px;
+    background: transparent; 
+    width: 90vw; 
+    height: 40px;
+    position: relative;
+    margin-left: 5px;
+}
+
+/* Input Field */
+.searchInput {
+    border: none;
+    background: transparent;
+    outline: none;
+    width: 100%;
+    color: white;
+    font-size: 16px;
+    padding: 5px;
+}
+
+/* Search Button */
+.searchButton {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 5px;
+    position: absolute;
+    right: 10px;
+}
+
+/* Search Button Icon */
+.searchButton img {
+    width: 25px;
+    height: 25px;
+}
+
+/* Placeholder Color */
+.searchInput::placeholder {
+    color: rgba(255, 255, 255, 0.7);
+}
+
+/* Account Logo Placeholder */
+.accountLogo {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-left: 20px !important;
+}
+
+.accountLogo i {
+    font-size: 32px; 
+    color: white;
+}
+
+/* Hover effect */
+.accountLogo:hover {
+    size: 120% !important;
+}
+
+
+/* Navigation Bar - Options Layer */
+.navigationBar {
+    background-color: black;
+    color: white;
+    position: fixed;
+    padding-top:20px;
+    padding-left: 20px !important;
+    font-family: glacialIndifferenceBold;
+    font-size: 18px;
+    letter-spacing: 3px;
+    padding-bottom: 5px;
+    box-shadow: 0px 0px 100px rgba(0, 0, 0, 100%);
+    z-index: 500;
+    height: 180px;
+}
+
+.navigationBar .nav-link {
+    color: white;
+    margin-right: 100px;
+}
+
+.nav-link.active {
+    color: white !important;
+}
+
+.nav-link.active {
+    color: white !important;
+    text-shadow: 
+        0 0 10px rgba(255, 255, 255),  
+        0 0 15px rgba(255, 255, 255),  
+        0 0 20px rgba(255, 255, 255);
+    font-weight: bold;
+}
+
+.nav-link:hover {
+    color: white !important;
+    text-shadow: 
+        0 0 10px rgba(255, 255, 255),  
+        0 0 15px rgba(255, 255, 255),  
+        0 0 20px rgba(255, 255, 255);
+    font-weight: bold;
+}
+
+/* Icons Bar */
+.iconsBar {
+    font-size: 30px;
+    margin-left: auto; 
+    display: flex;
+    align-items: center;
+    gap: 15px; 
+    
+}
+
+.navigationBar .nav-linkIcon {
+    color: white;
+    margin-right: 15px;
+    line-height: 30px !important;
+    display: inline-flex;
+    align-items: start;
+    gap: 5px;
+    text-decoration: none !important;
+}
+
+.ju{
+    gap: 6.5px !important;
+}
+
+.nav-linkIcon.active {
+    color: white !important;
+}
+
+.nav-linkIcon.active {
+    color: white !important;
+    text-shadow: 
+        0 0 10px rgba(255, 255, 255),  
+        0 0 15px rgba(255, 255, 255),  
+        0 0 20px rgba(255, 255, 255);
+    font-weight: bold;
+}
+
+.nav-linkIcon:hover {
+    color: white !important;
+    text-shadow: 
+        0 0 10px rgba(255, 255, 255),  
+        0 0 15px rgba(255, 255, 255),  
+        0 0 20px rgba(255, 255, 255);
+    font-weight: bold;
+}
+
+/* Main Body */
+.mainBody {
+    margin-top: 180px !important;
+    padding: 20px;
+
+}
+
+.filter {
+    display: flex;
+    justify-content: flex-end; 
+    margin: 20px;
+}
+
+.scrimFilter {
+    background-color: white !important;
+    font-size: 16px;
+    font-family: glacialIndifferenceBold !important;
+    text-transform: uppercase;
+    width: 200px;
+    text-align: left !important;
+}
+
+/* Carret Design */
+/* Add custom caret positioning */
+.scrimFilter {
+    position: relative;
+    padding-right: 30px !important; /* Space for caret */
+}
+
+/* Custom caret styling */
+.scrimFilter:after {
+    content: "▼";
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 10px;
+    pointer-events: none; /* Ensure clicks go through to button */
+}
+
+/* Rotate caret when dropdown is open */
+.scrimFilter[aria-expanded="true"]:after {
+    transform: translateY(-50%) rotate(180deg);
+}
+
+/* Style Dropdown */
+.scrimFilterDropdown {
+    font-family: glacialIndifference;
+    font-size: 16px !important;
+    color: white !important;
+    background-color: black !important;
+    border-radius: 0 !important;
+    text-transform: uppercase !important;
+    min-width: 150px; 
+    padding: 8px;
+    appearance: none; 
+    border-radius: 3% !important;
+    box-shadow: 0 0 2px white;
+}
+
+.filter-option {
+    color: white !important;
+}
+
+.filter-option:hover {
+    color: black !important;
+    background-color: white !important;
+}
+
+/* Results */
+.scrims-grid-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    padding: 20px;
+}
+
+.scrim-card {
+    border: 2px solid white;
+    border-radius: 8px;
+    height: 270px; /* Fixed height for uniform cards */
+    background-color: rgba(0, 0, 0, 0.3);
+    transition: all 0.3s ease;
+    overflow: hidden;
+}
+
+/* hover animation */
+.scrim-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(255, 255, 255, 0.1);
+}
+
+.scrim-card-content {
+    padding: 15px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Pagination */
+.scrim-pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    margin: 20px 0;
+    font-family: glacialIndifference !important;
+    font-size: 12px !important;
+    text-transform: uppercase;
+}
+
+.page-btn {
+    padding: 8px 16px;
+    background-color: black;
+    color: white;
+    border: 1px solid white;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.3s;
+    font-family: glacialIndifference !important;
+    font-size: 12px !important;
+    text-transform: uppercase;
+}
+
+.page-btn:hover:not(:disabled) {
+    background-color: #555;
+}
+
+.page-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.page-indicator {
+    color: white;
+    font-size: 1.1rem;
+}
+
+/* Score */
+.score {
+    display: flex !important;
+    color: white;
+    justify-content: center;
+    align-items: center;
+}
+
+.yourScore, .theirScore {
+    color: white;
+    font-family: gameCube;
+    font-size: 80px;
+}
+
+.dash {
+    font-family: glacialIndifferenceBold;
+    font-size: 80px;
+    margin: 0 30px 0 20px;
+}
+
+/* Squad Design */
+.opponent {
+    line-height: 20px;
+}
+
+.squadName {
+    color: white;
+    font-family: glacialIndifferenceBold;
+    text-align: center;
+    font-size: 30px;
+    line-height: 32px;
+}
+
+/* Status */
+.status {
+    text-align: center;
+    font-size: 14px;
+    font-family: glacialIndifferenceBold;
+    text-decoration: none;
+    font-weight:bold;
+    padding: 0px !important;
+    width: 200px !important;
+    padding: 0 10px 0 10px !important;
+}
+
+.victory {
+    background: #33CC33;
+    color: black;
+    border: 2px solid #33CC33;
+}
+
+.defeat {
+    background: #FF3300;
+    color: black;
+    border: 2px solid #FF3300;
+}
+
+.upcoming {
+    background: #ffcc00;
+    color: black;
+    border: 2px solid #ffcc00;
+}
+
+.unverified {
+    background: transparent;
+    color: white;
+    border: 2px solid white;
+}
+
+.timeAndDate {
+    color: white;
+    display: flex;
+    gap: 10px;
+    text-align: center;
+    justify-content: center;
+    font-family: glacialIndifference;
+    font-size: 16px;
+    line-height: 15px;
+}
+
+.noGames {
+    color: white;
+    display: flex;
+    gap: 20px;
+    text-align: center;
+    justify-content: center;
+    font-family: glacialIndifferenceBold;
+    font-size: 16px;
+    line-height: 15px;
+}
+
+/* Footer */
+footer .col-12 {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.aboutUsTop {
+    font-family: glacialIndifferenceBold;
+    text-transform: uppercase;
+    color: white;
+    font-size: 14px;
+    line-height: 16px;
+    text-align: center;
+    padding: 20px;
+    width: 650px;
+    margin-top: 50px;
+    padding: 0 !important;
+}
+
+.aboutUsBot {
+    font-family: glacialIndifference;
+    text-transform: uppercase;
+    color: white;
+    font-size: 14px;
+    line-height: 16px;
+    text-align: center;
+    padding: 20px;
+    width: 650px;
+    margin-top: 10px;
+    padding: 0 !important;
+}
+
+.socialMediaIcons {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 45px;
+    gap: 50px;
+}
+
+.socialMediaIcons i {
+    color: white;
+    font-size: 2rem; 
+    transition: transform 0.3s ease, color 0.3s ease; 
+}
+
+.socialMediaIcons i:hover {
+    transform: scale(1.2); 
+    color: #f0f0f0; 
+}
+
+.footIcon {
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.alert {
+    font-family: glacialIndifference !important;
+    font-size: 16px !important;
+}
+
+.alert-danger, .alert-success {
+    margin-top: 20px;
+}
+
+/* NEW modal */
+.customModal {
+    background: rgba(0, 0, 0) !important;
+    color: white !important;
+    font-family: glacialIndifference;
+    padding: 20px;
+    box-shadow: 0 0 10px white;
+    height: 70vh !important;
+}
+
+.modal-header h5 {
+    color: white;
+    font-family: glacialIndifferenceBold;
+    font-size: 50px;
+    line-height: 40px;
+    text-transform: capitalize !important;
+}
+
+.modal-footer {
+    display: flex;
+    justify-content: space-between;
+}
+
+.form-label {
+    font-family: glacialIndifferenceBold !important;
+    text-transform: uppercase !important;
+    color: white;
+    font-family: glacialIndifferenceBold;
+    font-size: 16px;
+    margin-top: 10px;
+}
+
+/* Buttons */
+.modalButtons {
+    font-size: 14px;
+    font-family: glacialIndifferenceBold;
+    background: transparent;
+    color: white;
+    border: 2px solid white;
+    text-decoration: none;
+    cursor: pointer;
+    transition: 0.3s ease;
+    font-weight: bold;
+    padding: 5px 20px;
+}
+
+.modalButtons:hover {
+    background: white;
+    color: black;
+}
+
+.customModal .modal-header,
+.customModal .modal-footer {
+    border: none !important;
+}
+
+.modal-dialog.modal-dialog-end {
+    margin-left: auto;
+    margin-right: 50px;
+    margin-top: 50px;
+    margin-bottom: 0;
+    max-width: 800px; /* Adjust width as needed */
+}
+
+/* Stop Bootstrap from forcing scroll to top */
+.modal.fade .modal-dialog {
+    transition: none !important;
+}
+
+/* Allow background scrolling */
+body.modal-open {
+    overflow: auto !important;
+    padding-right: 0 !important;
+}
+
+.notification {
+    border-top: solid white 2px;
+    margin: 0px;
+    padding: 20px;
+    font-size: 20px;
+    font-family: glacialIndifference;
+}
+
+/* Squad Design */
+.scrim-cardOnNotif {
+    border: 1px solid white;
+    border-radius: 8px;
+    height: 130px; /* Fixed height for uniform cards */
+    background-color: rgba(0, 0, 0, 0.3);
+    transition: all 0.1s ease;
+    overflow: hidden;
+    margin-bottom: 10px;
+    padding: 10px;
+    margin-top: 5px;
+}
+
+.opponentOnNotif {
+    line-height: 20px;
+}
+
+.squadNameOnNotif {
+    color: white;
+    font-family: glacialIndifference;
+    text-align: end;
+    font-size: 30px;
+    line-height: 32px;
+}
+
+/* Status */
+.scrimButtons {
+    position: absolute !important;
+    gap: 5px !important;
+    display: flex !important;
+    justify-self: center !important;
+    align-items: center !important; 
+    flex-direction: column !important;
+}
+
+.acceptOnNotif {
+    text-align: center !important;
+    font-size: 14px !important;
+    font-family: glacialIndifferenceBold !important;
+    background: #33CC33 !important;
+    color: black !important;
+    border: 2px solid #33CC33 !important;
+    text-decoration: none !important;
+    cursor: pointer !important;
+    transition: 0.3s ease !important;
+    font-weight:bold !important;
+    padding: 0px !important;
+    width: 200px !important;
+    /* padding: 3px 10px 3px 10px !important;  */
+    margin-bottom: 5px !important;
+}
+
+.acceptOnNotif:hover {
+    transform: scale(1.05) !important; 
+    transition: transform 0.2s ease-in-out !important; 
+}
+
+/* Changed */
+.acceptedOnNotif {
+    text-align: center !important;
+    font-size: 14px !important;
+    font-family: glacialIndifferenceBold !important;
+    background: #33CC33 !important;
+    color: black !important;
+    border: 2px solid #33CC33 !important;
+    text-decoration: none !important;
+    transition: 0.3s ease !important;
+    font-weight:bold !important;
+    padding: 0px !important;
+    width: 200px !important;
+    /* padding: 3px 10px 3px 10px !important;  */
+    margin-bottom: 5px !important;
+    opacity: 50%;
+}
+
+.declinedOnNotif {
+    text-align: center !important;
+    font-size: 14px !important;
+    font-family: glacialIndifferenceBold !important;
+    background: #FF3300 !important;
+    color: black !important;
+    border: 2px solid #FF3300 !important;
+    text-decoration: none !important;
+    transition: 0.3s ease !important;
+    font-weight:bold !important;
+    padding: 0px !important;
+    width: 200px !important;
+    margin-bottom: 5px !important;
+    opacity: 50%;
+}
+
+.declineOnNotif {
+    text-align: center !important;
+    font-size: 14px !important;
+    font-family: glacialIndifferenceBold !important;
+    background: #FF3300 !important;
+    color: black !important;
+    border: 2px solid #FF3300 !important;
+    text-decoration: none !important;
+    cursor: pointer !important;
+    transition: 0.3s ease !important;
+    font-weight:bold !important;
+    padding: 0px !important;
+    width: 200px !important;
+    margin-bottom: 5px !important;
+}
+
+.declineOnNotif:hover {
+    transform: scale(1.05) !important; 
+    transition: transform 0.2s ease-in-out !important; 
+}
+
+.verifyOnNotif {
+    text-align: center;
+    font-size: 14px;
+    font-family: glacialIndifferenceBold;
+    background: white;
+    color: black;
+    border: 2px solid white;
+    text-decoration: none;
+    cursor: pointer;
+    transition: 0.3s ease;
+    font-weight:bold;
+    padding: 0px !important;
+    width: 200px !important;
+    padding: 3px 10px 3px 10px !important; 
+    margin-bottom: 5px;
+}
+
+.verifyOnNotif:hover {
+    transform: scale(1.05); 
+    transition: transform 0.2s ease-in-out; 
+}
+
+.new {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+/* .scrimAccept, .scrimDecline {
+    text-align: center;
+    font-size: 14px;
+    font-family: glacialIndifferenceBold;
+    background: transparent;
+    color: white;
+    border: 2px solid white;
+    text-decoration: none;
+    cursor: pointer;
+    transition: 0.3s ease;
+    font-weight:bold;
+    padding: 0px !important;
+    width: 200px !important;
+    padding: 3px 10px 3px 10px !important; 
+} */
+
+.rejected {
+    background: #FF3300;
+    color: black;
+    border: 2px solid #FF3300;
+}
+
+.timeAndDateOnNotif {
+    color: white;
+    display: flex;
+    gap: 10px;
+    text-align: end;
+    justify-content: end;
+    font-family: glacialIndifference;
+    font-size: 16px;
+    line-height: 15px;
+}
+
+.noGamesOnNotif {
+    color: white;
+    display: flex;
+    gap: 20px;
+    text-align: end;
+    justify-content: end;
+    font-family: glacialIndifferenceBold;
+    font-size: 16px;
+    line-height: 15px;
+}
+
+.modal-body {
+    overflow-y: auto; 
+    overflow-x: hidden;
+    margin-bottom: 20px;
+}
+
+/* Design ng Scrollbar */
+.modal-body::-webkit-scrollbar {
+    width: 6px;
+}
+.modal-body::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.3);
+}
+.modal-body::-webkit-scrollbar-thumb {
+    background: white;
+    border-radius: 3px;
+}
+.modal-body::-webkit-scrollbar-thumb:hover {
+    background: white;
+}
+
+.notifEnd {
+    color: white;
+    font-family: glacialIndifference;
+    padding-bottom: 5px;
+    text-align: center;
+    font-size: 10px;
+    line-height: 14px;
+    text-transform: uppercase;
+    opacity: 50%; 
+}
+
+.time {
+    color: white;
+    font-family: glacialIndifference;
+    font-size: 15px;
+    line-height: 14px;
+    text-transform: uppercase;
+    opacity: 50%;  
+}
+
+.notifCount {
+    background-color: #FF3300;
+    border-radius: 20%;
+    color: white;
+    font-family: glacialIndifference;
+    font-size: 15px;
+    line-height: 10px !important;
+    padding: 5px;
+    text-decoration: none !important;
+}
+
+span {
+    text-decoration: none;
+    margin: 0 !important;
+    text-decoration: none !important;
+}
+
+.scrim-card-contentOnNotif {
+    padding: 15px 15px 20px 15px !important;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center !important;
+}
+
+.vs {
+    font-size: 14px !important;
+}
+

@@ -1,18 +1,28 @@
 <?php
 session_start();
 require_once '../includes/dbh.inc.php';
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
 
-if (!in_array($_SESSION['user_role'], ['Moderator'])) {
+if (!in_array($_SESSION['user']['Role'], ['Moderator'])) {
+    header("Location: ../loginPage.php");
     exit("Access Denied!");
 }
 
 // AJAX handling for DataTables
 if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') {
-    $sql = "SELECT Request_ID, Squad_ID, Squad_Name, Squad_Level, Proof_Type, 
-            Proof_File, Date_Submitted, Status, Date_Reviewed 
-            FROM tbl_verificationrequests";
+    $sql = "SELECT 
+    v.Request_ID,
+    v.Squad_ID,
+    s.Squad_Name,
+    v.Squad_Level,
+    v.Proof_Type,
+    v.Proof_File,
+    v.Date_Submitted,
+    v.Status,
+    v.Date_Reviewed
+FROM 
+    tbl_verificationrequests v
+JOIN 
+    tbl_squadprofile s ON v.Squad_ID = s.Squad_ID;";
     $result = $pdo->query($sql);
     $data = $result->fetchAll(PDO::FETCH_ASSOC);
     echo json_encode($data);
@@ -20,9 +30,20 @@ if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQU
 }
 
 // Regular page load initialization
-$sql = "SELECT Request_ID, Squad_ID, Squad_Name, Squad_Level, Proof_Type, 
-        Proof_File, Date_Submitted, Status, Date_Reviewed 
-        FROM tbl_verificationrequests";
+$sql = "SELECT 
+    v.Request_ID,
+    v.Squad_ID,
+    s.Squad_Name,
+    v.Squad_Level,
+    v.Proof_Type,
+    v.Proof_File,
+    v.Date_Submitted,
+    v.Status,
+    v.Date_Reviewed
+FROM 
+    tbl_verificationrequests v
+JOIN 
+    tbl_squadprofile s ON v.Squad_ID = s.Squad_ID;";
 $result = $pdo->query($sql);
 ?>
 
@@ -57,7 +78,7 @@ $result = $pdo->query($sql);
                     </div>
                 </a>
             </div>
-            
+           
             <!-- Vertical Nav Links -->
             <ul class="nav flex-column">
                 <li class="nav-item firstItem">
@@ -75,18 +96,35 @@ $result = $pdo->query($sql);
                         FEEDBACKS
                     </a>
                 </li>
-                <li class="nav-item lastItem">
+                <li class="nav-item">
                     <a class="nav-link active" href="modRequests.php">
                         <span class="nav-text">VERIFICATION REQUESTS</span>
                     </a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="modScrimsLog.php">
+                        <span class="nav-text">SCRIMS LOG</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="modInvitesLog.php">
+                        <span class="nav-text">INVITES LOG</span>
+                    </a>
+                </li>
+                <li class="nav-item lastItem">
+                    <a class="nav-link" href="modSquadAccounts.php">
+                        <span class="nav-text">SQUAD ACCOUNTS</span>
+                    </a>
+                </li>
             </ul>
-            
+           
             <!-- Account Logo (at bottom) -->
             <div class="nav-footer">
-                <button class="accountLogo" data-bs-toggle="modal" data-bs-target="#loginSignupModal">
-                    <i class="bi bi-box-arrow-left"></i>
-                </button>
+                <form action="../includes/logout.inc.php" method="post">
+                    <button class="accountLogo" data-bs-toggle="modal" data-bs-target="#loginSignupModal">
+                            <i class="bi bi-box-arrow-left"></i>
+                    </button>
+                </form>
             </div>
         </div>
 
