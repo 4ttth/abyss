@@ -29,6 +29,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['verify_submit'])) {
             mkdir($uploadDir, 0755, true);
         }
 
+        $victoryCount = 0;
+        $defeatCount = 0;
+
         foreach ($_FILES['proof_files']['tmp_name'] as $key => $tmpName) {
             if ($_FILES['proof_files']['error'][$key] !== UPLOAD_ERR_OK) {
                 continue;
@@ -63,8 +66,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['verify_submit'])) {
 
                 if (strpos(strtolower($resultStatus), 'victory') !== false) {
                     $resultStatus = 'Victory';
+                    $victoryCount++;
                 } elseif (strpos(strtolower($resultStatus), 'defeat') !== false) {
                     $resultStatus = 'Defeat';
+                    $defeatCount++;
                 } else {
                     $resultStatus = 'Not found';
                 }
@@ -73,6 +78,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['verify_submit'])) {
                 $updateStmt->execute([$battleID, $resultStatus, $proofID]);
             }
         }
+
+        // === Validate counts ===
+        if ($victoryCount != $yourScore || $defeatCount != $opponentScore) {
+            header("Location: matchVerificationPage.php?scrim_id=$scrimID&error=ocr_mismatch");
+            exit();
+        }
+
+        // === Determine Game_Result and update ===
+        $finalResult = ($victoryCount > $defeatCount) ? 'Victory' : 'Defeat';
+        $updateMatch = $pdo->prepare("UPDATE tbl_matchverifications SET Game_Result = ?, Status = 'Verified' WHERE Verification_ID = ?");
+        $updateMatch->execute([$finalResult, $verificationID]);
+
+        // === Award points ===
+        $points = ($finalResult === 'Victory') ? 50 : 25;
+        $updatePoints = $pdo->prepare("UPDATE tbl_squadprofile SET abyss_score = abyss_score + ? WHERE Squad_ID = ?");
+        $updatePoints->execute([$points, $squadID]);
 
         $_SESSION['verification_submitted'] = true;
         header("Location: ../verificationSuccess.php");

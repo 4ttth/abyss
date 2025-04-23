@@ -5,8 +5,8 @@ require_once 'dbh.inc.php';
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     // Check if user has squad
     if (!isset($_SESSION['user']['Squad_ID']) || empty($_SESSION['user']['Squad_ID'])) {
-        $_SESSION['error'] = "You must create a squad first!";
-        header("Location: ../squadCreation.php");
+        $_SESSION['error'] = "Non-existent squad. Please create a squad first.";
+        header("Location: ../signup.php");
         exit();
     }
 
@@ -60,7 +60,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     // Validate required fields
     if (empty($ign) || empty($fullName) || empty($gameID) || empty($role)) {
         $_SESSION['error'] = "Please fill in all required player fields";
-        header("Location: ../squadCreation.php");
+        header("Location: " . $_SERVER['HTTP_REFERER']);
         exit();
     }
 
@@ -108,7 +108,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     // Validate Current Rank
     if (!isset($rankConfig[$currentRank])) {
         $_SESSION['error'] = "Invalid current rank: $currentRank";
-        header("Location: ../squadCreation.php");
+        header("Location: " . $_SERVER['HTTP_REFERER']);
         exit();
     }
 
@@ -116,14 +116,14 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $currentConf = $rankConfig[$currentRank];
     if ($currentStar < $currentConf['min'] || ($currentConf['max'] !== PHP_INT_MAX && $currentStar > $currentConf['max'])) {
         $_SESSION['error'] = "Current stars for $currentRank must be {$currentConf['min']}-{$currentConf['max']}";
-        header("Location: ../squadCreation.php");
+        header("Location: " . $_SERVER['HTTP_REFERER']);
         exit();
     }
 
     // Validate Highest Rank
     if (!isset($rankConfig[$highestRank])) {
         $_SESSION['error'] = "Invalid highest rank: $highestRank";
-        header("Location: ../squadCreation.php");
+        header("Location: " . $_SERVER['HTTP_REFERER']);
         exit();
     }
 
@@ -131,14 +131,14 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $highestConf = $rankConfig[$highestRank];
     if ($highestStar < $highestConf['min'] || ($highestConf['max'] !== PHP_INT_MAX && $highestStar > $highestConf['max'])) {
         $_SESSION['error'] = "Highest stars for $highestRank must be {$highestConf['min']}-{$highestConf['max']}";
-        header("Location: ../squadCreation.php");
+        header("Location: " . $_SERVER['HTTP_REFERER']);
         exit();
     }
 
     // Tier Validation: Highest rank cannot be lower than current rank NEEDED BA TO
     if ($rankConfig[$highestRank]['tier'] < $rankConfig[$currentRank]['tier']) {
         $_SESSION['error'] = "Highest rank ($highestRank) cannot be lower than current rank ($currentRank)";
-        header("Location: ../squadCreation.php");
+        header("Location: " . $_SERVER['HTTP_REFERER']);
         exit();
     }
 
@@ -146,7 +146,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     if ($rankConfig[$highestRank]['tier'] == $rankConfig[$currentRank]['tier']) {
         if ($highestStar < $currentStar) {
             $_SESSION['error'] = "Highest stars ($highestStar) cannot be less than current stars ($currentStar) for the same tier";
-            header("Location: ../squadCreation.php");
+            header("Location: " . $_SERVER['HTTP_REFERER']);
             exit();
         }
     }
@@ -190,15 +190,15 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $pdo->commit();
 
         $_SESSION['success'] = "Player added successfully!";
-        header("Location: ../squadCreation.php");
+        header("Location: logout2.inc.php");
         exit();
     } catch (PDOException $e) {
         $pdo->rollBack();
         $_SESSION['error'] = "Error adding player: " . $e->getMessage();
-        header("Location: ../squadCreation.php");
+        header("Location: " . $_SERVER['HTTP_REFERER']);
         exit();
     }
 } else {
-    header("Location: ../squadCreation.php");
+    header("Location: " . $_SERVER['HTTP_REFERER']);
     exit();
 }

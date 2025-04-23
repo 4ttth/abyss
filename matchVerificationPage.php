@@ -402,6 +402,14 @@ $verificationData = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 <form action="includes/matchVerification.inc.php" method="post" enctype="multipart/form-data">
                     <input type="hidden" name="scrim_id" value="<?= $_GET['scrim_id'] ?? '' ?>">
                     
+                    <!-- TRY TRY TRY -->
+                    <?php if (isset($_GET['error']) && $_GET['error'] === 'ocr_mismatch'): ?>
+                        <div class="error-box" style="background: #ffe6e6; border: 1px solid #cc0000; padding: 10px; color: #b30000; border-radius: 5px; margin-bottom: 15px;">
+                            ❌ The number of scanned \"Victory\" and \"Defeat\" results do not match the scores you entered. Please re-upload the correct screenshots.
+                        </div>
+                    <?php endif; ?>
+
+                    
                     <div class="row line">
                         <!-- Your Score -->
                         <div class="form-group mt-3 col-5">
