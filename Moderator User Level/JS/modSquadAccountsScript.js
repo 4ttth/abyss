@@ -104,27 +104,31 @@ $(document).ready(function() {
 // TRY TRY TRY
 $(document).ready(function () {
     $('#submitPenalty').on('click', function (e) {
-        e.preventDefault(); // Prevent the default form submission
+        e.preventDefault();
 
-        // Serialize form data
         const formData = $('#penaltyForm').serialize();
 
-        // Send AJAX request
         $.ajax({
-            url: 'includes/applyPenalty.php', // The PHP script to handle the request
+            url: 'includes/applyPenalty.php',
             type: 'POST',
+            dataType: 'json', // Expect JSON response
             data: formData,
             success: function (response) {
-                if (response.trim() === 'success') {
-                    alert('Penalization was successful!');
-                    $('#penaltyModal').modal('hide'); // Close the modal
-                    location.reload(); // Reload the page to reflect changes (optional)
+                if (response.status === 'success') {
+                    alert(response.message);
+                    $('#penaltyModal').modal('hide');
+                    location.reload();
                 } else {
-                    alert('Error: ' + response);
+                    alert('Error: ' + (response.message || 'Unknown error'));
                 }
             },
-            error: function (xhr, status, error) {
-                alert('An error occurred: ' + error);
+            error: function (xhr) {
+                try {
+                    const errorResponse = JSON.parse(xhr.responseText);
+                    alert('Error: ' + (errorResponse.message || 'Unknown error'));
+                } catch {
+                    alert('Server returned invalid response');
+                }
             }
         });
     });

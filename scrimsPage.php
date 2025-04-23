@@ -117,6 +117,27 @@ if (isset($_SESSION['user']['Squad_ID'])) {
     $stmt->execute([$squadID, $squadID, $squadID]);
     $scrims = $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
+
+// sledgehammer
+// Function to count unread messages
+function countUnreadMessages($pdo, $squadId) {
+    $stmt = $pdo->prepare("SELECT SUM(
+                            CASE 
+                                WHEN Squad1_ID = ? THEN Squad1_Unread 
+                                WHEN Squad2_ID = ? THEN Squad2_Unread 
+                                ELSE 0 
+                            END) as total_unread
+                          FROM tbl_conversations
+                          WHERE Squad1_ID = ? OR Squad2_ID = ?");
+    $stmt->execute([$squadId, $squadId, $squadId, $squadId]);
+    $result = $stmt->fetch(PDO::FETCH_ASSOC);
+    return $result['total_unread'] ?? 0;
+}
+
+// Get unread message count
+$unreadMessageCount = countUnreadMessages($pdo, $_SESSION['user']['Squad_ID']);
+
+// FIFTHHARMONY
 ?>
 
 
@@ -203,11 +224,14 @@ if (isset($_SESSION['user']['Squad_ID'])) {
                                     <?php endif; ?>
                                 </a>
                             </li>
+                            <!-- sledgehammer -->
                             <!-- Inbox -->
                             <li class="nav-item">
                                 <a class="nav-linkIcon ju" href="inboxPage.php">
                                     <i class="bi bi-chat-left-fill"></i>
-                                    <span class="notifCount">3</span>
+                                    <?php if ($unreadMessageCount > 0): ?>
+                                        <span class="notifCount"><?= $unreadMessageCount ?></span>
+                                    <?php endif; ?>
                                 </a>
                             </li>
                         </div>

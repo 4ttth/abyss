@@ -180,3 +180,15 @@ $(document).on('click', '.show-logs', function() {
         }
     });
 });
+
+document.addEventListener("DOMContentLoaded", function () {
+    const successAlert = document.getElementById("success-alert");
+    if (successAlert) {
+        setTimeout(() => {
+            successAlert.classList.add("hidden"); // Add the hidden class for fade-out
+            setTimeout(() => {
+                successAlert.remove(); // Remove the alert from the DOM after fade-out
+            }, 500); // Wait for the fade-out transition to complete (500ms)
+        }, 2000); 
+    }
+});

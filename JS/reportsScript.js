@@ -420,3 +420,32 @@ document.querySelector('form').addEventListener('submit', function(e) {
         alert('Please fill all required fields');
     }
 });
+
+// SLEDGEHAMMER
+
+// Function to check for new messages periodically
+function checkNewMessages() {
+    fetch('includes/getUnreadCount.inc.php')
+        .then(response => response.json())
+        .then(data => {
+            const badge = document.querySelector('.nav-linkIcon[href="inboxPage.php"] .notifCount');
+            if (data.count > 0) {
+                if (!badge) {
+                    const newBadge = document.createElement('span');
+                    newBadge.className = 'notifCount';
+                    newBadge.textContent = data.count;
+                    document.querySelector('.nav-linkIcon[href="inboxPage.php"]').appendChild(newBadge);
+                } else {
+                    badge.textContent = data.count;
+                }
+            } else if (badge) {
+                badge.remove();
+            }
+        });
+}
+
+// Check every 30 seconds
+setInterval(checkNewMessages, 30000);
+
+// Initial check when page loads
+document.addEventListener('DOMContentLoaded', checkNewMessages);

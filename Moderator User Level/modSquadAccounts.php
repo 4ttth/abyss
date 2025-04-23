@@ -263,11 +263,11 @@ $result = $pdo->query($sql);
                 body: formData
             });
             
-            const result = await response.json();
+            const result = await response.json(); // Now expects valid JSON
             
             if (result.status === 'success') {
                 alert(result.message);
-                window.location.reload(); // Reload the page
+                window.location.reload();
             } else {
                 alert('Error: ' + result.message);
             }

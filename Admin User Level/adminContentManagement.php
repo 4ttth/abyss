@@ -11,13 +11,78 @@ if (!isset($pdo)) {
     die("Database connection failed!");
 }
 
+// Handle form submission
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit'])) {
+    try {
+        // Process form data
+        $event_name = $_POST['event_name'];
+        $event_duration = $_POST['event_duration'];
+        $event_details = $_POST['event_details'];
+        $youtube_link = $_POST['youtube_link'] ?? null;
+        $advertisement_link = $_POST['advertisement_link'] ?? null;
+        
+        // File upload handling
+        $upload_dir = "../uploads/content/";
+        
+        // Process promotional content
+        $promotional_content = null;
+        if (!empty($_FILES['promotional_content']['name'])) {
+            $promo_file = $upload_dir . basename($_FILES['promotional_content']['name']);
+            move_uploaded_file($_FILES['promotional_content']['tmp_name'], $promo_file);
+            $promotional_content = $promo_file;
+        }
+        
+        // Process youtube banner
+        $youtube_banner = null;
+        if (!empty($_FILES['youtube_banner']['name'])) {
+            $yt_banner = $upload_dir . basename($_FILES['youtube_banner']['name']);
+            move_uploaded_file($_FILES['youtube_banner']['tmp_name'], $yt_banner);
+            $youtube_banner = $yt_banner;
+        }
+        
+        // Process advertisement banner
+        $advertisement_banner = null;
+        if (!empty($_FILES['advertisement_banner']['name'])) {
+            $ad_banner = $upload_dir . basename($_FILES['advertisement_banner']['name']);
+            move_uploaded_file($_FILES['advertisement_banner']['tmp_name'], $ad_banner);
+            $advertisement_banner = $ad_banner;
+        }
+        
+        // Insert into database
+        $sql = "INSERT INTO tbl_contentmanagement 
+                (Event_Name, Event_Duration, Event_Details, Promotional_Content, 
+                 Youtube_Link, Youtube_Banner, Advertisement_Link, Advertisement_Banner, Is_Displayed) 
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, 0)";
+        
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute([
+            $event_name, 
+            $event_duration, 
+            $event_details, 
+            $promotional_content,
+            $youtube_link,
+            $youtube_banner,
+            $advertisement_link,
+            $advertisement_banner
+        ]);
+        
+        // Refresh the page to show the new content
+        header("Location: adminContentManagement.php");
+        exit();
+        
+    } catch (PDOException $e) {
+        die("Error adding content: " . $e->getMessage());
+    }
+}
+
 $sql = "SELECT Content_ID, Event_Name, Event_Duration, Event_Details, Promotional_Content, Youtube_Link, Youtube_Banner, Advertisement_Link, Advertisement_Banner, Is_Displayed FROM tbl_contentmanagement";
 $result = $pdo->query($sql);
 
 if (!$result) {
-    die("Query failed: " . $pdo->error);
+    die("Query failed: " . $pdo->errorInfo()[2]);
 }
 ?>
+
 
 <!doctype html>
 <html lang="en">
@@ -162,11 +227,11 @@ if (!$result) {
                 <tbody>
                     <?php while ($row = $result->fetch(PDO::FETCH_ASSOC)): ?>
                         <tr>
-                            <td><?= $row['Content_ID'] ?></td>
-                            <td><?= $row['Event_Name'] ?></td>
-                            <td><?= $row['Event_Duration'] ?></td>
-                            <td><?= $row['Event_Details'] ?></td>
-                            <<td class="buttonColumn">
+                            <td><?= htmlspecialchars($row['Content_ID']) ?></td>
+                            <td><?= htmlspecialchars($row['Event_Name']) ?></td>
+                            <td><?= htmlspecialchars($row['Event_Duration']) ?></td>
+                            <td><?= htmlspecialchars($row['Event_Details']) ?></td>
+                            <td class="buttonColumn">
                                 <?php if (!empty($row['Promotional_Content'])): ?>
                                     <img src="<?= htmlspecialchars($row['Promotional_Content']) ?>" alt="Promotional Content" width="100">
                                 <?php else: ?>
@@ -228,9 +293,8 @@ if (!$result) {
                     <h5 class="modal-title" id="addContentModalLabel">ADD NEW CONTENT</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body">
-                    <form action="includes/add_content.inc.php" method="post" enctype="multipart/form-data">
-                        
+                <form action="adminContentManagement.php" method="post" enctype="multipart/form-data">
+                    <div class="modal-body">
                         <div class="mb-3">
                             <label class="form-label">EVENT NAME</label>
                             <input type="text" name="event_name" class="form-control plchldr" placeholder="Enter event name" required>
@@ -248,7 +312,7 @@ if (!$result) {
 
                         <div class="mb-3">
                             <label class="form-label">PROMOTIONAL CONTENT</label>
-                            <input type="file" name="promotional_content" class="form-control">
+                            <input type="file" name="promotional_content" class="form-control" accept="image/*">
                         </div>
 
                         <div class="mb-3">
@@ -258,7 +322,7 @@ if (!$result) {
 
                         <div class="mb-3">
                             <label class="form-label">YOUTUBE BANNER</label>
-                            <input type="file" name="youtube_banner" class="form-control">
+                            <input type="file" name="youtube_banner" class="form-control" accept="image/*">
                         </div>
 
                         <div class="mb-3">
@@ -268,9 +332,8 @@ if (!$result) {
 
                         <div class="mb-3">
                             <label class="form-label">ADVERTISEMENT BANNER</label>
-                            <input type="file" name="advertisement_banner" class="form-control">
+                            <input type="file" name="advertisement_banner" class="form-control" accept="image/*">
                         </div>
-
                     </div>
                     <div class="modal-footer">
                         <button type="submit" name="submit" class="modalButtons">ADD CONTENT</button>
@@ -279,7 +342,6 @@ if (!$result) {
             </div>
         </div>
     </div>
-
     <!-- Javascript -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>

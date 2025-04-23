@@ -10,6 +10,40 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         exit();
     }
 
+    $baseScores = [
+        'Warrior I' => 0,
+        'Warrior II' => 0,
+        'Warrior III' => 0,
+        'Elite I' => 100,
+        'Elite II' => 100,
+        'Elite III' => 100,
+        'Elite IV' => 100,
+        'Master I' => 200,
+        'Master II' => 200,
+        'Master III' => 200,
+        'Master IV' => 200,
+        'Grandmaster I' => 300,
+        'Grandmaster II' => 300,
+        'Grandmaster III' => 300,
+        'Grandmaster IV' => 300,
+        'Grandmaster V' => 300,
+        'Epic I' => 400,
+        'Epic II' => 400,
+        'Epic III' => 400,
+        'Epic IV' => 400,
+        'Epic V' => 400,
+        'Legend I' => 500,
+        'Legend II' => 500,
+        'Legend III' => 500,
+        'Legend IV' => 500,
+        'Legend V' => 500,
+        'Mythic' => 600,
+        'Mythical Honor' => 600,
+        'Mythical Glory' => 600,
+        'Mythical Immortal' => 600
+    ];
+
+
     // Get form data
     $ign = trim($_POST['IGN']);
     $fullName = trim($_POST['Full_Name']);
@@ -20,6 +54,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $highestStar = (int)$_POST['Highest_Star'];
     $role = trim($_POST['Role']);
     $heroNames = array_map('trim', [$_POST['Hero_1'], $_POST['Hero_2'], $_POST['Hero_3']]);
+
+    $highestScore = isset($baseScores[$highestRank]) ? $baseScores[$highestRank] + $highestStar : $highestStar;
 
     // Validate required fields
     if (empty($ign) || empty($fullName) || empty($gameID) || empty($role)) {
@@ -130,9 +166,9 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         // Insert player
         $sql = "INSERT INTO tbl_playerprofile (
                     Squad_ID, IGN, Full_Name, Game_ID, 
-                    Current_Rank, Current_Star, Highest_Rank, Highest_Star, Role,
+                    Current_Rank, Current_Star, Highest_Rank, Highest_Star, Highest_Score, Role,
                     Hero_1, Hero_2, Hero_3
-                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         $stmt = $pdo->prepare($sql);
         $stmt->execute([
@@ -144,6 +180,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             $currentStar,
             $highestRank,
             $highestStar,
+            $highestScore,
             $role,
             $hero1,  
             $hero2,

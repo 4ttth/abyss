@@ -545,8 +545,8 @@ document.addEventListener('DOMContentLoaded', function() {
             return;
         }
         
-        if (!fileInput.files.length) {
-            alert('Please upload proof file');
+        if (fileInput.files.length < 1) {
+            alert('Please upload at least one proof file');
             return;
         }
         
@@ -559,4 +559,44 @@ document.addEventListener('DOMContentLoaded', function() {
         verifyButton.disabled = true;
         verifyButton.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Processing...';
     });
+});
+
+// SLEDGEHAMMER
+
+// Function to check for new messages periodically
+function checkNewMessages() {
+    fetch('includes/getUnreadCount.inc.php')
+        .then(response => response.json())
+        .then(data => {
+            const badge = document.querySelector('.nav-linkIcon[href="inboxPage.php"] .notifCount');
+            if (data.count > 0) {
+                if (!badge) {
+                    const newBadge = document.createElement('span');
+                    newBadge.className = 'notifCount';
+                    newBadge.textContent = data.count;
+                    document.querySelector('.nav-linkIcon[href="inboxPage.php"]').appendChild(newBadge);
+                } else {
+                    badge.textContent = data.count;
+                }
+            } else if (badge) {
+                badge.remove();
+            }
+        });
+}
+
+// Check every 30 seconds
+setInterval(checkNewMessages, 30000);
+
+// Initial check when page loads
+document.addEventListener('DOMContentLoaded', checkNewMessages);
+
+// Update file input display
+document.getElementById('fileInput').addEventListener('change', function() {
+    const files = this.files;
+    if (files.length > 0) {
+        document.getElementById('fileName').textContent = 
+            `${files.length} file${files.length > 1 ? 's' : ''} selected`;
+    } else {
+        document.getElementById('fileName').textContent = 'No files chosen';
+    }
 });

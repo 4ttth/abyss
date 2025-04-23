@@ -21,6 +21,8 @@ $squadDetails = [
     'Squad_Description' => 'N/A'
 ];
 
+$scrimID = isset($_GET['scrim_id']) && is_numeric($_GET['scrim_id']) ? intval($_GET['scrim_id']) : null; // TESTING LANG TO BAKS FIFTHHARMONY
+
 // Fetch squad details only if Squad_ID exists
 if (isset($user['Squad_ID']) && $user['Squad_ID'] !== 'N/A') {
     try {
@@ -240,6 +242,36 @@ $maxScore = ceil($numberOfGames / 2); // For BO3: ceil(3/2)=2, BO5: ceil(5/2)=3,
 $numberOfGames = isset($scrimDetails['No_Of_Games']) ? (int)$scrimDetails['No_Of_Games'] : 1;
 $maxScore = ceil($numberOfGames / 2); // Maximum wins needed to win the series
 
+
+// sledgehammer
+// Function to count unread messages
+function countUnreadMessages($pdo, $squadId) {
+    $stmt = $pdo->prepare("SELECT SUM(
+                            CASE 
+                                WHEN Squad1_ID = ? THEN Squad1_Unread 
+                                WHEN Squad2_ID = ? THEN Squad2_Unread 
+                                ELSE 0 
+                            END) as total_unread
+                          FROM tbl_conversations
+                          WHERE Squad1_ID = ? OR Squad2_ID = ?");
+    $stmt->execute([$squadId, $squadId, $squadId, $squadId]);
+    $result = $stmt->fetch(PDO::FETCH_ASSOC);
+    return $result['total_unread'] ?? 0;
+}
+
+// Get unread message count
+$unreadMessageCount = countUnreadMessages($pdo, $_SESSION['user']['Squad_ID']);
+
+// FIFTHHARMONY
+
+// FOR MULTIPLE PROOF FILES
+// Get verification with all proof files
+$stmt = $pdo->prepare("SELECT v.*, p.File_Path 
+                      FROM tbl_matchverifications v
+                      LEFT JOIN tbl_prooffiles p ON v.Verification_ID = p.Verification_ID
+                      WHERE v.Match_ID = ?");
+$stmt->execute([$scrimID]);
+$verificationData = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
 
 
@@ -322,11 +354,14 @@ $maxScore = ceil($numberOfGames / 2); // Maximum wins needed to win the series
                                     <?php endif; ?>
                                 </a>
                             </li>
+                            <!-- sledgehammer -->
                             <!-- Inbox -->
                             <li class="nav-item">
                                 <a class="nav-linkIcon ju" href="inboxPage.php">
                                     <i class="bi bi-chat-left-fill"></i>
-                                    <span class="notifCount">3</span>
+                                    <?php if ($unreadMessageCount > 0): ?>
+                                        <span class="notifCount"><?= $unreadMessageCount ?></span>
+                                    <?php endif; ?>
                                 </a>
                             </li>
                         </div>
@@ -396,16 +431,26 @@ $maxScore = ceil($numberOfGames / 2); // Maximum wins needed to win the series
                         </div>
                     </div>
                     
-                    <!-- File Upload (keeping your original structure) -->
-                    <div class="row line">
-                        <div class="mb-3">
-                            <label class="form-label">ATTACH FILE</label>
-                            <div class="custom-file-upload">
-                                <input type="file" name="Proof_File" id="fileInput" hidden required>
-                                <button type="button" class="modalButtons" onclick="document.getElementById('fileInput').click()">CHOOSE FILE</button>
-                                <span class="fileName" id="fileName">No file chosen</span>
-                            </div>
+                    <!-- Change file input to accept multiple files -->
+                    <div class="mb-3">
+                        <label class="form-label">ATTACH FILES (Multiple allowed)</label>
+                        <div class="custom-file-upload">
+                            <input type="file" name="proof_files[]" id="fileInput" hidden multiple required>
+                            <button type="button" class="modalButtons" onclick="document.getElementById('fileInput').click()">
+                                CHOOSE FILES
+                            </button>
+                            <span class="fileName" id="fileName">No files chosen</span>
                         </div>
+                    </div>
+
+                    <div class="proof-files">
+                        <?php foreach ($verificationData as $file): ?>
+                            <?php if (!empty($file['File_Path'])): ?>
+                                <a href="<?= $file['File_Path'] ?>" target="_blank">
+                                    <img src="<?= $file['File_Path'] ?>" class="proof-thumbnail">
+                                </a>
+                            <?php endif; ?>
+                        <?php endforeach; ?>
                     </div>
                                                 
                     <!-- Verify Button -->
@@ -596,8 +641,6 @@ $maxScore = ceil($numberOfGames / 2); // Maximum wins needed to win the series
         </div>
     </div>
 
-
-
     <!-- Javascript -->
     <script>
     // Convert PHP variables to JS
@@ -606,5 +649,7 @@ $maxScore = ceil($numberOfGames / 2); // Maximum wins needed to win the series
     </script>
     <script src="JS/matchVerificationScript.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+
+    
 </body>
 </html>

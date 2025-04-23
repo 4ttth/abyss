@@ -51,6 +51,39 @@ document.addEventListener('DOMContentLoaded', function() {
     updateNotificationBadge();
 });
 
+document.addEventListener('DOMContentLoaded', function() {
+    // Filter functionality
+    const filterOptions = document.querySelectorAll('.filter-option');
+    
+    filterOptions.forEach(option => {
+        option.addEventListener('click', function(e) {
+            e.preventDefault();
+            const status = this.dataset.status;
+            filterScrims(status);
+            
+            // Update active filter style
+            filterOptions.forEach(opt => opt.classList.remove('active'));
+            this.classList.add('active');
+            
+            // Update button text
+            document.querySelector('#scrimFilterDropdown span').textContent = this.textContent;
+        });
+    });
+});
+
+function filterScrims(status) {
+    const allCards = document.querySelectorAll('.scrim-card');
+    
+    allCards.forEach(card => {
+        if (status === 'all') {
+            card.style.display = 'block';
+        } else {
+            const matchesFilter = card.dataset.status === status.toLowerCase();
+            card.style.display = matchesFilter ? 'block' : 'none';
+        }
+    });
+}
+
 // Handle Accept/Decline
 // function respondToInvite(scheduleId, action) {
 //     // Disable buttons and show loading state
@@ -183,35 +216,31 @@ document.getElementById('fileInput').addEventListener('change', function() {
     document.getElementById('fileName').textContent = this.files[0] ? this.files[0].name : 'No file chosen';
 });
 
-document.addEventListener('DOMContentLoaded', function() {
-    // Filter functionality
-    const filterOptions = document.querySelectorAll('.filter-option');
-    
-    filterOptions.forEach(option => {
-        option.addEventListener('click', function(e) {
-            e.preventDefault();
-            const status = this.dataset.status;
-            filterScrims(status);
-            
-            // Update active filter style
-            filterOptions.forEach(opt => opt.classList.remove('active'));
-            this.classList.add('active');
-            
-            // Update button text
-            document.querySelector('#scrimFilterDropdown span').textContent = this.textContent;
-        });
-    });
-});
+// SLEDGEHAMMER
 
-function filterScrims(status) {
-    const allCards = document.querySelectorAll('.scrim-card');
-    
-    allCards.forEach(card => {
-        if (status === 'all') {
-            card.style.display = 'block';
-        } else {
-            const matchesFilter = card.dataset.status === status.toLowerCase();
-            card.style.display = matchesFilter ? 'block' : 'none';
-        }
-    });
+// Function to check for new messages periodically
+function checkNewMessages() {
+    fetch('includes/getUnreadCount.inc.php')
+        .then(response => response.json())
+        .then(data => {
+            const badge = document.querySelector('.nav-linkIcon[href="inboxPage.php"] .notifCount');
+            if (data.count > 0) {
+                if (!badge) {
+                    const newBadge = document.createElement('span');
+                    newBadge.className = 'notifCount';
+                    newBadge.textContent = data.count;
+                    document.querySelector('.nav-linkIcon[href="inboxPage.php"]').appendChild(newBadge);
+                } else {
+                    badge.textContent = data.count;
+                }
+            } else if (badge) {
+                badge.remove();
+            }
+        });
 }
+
+// Check every 30 seconds
+setInterval(checkNewMessages, 30000);
+
+// Initial check when page loads
+document.addEventListener('DOMContentLoaded', checkNewMessages);

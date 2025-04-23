@@ -112,8 +112,8 @@
         <!-- Events & Leaderboard Layer-->
         <div class="container-fluid">
             <div class="row d-flex eventsLeaderboard">
-                <!-- Admin Content Start -->
-                    <?php
+                 <!-- Admin Content Start -->
+                 <?php
                     require_once 'includes/dbh.inc.php';
 
                     // Fetch active content
@@ -124,6 +124,9 @@
                         WHERE Is_Displayed = 1 
                         LIMIT 1
                     ")->fetch(PDO::FETCH_ASSOC);
+
+                    $imagePath = "uploads/content/" . basename($activeContent['Promotional_Content']);
+                    $imagePathYT = "uploads/content/" . basename($activeContent['Youtube_Banner']);
                     ?>
 
                     <div class="col-xl-6 eventsColumn">
@@ -146,8 +149,8 @@
                             <div class="row d-flex skinBlocks gx-3">
                                 <?php if (!empty($activeContent['Promotional_Content'])): ?>
                                     <div class="col-4 skinBlock">
-                                        <img src="<?= htmlspecialchars($activeContent['Promotional_Content']) ?>" 
-                                            class="img-fluid" alt="Promotional Banner">
+                                        <img src="<?= htmlspecialchars($imagePath)?>" 
+                                            class="promotionalContent" alt="Promotional Banner">
                                     </div>
                                 <?php endif; ?>
                             </div>
@@ -156,12 +159,13 @@
                             <div class="videoCard">
                                 <?php if (!empty($activeContent['Youtube_Link'])): ?>
                                     <a href="<?= htmlspecialchars($activeContent['Youtube_Link']) ?>" target="_blank">
-                                        <div class="thumbnail" 
-                                            style="background-image: url('<?= htmlspecialchars($activeContent['Youtube_Banner']) ?>')">
+                                        <div class="thumbnail">
+                                            <img src="<?= htmlspecialchars($imagePathYT)?>" alt="Youtube Banner"> 
                                         </div>
                                     </a>
                                 <?php endif; ?>
                             </div>
+
                         <?php else: ?>
                             <div class="row textBlockCenter">
                                 <div class="titleCenter">NO ACTIVE EVENT</div>

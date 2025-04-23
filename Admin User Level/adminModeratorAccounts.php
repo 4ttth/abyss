@@ -36,6 +36,11 @@ $sql = "SELECT User_ID AS Moderator_ID, Email_Address FROM tbl_useraccount WHERE
 $result = $pdo->query($sql);
 
 // Display success/error messages
+if (isset($_SESSION['note_success'])) {
+    echo '<div class="alert alert-success" id="success-alert">' . $_SESSION['note_success'] . '</div>';
+    unset($_SESSION['note_success']); // Unset the session variable
+}
+
 if (isset($_GET['error'])) {
     $error_messages = [
         'emptyfields' => 'Please fill all fields.',

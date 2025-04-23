@@ -27,17 +27,17 @@ try {
     $stmt = $pdo->query("SELECT COUNT(DISTINCT u.Squad_ID) 
     FROM tbl_useraccount u
     JOIN tbl_userlogin l ON u.User_ID = l.User_ID
-    WHERE l.Login_Time >= NOW() - INTERVAL 30 DAY");
+    WHERE l.Login_Time >= NOW() - INTERVAL 30 DAY AND u.Role = 'User'");
     $activeSquads = $stmt->fetchColumn();
 
     // Inactive Squads
     $stmt = $pdo->query("SELECT COUNT(DISTINCT u.Squad_ID) 
     FROM tbl_useraccount u
-    WHERE u.Squad_ID NOT IN (
+    WHERE u.Role = 'User' AND u.Squad_ID NOT IN (
         SELECT DISTINCT u2.Squad_ID 
         FROM tbl_useraccount u2
         JOIN tbl_userlogin l ON u2.User_ID = l.User_ID
-        WHERE l.Login_Time >= NOW() - INTERVAL 30 DAY
+        WHERE l.Login_Time >= NOW() - INTERVAL 30 DAY AND u2.Role = 'User'
     )");
     $inactiveSquads = $stmt->fetchColumn();
 

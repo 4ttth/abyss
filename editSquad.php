@@ -299,12 +299,39 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                                 <div class="dropdown-wrapper">
                                                     <select name="Current_Rank" class="squadLevelDropdown">
                                                         <option selected disabled>Select Rank</option>
-                                                        <option>Warrior</option>
-                                                        <option>Elite</option>
-                                                        <option>Master</option>
-                                                        <option>Grandmaster</option>
-                                                        <option>Epic</option>
-                                                        <option>Legend</option>
+                                                        <!-- Warrior -->
+                                                        <option>Warrior I</option>
+                                                        <option>Warrior II</option>
+                                                        <option>Warrior III</option>
+                                                        <!-- Elite -->
+                                                        <option>Elite I</option>
+                                                        <option>Elite II</option>
+                                                        <option>Elite III</option>
+                                                        <option>Elite IV</option>
+                                                        <!-- Master -->
+                                                        <option>Master I</option>
+                                                        <option>Master II</option>
+                                                        <option>Master III</option>
+                                                        <option>Master IV</option>
+                                                        <!-- Grandmaster -->
+                                                        <option>Grandmaster I</option>
+                                                        <option>Grandmaster II</option>
+                                                        <option>Grandmaster III</option>
+                                                        <option>Grandmaster IV</option>
+                                                        <option>Grandmaster V</option>
+                                                        <!-- Epic -->
+                                                        <option>Epic I</option>
+                                                        <option>Epic II</option>
+                                                        <option>Epic III</option>
+                                                        <option>Epic IV</option>
+                                                        <option>Epic V</option>
+                                                        <!-- Legend -->
+                                                        <option>Legend I</option>
+                                                        <option>Legend II</option>
+                                                        <option>Legend III</option>
+                                                        <option>Legend IV</option>
+                                                        <option>Legend V</option>
+                                                        <!-- Mythic -->
                                                         <option>Mythic</option>
                                                         <option>Mythical Honor</option>
                                                         <option>Mythical Glory</option>
@@ -321,12 +348,39 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                                 <div class="dropdown-wrapper">
                                                     <select name="Highest_Rank" class="squadLevelDropdown">
                                                         <option selected disabled>Select Rank</option>
-                                                        <option>Warrior</option>
-                                                        <option>Elite</option>
-                                                        <option>Master</option>
-                                                        <option>Grandmaster</option>
-                                                        <option>Epic</option>
-                                                        <option>Legend</option>
+                                                        <!-- Warrior -->
+                                                        <option>Warrior I</option>
+                                                        <option>Warrior II</option>
+                                                        <option>Warrior III</option>
+                                                        <!-- Elite -->
+                                                        <option>Elite I</option>
+                                                        <option>Elite II</option>
+                                                        <option>Elite III</option>
+                                                        <option>Elite IV</option>
+                                                        <!-- Master -->
+                                                        <option>Master I</option>
+                                                        <option>Master II</option>
+                                                        <option>Master III</option>
+                                                        <option>Master IV</option>
+                                                        <!-- Grandmaster -->
+                                                        <option>Grandmaster I</option>
+                                                        <option>Grandmaster II</option>
+                                                        <option>Grandmaster III</option>
+                                                        <option>Grandmaster IV</option>
+                                                        <option>Grandmaster V</option>
+                                                        <!-- Epic -->
+                                                        <option>Epic I</option>
+                                                        <option>Epic II</option>
+                                                        <option>Epic III</option>
+                                                        <option>Epic IV</option>
+                                                        <option>Epic V</option>
+                                                        <!-- Legend -->
+                                                        <option>Legend I</option>
+                                                        <option>Legend II</option>
+                                                        <option>Legend III</option>
+                                                        <option>Legend IV</option>
+                                                        <option>Legend V</option>
+                                                        <!-- Mythic -->
                                                         <option>Mythic</option>
                                                         <option>Mythical Honor</option>
                                                         <option>Mythical Glory</option>

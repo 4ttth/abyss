@@ -49,9 +49,23 @@ if (isset($_SESSION['user']['Squad_ID']) && !empty($_SESSION['user']['Squad_ID']
     }
 }
 
+// Fetch logged-in user's squad level NEWNEWNEWNEW
+$userSquadLevel = 'N/A';
+if (isset($_SESSION['user']['Squad_ID']) && $_SESSION['user']['Squad_ID'] !== 'N/A') {
+    try {
+        $stmtUserSquad = $pdo->prepare("SELECT Squad_Level FROM tbl_squadprofile WHERE Squad_ID = ?");
+        $stmtUserSquad->execute([$_SESSION['user']['Squad_ID']]);
+        $userSquadData = $stmtUserSquad->fetch(PDO::FETCH_ASSOC);
+        if ($userSquadData) {
+            $userSquadLevel = $userSquadData['Squad_Level'];
+        }
+    } catch (PDOException $e) {
+        // Handle error if needed
+    }
+}
+
 // Replace the existing verification check with this
-$enableScrimButton = ($verificationStatus === 'Approved') || 
-                    (strcasecmp($squadDetails['Squad_Level'], 'Amateur') === 0);
+$enableScrimButton = ($verificationStatus === 'Approved') || (strcasecmp($userSquadLevel, 'Amateur') === 0);
 
 // Check verification status
 if ($verificationStatus === 'Approved') {
@@ -192,6 +206,27 @@ function getVerificationNotifications($pdo, $squadID) {
 
 // Usage:
 $verificationNotifs = getVerificationNotifications($pdo, $_SESSION['user']['Squad_ID']);
+
+// sledgehammer
+// Function to count unread messages
+function countUnreadMessages($pdo, $squadId) {
+    $stmt = $pdo->prepare("SELECT SUM(
+                            CASE 
+                                WHEN Squad1_ID = ? THEN Squad1_Unread 
+                                WHEN Squad2_ID = ? THEN Squad2_Unread 
+                                ELSE 0 
+                            END) as total_unread
+                          FROM tbl_conversations
+                          WHERE Squad1_ID = ? OR Squad2_ID = ?");
+    $stmt->execute([$squadId, $squadId, $squadId, $squadId]);
+    $result = $stmt->fetch(PDO::FETCH_ASSOC);
+    return $result['total_unread'] ?? 0;
+}
+
+// Get unread message count
+$unreadMessageCount = countUnreadMessages($pdo, $_SESSION['user']['Squad_ID']);
+
+// FIFTHHARMONY
 ?>
 
 <!DOCTYPE html>
@@ -271,11 +306,14 @@ $verificationNotifs = getVerificationNotifications($pdo, $_SESSION['user']['Squa
                                     <?php endif; ?>
                                 </a>
                             </li>
+                            <!-- sledgehammer -->
                             <!-- Inbox -->
                             <li class="nav-item">
                                 <a class="nav-linkIcon ju" href="inboxPage.php">
                                     <i class="bi bi-chat-left-fill"></i>
-                                    <span class="notifCount">3</span>
+                                    <?php if ($unreadMessageCount > 0): ?>
+                                        <span class="notifCount"><?= $unreadMessageCount ?></span>
+                                    <?php endif; ?>
                                 </a>
                             </li>
                         </div>
@@ -313,7 +351,11 @@ $verificationNotifs = getVerificationNotifications($pdo, $_SESSION['user']['Squa
 
         <!-- Main Body (view-only) -->
         <div class="row mainBody">
-            <button onclick="openChallengeModal(<?php echo $squadDetails['Squad_ID']; ?>)" class="challengeButton">CHALLENGE</button>
+        <button onclick="openChallengeModal(<?= $squadDetails['Squad_ID'] ?>)" 
+                class="challengeButton <?= !$enableScrimButton ? 'disabled' : '' ?>" 
+                <?= !$enableScrimButton ? 'disabled' : '' ?>>
+            CHALLENGE
+        </button>
                                         
             <!-- Stats Column -->
             <div class="col-3" >
@@ -604,7 +646,7 @@ $verificationNotifs = getVerificationNotifications($pdo, $_SESSION['user']['Squa
     <script>
     // Convert PHP variables to JS
     const verificationStatus = <?= json_encode($verificationStatus) ?>;
-    const squadLevel = <?= json_encode($squadDetails['Squad_Level']) ?>;
+    const squadLevel = <?= json_encode($userSquadLevel) ?>;
     </script>
     <script src="JS/squadDetailsScript.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
