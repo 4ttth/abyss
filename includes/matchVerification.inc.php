@@ -31,6 +31,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['verify_submit'])) {
 
         $victoryCount = 0;
         $defeatCount = 0;
+
+        $victoryCount = 0;
+        $defeatCount = 0;
         $battleIDs = [];
 
         foreach ($_FILES['proof_files']['tmp_name'] as $key => $tmpName) {
@@ -99,16 +102,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['verify_submit'])) {
                     $pdo->prepare("UPDATE tbl_squadprofile SET abyss_score = abyss_score + 25 WHERE Squad_ID = ?")
                         ->execute([$row['Squad_ID']]);
                 }
-            }
-        } else {
-            // Grace period check: opponent has not submitted after 72 hours
-            $graceCheck = $pdo->prepare("SELECT COUNT(*) FROM tbl_matchverifications WHERE Match_ID = ? AND Squad_ID != ? AND Submission_Time >= NOW() - INTERVAL 72 HOUR");
-            $graceCheck->execute([$scrimID, $squadID]);
-            $opponentRecent = $graceCheck->fetchColumn();
-
-            if ((int)$opponentRecent === 0) {
-                $pdo->prepare("UPDATE tbl_squadprofile SET abyss_score = abyss_score + 25 WHERE Squad_ID = ?")
-                    ->execute([$squadID]);
             }
         }
 

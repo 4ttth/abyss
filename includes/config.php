@@ -29,5 +29,9 @@ return array(
     'MAX_STARS' => 1000,
     // Default stars that the search starts at (upon clicking 'Find Scrim'): matchmaking.php
     'DEFAULT_STARS' => 5,
+    // Maximum number of players that can be in a team
+    'MAX_PLAYERS' => 5,
+    // Machine host name
+    'HOST_NAME' => '192.168.1.128',
 );
 ?>

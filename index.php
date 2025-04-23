@@ -77,7 +77,12 @@
                 </div>
             </div>
         </div>
-
+        <?php if (isset($_SESSION['success'])): ?>
+            <div class="alert alert-success">
+                <?= htmlspecialchars($_SESSION['success']); ?>
+            </div>
+            <?php unset($_SESSION['success']); ?>
+        <?php endif; ?>
         <!-- Title + Guin Background -->
         <div class="topBackground">
             <div class="entryButtons">

@@ -2,6 +2,9 @@
 session_start();
 require_once 'includes/dbh.inc.php';
 
+use chillerlan\QRCode\{QRCode, QROptions};
+require_once 'vendor/autoload.php';
+
 
 // Initialize user data from sessions
 $user = $_SESSION['user'] ?? ['username' => 'Guest', 'Squad_ID' => 'N/A'];
@@ -57,6 +60,25 @@ if (isset($_SESSION['user']['Squad_ID'])) {
 } else {
     $players = [];
 }
+
+// Generate QR Code URL
+$config = include('includes/config.php');
+$hostName = "http://" . $config['HOST_NAME'];
+$squadID = $_SESSION['user']['Squad_ID'] ?? 'N/A';
+$encodedsquadID = base64_encode($squadID);
+$encodedUsername = base64_encode($user['Username'] ?? 'Guest');
+$qrURL = $hostName . "/abyss/playerCreation.php?squad_id=" . $encodedsquadID . "&username=" . $encodedUsername;
+$options = new QROptions([
+    'version' => 5,
+    'eccLevel' => QRCode::ECC_H,
+    'scale' => 5,
+    'imageBase64' => true,
+    'imageTransparent' => false,
+    'foregroundColor' => '#000000',
+    'backgroundColor' => '#ffffff'
+]);
+
+$qrcode = (new QRCode)->render($qrURL);
 ?>
 
 <!doctype html>
@@ -135,13 +157,17 @@ if (isset($_SESSION['user']['Squad_ID'])) {
                         </div>
                     </div>
 
-                    <!-- TESTESTSETSETSETSETSET -->
+                    <!-- Static QR Code -->
+                    <div class="qr-wrapper">
+                        <div class="qr-code">
+                            <?php printf('<img width="150px" height="150px" src="%s" alt="$s" />', $qrcode, $qrURL);;?>
+                            <div class="qr-text">Scan to Add Player</div>
+                        </div>
+                    </div>
+
                     <!-- Squad Members Profile -->
                     <div class="profiles-wrapper">
                         <div class="profiles">
-
-                            <!-- TODO: COACH SLOT REMOVED, INCLUDE A NEW COLUMN IN PLAYER TABLE FOR A ROLE WHETHER IT IS A COACH OR NOT, AS WELL AS IN THE FORM -->
-                            <!-- Player Details -->
                             <?php $playerIndex = 1; ?>
                             <?php foreach ($players as $player): ?>
                                 <div class="memberProfile">
@@ -168,14 +194,6 @@ if (isset($_SESSION['user']['Squad_ID'])) {
                                 </div>
                                 <?php $playerIndex += 1; ?>
                             <?php endforeach; ?>
-
-
-                            <!-- Add Player Modal -->
-                            <div class="addButton" data-bs-toggle="modal" data-bs-target="#addPlayerModal">
-                                <i class="bi bi-plus-circle-fill add"></i>
-                                <div class="buttonTitle">ADD PLAYER PROFILE</div>
-                            </div>
-
                         </div>
                     </div>
 
@@ -287,169 +305,6 @@ if (isset($_SESSION['user']['Squad_ID'])) {
                     <!-- END HERE -->
 
                     <!-- TESTESTESETESETSETSETSETS -->
-                    <!-- Add Player Modal -->
-                    <div class="modal fade" id="addPlayerModal" tabindex="-1" aria-labelledby="addPlayerModalLabel" aria-hidden="true">
-                        <div class="modal-dialog">
-                            <div class="modal-content customModal">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="addPlayerModalLabel">ADD PLAYER PROFILE</h5>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                </div>
-                                <div class="modal-body">
-                                    <form action="includes/playercreate.inc.php" method="post">
-                                        <div class="mb-3">
-                                            <label class="form-label">IN-GAME NAME</label>
-                                            <input type="text" name="IGN" class="form-control plchldr" placeholder="Enter IGN" required>
-                                        </div>
-                                        <div class="mb-3">
-                                            <label class="form-label">FULL NAME</label>
-                                            <input type="text" name="Full_Name" class="form-control plchldr" placeholder="Enter Full Name" required>
-                                        </div>
-                                        <div class="mb-3">
-                                            <label class="form-label">GAME ID</label>
-                                            <input type="text" name="Game_ID" class="form-control plchldr" placeholder="Enter Game ID" required>
-                                        </div>
-
-                                        <!-- Two-Column Layout for Rank -->
-                                        <div class="row">
-                                            <!-- Current Rank -->
-                                            <div class="col-md-6">
-                                                <label class="form-label">CURRENT RANK</label>
-                                                <div class="dropdown-wrapper">
-                                                    <select name="Current_Rank" class="squadLevelDropdown">
-                                                        <option selected disabled>Select Rank</option>
-                                                        <!-- Warrior -->
-                                                        <option>Warrior I</option>
-                                                        <option>Warrior II</option>
-                                                        <option>Warrior III</option>
-                                                        <!-- Elite -->
-                                                        <option>Elite I</option>
-                                                        <option>Elite II</option>
-                                                        <option>Elite III</option>
-                                                        <option>Elite IV</option>
-                                                        <!-- Master -->
-                                                        <option>Master I</option>
-                                                        <option>Master II</option>
-                                                        <option>Master III</option>
-                                                        <option>Master IV</option>
-                                                        <!-- Grandmaster -->
-                                                        <option>Grandmaster I</option>
-                                                        <option>Grandmaster II</option>
-                                                        <option>Grandmaster III</option>
-                                                        <option>Grandmaster IV</option>
-                                                        <option>Grandmaster V</option>
-                                                        <!-- Epic -->
-                                                        <option>Epic I</option>
-                                                        <option>Epic II</option>
-                                                        <option>Epic III</option>
-                                                        <option>Epic IV</option>
-                                                        <option>Epic V</option>
-                                                        <!-- Legend -->
-                                                        <option>Legend I</option>
-                                                        <option>Legend II</option>
-                                                        <option>Legend III</option>
-                                                        <option>Legend IV</option>
-                                                        <option>Legend V</option>
-                                                        <!-- Mythic -->
-                                                        <option>Mythic</option>
-                                                        <option>Mythical Honor</option>
-                                                        <option>Mythical Glory</option>
-                                                        <option>Mythical Immortal</option>
-                                                    </select>
-                                                    <span class="dropdown-icon">▼</span>
-                                                </div>
-                                                <input name="Current_Star" type="text" class="form-control plchldr mt-2" placeholder="Enter Stars">
-                                            </div>
-
-                                            <!-- Highest Rank -->
-                                            <div class="col-md-6">
-                                                <label class="form-label">HIGHEST RANK</label>
-                                                <div class="dropdown-wrapper">
-                                                <select name="Highest_Rank" class="squadLevelDropdown">
-                                                    <option selected disabled>Select Rank</option>
-                                                    <!-- Warrior -->
-                                                    <option>Warrior I</option>
-                                                    <option>Warrior II</option>
-                                                    <option>Warrior III</option>
-                                                    <!-- Elite -->
-                                                    <option>Elite I</option>
-                                                    <option>Elite II</option>
-                                                    <option>Elite III</option>
-                                                    <option>Elite IV</option>
-                                                    <!-- Master -->
-                                                    <option>Master I</option>
-                                                    <option>Master II</option>
-                                                    <option>Master III</option>
-                                                    <option>Master IV</option>
-                                                    <!-- Grandmaster -->
-                                                    <option>Grandmaster I</option>
-                                                    <option>Grandmaster II</option>
-                                                    <option>Grandmaster III</option>
-                                                    <option>Grandmaster IV</option>
-                                                    <option>Grandmaster V</option>
-                                                    <!-- Epic -->
-                                                    <option>Epic I</option>
-                                                    <option>Epic II</option>
-                                                    <option>Epic III</option>
-                                                    <option>Epic IV</option>
-                                                    <option>Epic V</option>
-                                                    <!-- Legend -->
-                                                    <option>Legend I</option>
-                                                    <option>Legend II</option>
-                                                    <option>Legend III</option>
-                                                    <option>Legend IV</option>
-                                                    <option>Legend V</option>
-                                                    <!-- Mythic -->
-                                                    <option>Mythic</option>
-                                                    <option>Mythical Honor</option>
-                                                    <option>Mythical Glory</option>
-                                                    <option>Mythical Immortal</option>
-                                                </select>
-                                                    <span class="dropdown-icon">▼</span>
-                                                </div>
-                                                <input name="Highest_Star" type="text" class="form-control plchldr mt-2" placeholder="Enter Stars">
-                                            </div>
-                                        </div>
-
-                                        <!-- Role Dropdown -->
-                                        <div class="mb-3 mt-3">
-                                            <label class="form-label">ROLE</label>
-                                            <div class="dropdown-wrapper">
-                                                <select name="Role" class="squadLevelDropdown">
-                                                    <option selected disabled>Select Role</option>
-                                                    <option>Tank</option>
-                                                    <option>Fighter</option>
-                                                    <option>Assassin</option>
-                                                    <option>Mage</option>
-                                                    <option>Marksman</option>
-                                                    <option>Support</option>
-                                                    <option>Coach</option>
-                                                </select>
-                                                <span class="dropdown-icon">▼</span>
-                                            </div>
-                                        </div>
-
-                                        <div class="hero-pool-container">
-                                            <label class="form-label">HERO POOL</label>
-                                            <div class="hero-selection">
-                                                <div class="hero-circle" data-hero-index="1" data-bs-toggle="modal" data-bs-target="#heroModal"></div>
-                                                <div class="hero-circle" data-hero-index="2" data-hero-index="2" data-bs-toggle="modal" data-bs-target="#heroModal"></div>
-                                                <div class="hero-circle" data-hero-index="3" data-hero-index="3" data-bs-toggle="modal" data-bs-target="#heroModal"></div>
-                                            </div>
-                                            <input type="hidden" name="Hero_1" id="hero1Input">
-                                            <input type="hidden" name="Hero_2" id="hero2Input">
-                                            <input type="hidden" name="Hero_3" id="hero3Input">
-                                        </div>
-
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="submit" name="submit" class="modalButtons">SAVE PLAYER</button>
-                                </div>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-
                     <!-- Hero Selection Modal -->
                     <div class="modal fade" id="heroModal" tabindex="-1" aria-labelledby="heroModalLabel" aria-hidden="true">
                         <div class="modal-dialog modal-dialog-centered">
@@ -792,6 +647,15 @@ if (isset($_SESSION['user']['Squad_ID'])) {
             fileNameSpan.textContent = this.files[0] ? this.files[0].name : 'No file chosen';
         });
     });
+
+    // Use AJAX to refresh player list without reloading
+    setInterval(function() {
+        fetch('includes/fetchPlayers.inc.php?squad_id=<?= urlencode($squadID) ?>')
+            .then(response => response.text())
+            .then(data => {
+                document.querySelector('.profiles').innerHTML = data;
+            });
+    }, 5000); // Refresh every 5 seconds
     </script>
     <script src="JS/creatingSquadScript.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
