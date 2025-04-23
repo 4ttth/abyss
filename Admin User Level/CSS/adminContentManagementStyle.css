@@ -193,6 +193,46 @@ strong {
     border-right: solid white 1px;
 }
 
+.navBarOverflow {
+    height: calc(100vh - 300px);
+    overflow-y: auto; 
+    overflow-x: hidden;
+    margin-bottom: 20px;
+}
+
+.logoLayer {
+    position: sticky;
+    top: 0;
+    background-color: black;
+    z-index: 10;
+    padding-bottom: 10px;
+}
+
+.nav-footer {
+    position: sticky;
+    bottom: 0;
+    background-color: black;
+    z-index: 10;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    text-align: center;
+}
+
+/* Design ng Scrollbar */
+.navBarOverflow::-webkit-scrollbar {
+    width: 6px;
+}
+.navBarOverflow::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.3);
+}
+.navBarOverflow::-webkit-scrollbar-thumb {
+    background: white;
+    border-radius: 3px;
+}
+.navBarOverflow::-webkit-scrollbar-thumb:hover {
+    background: white;
+}
+
 .navigationBar .nav-link {
     display: flex;
     color: white;
@@ -450,11 +490,11 @@ option {
     margin-bottom: 20px;
 }
 
-.bi-node-plus-fill {
+/* .bi-node-plus-fill {
     font-size: 25px;
     padding: 0;
     margin-right: 10px;
-}
+} */
 
 .addContentButton:hover {
     background-color: white;
@@ -577,4 +617,13 @@ option {
     background-color: transparent !important;
     border: 2px solid white !important;
     border-radius: 0 !important;
+}
+
+.alert {
+    font-family: glacialIndifference !important;
+    font-size: 16px !important;
+}
+
+.alert-danger, .alert-success {
+    margin-top: 20px;
 }

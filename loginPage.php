@@ -1,6 +1,6 @@
 <?php
-    require_once 'includes/config_session.inc.php';
-    require_once 'includes/login_view.inc.php';
+session_start();
+require_once 'includes/login_view.inc.php';
 ?>
 
 <!doctype html>
@@ -32,7 +32,16 @@
                     </a>
                 </div>
 
-                <form action="includes/login.inc.php" method = "post">
+                <!-- Error Alert -->
+                <?php if (isset($_SESSION['error_login'])) : ?>
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <?= $_SESSION['error_login'] ?>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                    <?php unset($_SESSION['error_login']); ?>
+                <?php endif; ?>
+
+                <form action="includes/login.inc.php" method="post">
                     <!-- Username Field -->
                     <div class="form-group mt-3">
                         <label class="form-label title">USERNAME</label>
@@ -57,9 +66,7 @@
                     </div>
                 </form>
 
-                <?php
-                check_login_errors();
-                ?>
+                <?php check_login_errors(); ?>
 
             </div>
         </div>

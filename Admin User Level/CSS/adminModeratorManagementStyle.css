@@ -193,6 +193,46 @@ strong {
     border-right: solid white 1px;
 }
 
+.navBarOverflow {
+    height: calc(100vh - 300px);
+    overflow-y: auto; 
+    overflow-x: hidden;
+    margin-bottom: 20px;
+}
+
+.logoLayer {
+    position: sticky;
+    top: 0;
+    background-color: black;
+    z-index: 10;
+    padding-bottom: 10px;
+}
+
+.nav-footer {
+    position: sticky;
+    bottom: 0;
+    background-color: black;
+    z-index: 10;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    text-align: center;
+}
+
+/* Design ng Scrollbar */
+.navBarOverflow::-webkit-scrollbar {
+    width: 6px;
+}
+.navBarOverflow::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.3);
+}
+.navBarOverflow::-webkit-scrollbar-thumb {
+    background: white;
+    border-radius: 3px;
+}
+.navBarOverflow::-webkit-scrollbar-thumb:hover {
+    background: white;
+}
+
 .navigationBar .nav-link {
     display: flex;
     color: white;
@@ -283,6 +323,7 @@ strong {
     padding-left: 350px !important;
     margin-top: 50px !important;
     max-width: 100% !important;
+    
 }
 
 /* Decorative Divider - Right*/
@@ -350,6 +391,7 @@ table.dataTable thead {
     color: black;
     font-family: glacialIndifferenceBold;
     font-size: 18px;
+    line-height: 18px;
     text-transform: uppercase;
 }
 
@@ -390,6 +432,15 @@ div.dt-container .dt-search input {
     font-size: 16px;
 }
 
+td {
+    border-color: inherit;
+    border-style: solid;
+    border-width: 0;
+    color: white !important;
+    font-family: glacialIndifference;
+    font-size: 16px;
+}
+
 .dt-paging {
     background-color: white !important;
     font-family: glacialIndifference;
@@ -423,7 +474,7 @@ option {
     cursor: pointer;
     transition: 0.3s ease;
     font-weight:bold;
-    width: 100px !important;
+    width: 150px !important;
     text-transform: uppercase;
 }
 
@@ -432,8 +483,7 @@ option {
     color: black;
 }
 
-/* Penalize Button */
-.penalize {
+.delete {
     text-align: center;
     font-size: 14px;
     font-family: glacialIndifferenceBold;
@@ -449,12 +499,44 @@ option {
     background-color: #ff3300;
 }
 
-.penalize:hover {
+.delete:hover {
     transform: scale(1.1); 
     transition: transform 0.2s ease-in-out; 
 }
 
+.addContentButton {
+    text-align: center;
+    font-size: 20px;
+    font-family: glacialIndifferenceBold;
+    background: transparent;
+    color: white;
+    border: 2px solid white;
+    text-decoration: none;
+    cursor: pointer;
+    transition: 0.3s ease;
+    font-weight:bold;
+    width: 250px !important;
+    text-transform: uppercase;
+    margin-left: 10px;
+    margin-bottom: 20px;
+}
+
+.bi-node-plus-fill {
+    font-size: 25px;
+    padding: 0;
+    margin-right: 10px;
+}
+
+.addContentButton:hover {
+    background-color: white;
+    color: black;
+}
+
 /* Modal */
+.headni2 {
+    margin-bottom: 20px !important;
+}
+
 .customModal {
     background: rgba(0, 0, 0, 0.9) !important;
     color: white !important;
@@ -550,4 +632,53 @@ option {
     transform: translateY(-50%);
     color: white;
     pointer-events: none;
+}
+
+.form-control::placeholder {
+    color: white !important;
+    opacity: 50% !important;
+}
+
+.form-control:focus {
+    border-color: white !important;
+    box-shadow: 0 0 10px white !important;
+    outline: none !important;
+}
+
+.plchldr {
+    font-family: glacialIndifference;
+    font-size: 18px !important;
+    color: white !important;
+    background-color: transparent !important;
+    border: 2px solid white !important;
+    border-radius: 0 !important;
+}
+
+/* NEW */
+.bodies {
+    display: flex;
+}
+
+.rightBody {
+    height: 100px;
+    margin-top: 50px !important;
+    max-width: 100% !important;
+    justify-content: right;
+}
+
+.adminNotes {
+    justify-content: end;
+}
+
+.reset {
+    width: 190px !important;
+}
+
+.alert {
+    font-family: glacialIndifference !important;
+    font-size: 16px !important;
+}
+
+.alert-danger, .alert-success {
+    margin-top: 20px;
 }

@@ -1,53 +1,48 @@
 <?php
 session_start();
 require_once '../includes/dbh.inc.php';
-header('Content-Type: application/json'); // Add this
 
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
+// 1. Validate session FIRST
+if (!isset($_SESSION['user']['Role']) || !in_array($_SESSION['user']['Role'], ['Moderator'])) {
+    header('Content-Type: application/json');
+    die(json_encode(['success' => false, 'error' => 'Unauthorized']));
+}
 
+// 2. Validate POST parameters
+if (empty($_POST['request_id']) || empty($_POST['action'])) {
+    header('Content-Type: application/json');
+    die(json_encode(['success' => false, 'error' => 'Missing parameters']));
+}
 
 try {
-    // Validate session first
-    if (!isset($_SESSION['user_role']) || !in_array($_SESSION['user_role'], ['Moderator'])) {
-        throw new Exception("Access Denied: Invalid permissions");
+    // 3. Prepare SQL statement
+    $stmt = $pdo->prepare("
+        UPDATE tbl_verificationrequests 
+        SET Status = :status, 
+            Date_Reviewed = NOW() 
+        WHERE Request_ID = :request_id
+    ");
+
+    // 4. Bind parameters explicitly
+    $status = ($_POST['action'] === 'approve') ? 'Approved' : 'Rejected';
+    $stmt->bindParam(':status', $status);
+    $stmt->bindParam(':request_id', $_POST['request_id']);
+
+    // 5. Execute and check result
+    if (!$stmt->execute()) {
+        throw new Exception('Database update failed');
     }
 
-    if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-        throw new Exception("Invalid request method");
-    }
-
-    // Validate inputs
-    $requestId = filter_input(INPUT_POST, 'request_id', FILTER_VALIDATE_INT);
-    $action = filter_input(INPUT_POST, 'action', FILTER_SANITIZE_STRING);
-    
-    if (!$requestId || !in_array($action, ['approve', 'reject'])) {
-        throw new Exception("Invalid parameters: request_id=$requestId, action=$action");
-    }
-
-    // Database update
-    $status = ($action === 'approve') ? 'Approved' : 'Rejected';
-    $dateReviewed = date('Y-m-d H:i:s');
-    
-    $stmt = $pdo->prepare("UPDATE tbl_verificationrequests 
-                          SET Status = :status, Date_Reviewed = :date_reviewed
-                          WHERE Request_ID = :request_id");
-    $stmt->execute([
-        ':status' => $status,
-        ':date_reviewed' => $dateReviewed,
-        ':request_id' => $requestId
-    ]);
-
-    if ($stmt->rowCount() === 0) {
-        throw new Exception("No rows affected - invalid Request_ID?");
-    }
-
+    // 6. Return SUCCESS response
+    header('Content-Type: application/json');
     echo json_encode(['success' => true]);
-    
+
 } catch (Exception $e) {
+    // 7. Proper error handling
+    header('Content-Type: application/json');
     http_response_code(500);
     echo json_encode([
-        'error' => $e->getMessage(),
-        'trace' => $e->getTrace() // Remove in production
+        'success' => false, 
+        'error' => 'Server error: ' . $e->getMessage()
     ]);
 }

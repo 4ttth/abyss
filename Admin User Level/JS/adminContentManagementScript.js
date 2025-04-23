@@ -1,9 +1,9 @@
-// document.addEventListener("DOMContentLoaded", function () {
-//     setTimeout(() => {
-//         document.querySelector(".introScreen").style.display = "none"; 
-//         document.querySelector(".pageContent").classList.add("showContent");
-//     }, 500); // Matches animation duration
-// });
+document.addEventListener("DOMContentLoaded", function () {
+    setTimeout(() => {
+        document.querySelector(".introScreen").style.display = "none"; 
+        document.querySelector(".pageContent").classList.add("showContent");
+    }, 500); // Matches animation duration
+});
 
 // $(document).ready(function () {
 //     $('#myTable').DataTable();
@@ -51,6 +51,31 @@ function showAddContentModal() {
     } catch (error) {
         console.error("Failed to show modal:", error);
     }
+}
+
+// Display toggle
+function toggleDisplay(contentId, currentDisplay) {
+    const newDisplay = currentDisplay === 1 ? 0 : 1;
+
+    $.ajax({
+        url: '../includes/updateDisplay.inc.php',
+        method: 'POST',
+        data: {
+            content_id: contentId,
+            is_displayed: newDisplay
+        },
+        dataType: 'json', // Ensure proper JSON parsing
+        success: function(response) {
+            if (response.success) {
+                location.reload(); // Refresh to update UI
+            } else {
+                alert('Error: ' + (response.error || 'Unknown error'));
+            }
+        },
+        error: function(xhr) {
+            alert('Server Error: ' + xhr.status + ' ' + xhr.statusText);
+        }
+    });
 }
 
 // Add to existing event listener
