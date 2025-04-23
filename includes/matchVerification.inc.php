@@ -31,9 +31,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['verify_submit'])) {
 
         $victoryCount = 0;
         $defeatCount = 0;
-
-        $victoryCount = 0;
-        $defeatCount = 0;
         $battleIDs = [];
 
         foreach ($_FILES['proof_files']['tmp_name'] as $key => $tmpName) {
