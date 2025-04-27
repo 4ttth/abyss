@@ -1,6 +1,4 @@
 <?php
-error_reporting(E_ALL);
-ini_set('display_errors', 'on');
 session_start(); // Start the session
 require_once 'includes/dbh.inc.php'; // Database connection
 require_once 'includes/userhomepage.inc.php'; // Squad details logic
