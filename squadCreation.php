@@ -8,7 +8,11 @@ require_once 'vendor/autoload.php';
 
 // Initialize user data from sessions
 $user = $_SESSION['user'] ?? ['username' => 'Guest', 'Squad_ID' => 'N/A'];
-
+if (!$_SESSION['user']['verified']) {
+    $_SESSION['error'] = "Please verify your email to proceed.";
+    header("Location: verifyEmail.php");
+    exit();
+}
 try {
     if (isset($_SESSION['user']['username'])) {
         // Fetch ALL user data from database using session username

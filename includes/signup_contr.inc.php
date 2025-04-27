@@ -47,7 +47,3 @@ function is_password_not_same(string $pwd, string $confirmPassword) {
         return $pwd !== $confirmPassword;
 }
 
-
-function create_user(object $pdo, string $email, string $pwd, string $username) {
-    set_user($pdo, $email, $pwd, $username);
-}
