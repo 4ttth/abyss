@@ -2,8 +2,8 @@
 error_reporting(E_ALL);
 ini_set('display_errors', 'on');
 session_start(); // Start the session
-require_once '/includes/dbh.inc.php'; // Database connection
-require_once '/includes/userHomepage.inc.php'; // Squad details logic
+require_once 'includes/dbh.inc.php'; // Database connection
+require_once 'includes/userHomepage.inc.php'; // Squad details logic
 
 
 // ====== NEW CODE START ======
