@@ -28,6 +28,9 @@ body {
     width: 100vw;
 }
 
+.texter {
+    opacity: 20%;
+}
 
 strong {
     font-family: glacialIndifferenceBold;

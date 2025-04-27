@@ -81,6 +81,7 @@ $result = $pdo->query($sql);
 if (!$result) {
     die("Query failed: " . $pdo->errorInfo()[2]);
 }
+
 ?>
 
 
@@ -126,7 +127,12 @@ if (!$result) {
                     </li>
                     <li class="nav-item">
                         <a class="nav-link active" href="adminContentManagement.php">
-                            <span class="nav-text">CONTENT MANAGEMENT</span>
+                            <span class="nav-text">EVENT MANAGEMENT</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="adminInstructionsManagement.php">
+                            <span class="nav-text">INSTRUCTION MANAGEMENT</span>
                         </a>
                     </li>
                     <li class="nav-item">
@@ -188,7 +194,7 @@ if (!$result) {
             <!-- Header -->
             <div class="row textBlockLeft">
                 <div class="titleLeft">
-                    CONTENT MANAGEMENT
+                    EVENT MANAGEMENT
                 </div>
                 <div class="descriptionLeft">
                     LOG AS OF <strong>MARCH 24, 2025</strong>
@@ -342,6 +348,7 @@ if (!$result) {
             </div>
         </div>
     </div>
+    
     <!-- Javascript -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
