@@ -69,7 +69,7 @@ try {
                 <li><strong>Time:</strong> $scrimTime</li>
                 <li><strong>Number of Games:</strong> $scrimNotes</li>
             </ul>
-            <p>Please <a href='$hostname/abyss/index.php'>log in</a> to your account to respond to the invitation.</p>
+            <p>Please <a href='https://$hostname'>log in</a> to your account to respond to the invitation.</p>
         ";
 
         // Send email to the target squad

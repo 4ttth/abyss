@@ -32,6 +32,6 @@ return array(
     // Maximum number of players that can be in a team
     'MAX_PLAYERS' => 5,
     // Machine host name
-    'HOST_NAME' => '192.168.1.119',
+    'HOST_NAME' => 'abyss.folded.cloud',
 );
 ?>
