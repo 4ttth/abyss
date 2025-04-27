@@ -1,0 +1,2025 @@
+@font-face {
+    font-family: planetKosmos;
+    src: url(../CSS/fonts/planet_kosmos/PLANK___.TTF);
+}
+
+@font-face {
+    font-family: glacialIndifference;
+    src: url(../CSS/fonts/glacial-indifference/GlacialIndifference-Regular.otf);
+}
+
+@font-face {
+    font-family: glacialIndifferenceBold;
+    src: url(../CSS/fonts/glacial-indifference/GlacialIndifference-Bold.otf);
+}
+
+@font-face {
+    font-family: gameCube;
+    src: url(../CSS/fonts/gamecuben/GameCube.ttf);
+}
+
+/* Entire Page */
+body {
+    overflow-x: hidden; 
+    width: 100vw;
+    max-width: 100%;
+}
+
+.customPageBackground {
+    background-color: black;
+}
+
+strong {
+    font-family: glacialIndifferenceBold;
+}
+
+/* Intro Animation */
+.introScreen {
+    position: fixed;
+    width: 100%;
+    height: 100vh;
+    background-color: black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+
+.loadingAnimation {
+    width: 400px; 
+    height: 400px;
+    background-image: url('../IMG/essentials/loadingAnimation.gif'); 
+    background-size: cover;
+}
+
+.hiddenContent {
+    opacity: 0;
+}
+
+.showContent {
+    opacity: 1;
+    transition: opacity .5s ease-in-out;
+}
+
+/* Guin Background */
+.topBackground {
+    background: url('../IMG/backgrounds/guinBackground.jpg') no-repeat center center;
+    background-size: cover;
+    background-attachment: scroll; 
+    width: 100%;
+    height: auto; 
+    min-height: 100vh;
+    margin-top: 40px;
+    opacity: 100%;
+    z-index: 0;
+    position: relative;
+}
+
+/* Navigation Bar - Logo Layer */
+/* Logo & Name */
+.navbar-brand {
+    display: flex;
+    align-items: center;
+}
+
+.logoLayer {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+.logoPicture {
+    width: 80px;
+    height: auto;
+    margin-right: 16px; 
+}
+
+.logoText {
+    font-size: 50px;
+    padding-top: 20px;
+    color: white; 
+    font-family: planetKosmos;
+    margin-right: 40px;
+    letter-spacing: 2px;
+}
+
+/* Search Bar */
+.searchBar {
+    display: flex;
+    align-items: center;
+    border: 1px solid white; 
+    border-radius: 30px;
+    padding: 5px 15px !important;
+    background: transparent; 
+    width: 90vw; 
+    height: 40px;
+    position: relative;
+    margin-left: 5px;
+}
+
+/* Input Field */
+.searchInput {
+    border: none;
+    background: transparent;
+    outline: none;
+    width: 100%;
+    color: white;
+    font-size: 16px;
+    padding: 5px;
+    font-family: glacialIndifference;
+    font-size: 18px !important;
+}
+
+/* Search Button */
+.searchButton {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 5px;
+    position: absolute;
+    right: 10px;
+}
+
+/* Search Button Icon */
+.searchButton img {
+    width: 25px;
+    height: 25px;
+}
+
+/* Placeholder Color */
+.searchInput::placeholder {
+    color: rgba(255, 255, 255, 0.7);
+}
+
+/* Account Logo Placeholder */
+.accountLogo {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-left: 20px !important;
+}
+
+.accountLogo i {
+    font-size: 32px; 
+    color: white;
+}
+
+/* Hover effect */
+.accountLogo:hover {
+    size: 120% !important;
+}
+
+
+/* Navigation Bar - Options Layer */
+.navigationBar {
+    background-color: black;
+    color: white;
+    position: fixed;
+    padding-top:20px;
+    padding-left: 20px !important;
+    font-family: glacialIndifferenceBold;
+    font-size: 18px;
+    letter-spacing: 3px;
+    padding-bottom: 5px;
+    box-shadow: 0px 0px 100px rgba(0, 0, 0, 100%);
+    z-index: 500;
+    height: 180px;
+}
+
+.navigationBar .nav-link {
+    color: white;
+    margin-right: 100px;
+}
+
+.nav-link.active {
+    color: white !important;
+}
+
+.nav-link.active {
+    color: white !important;
+    text-shadow: 
+        0 0 10px rgba(255, 255, 255),  
+        0 0 15px rgba(255, 255, 255),  
+        0 0 20px rgba(255, 255, 255);
+    font-weight: bold;
+}
+
+.nav-link:hover {
+    color: white !important;
+    text-shadow: 
+        0 0 10px rgba(255, 255, 255),  
+        0 0 15px rgba(255, 255, 255),  
+        0 0 20px rgba(255, 255, 255);
+    font-weight: bold;
+}
+
+/* Icons Bar */
+.iconsBar {
+    font-size: 30px;
+    margin-left: auto; 
+    display: flex;
+    align-items: center;
+    gap: 15px; 
+    
+}
+
+.navigationBar .nav-linkIcon {
+    color: white;
+    margin-right: 15px;
+    line-height: 30px !important;
+    display: inline-flex;
+    align-items: start;
+    gap: 5px;
+    text-decoration: none !important;
+}
+
+.ju{
+    gap: 6.5px !important;
+}
+
+.nav-linkIcon.active {
+    color: white !important;
+}
+
+.nav-linkIcon.active {
+    color: white !important;
+    text-shadow: 
+        0 0 10px rgba(255, 255, 255),  
+        0 0 15px rgba(255, 255, 255),  
+        0 0 20px rgba(255, 255, 255);
+    font-weight: bold;
+}
+
+.nav-linkIcon:hover {
+    color: white !important;
+    text-shadow: 
+        0 0 10px rgba(255, 255, 255),  
+        0 0 15px rgba(255, 255, 255),  
+        0 0 20px rgba(255, 255, 255);
+    font-weight: bold;
+}
+
+/* Squad Details */
+.squadDetails {
+    position: relative;
+    background-image: url(../IMG/backgrounds/squadBackground.jpg);
+    background-size: contain;
+    background-repeat: no-repeat;
+    height: 280px;
+    margin-top: 180px;
+    text-align: right;
+    margin-bottom: 30px;
+    padding-top: 30px;
+}
+
+.squadDetailsContent {
+    margin-top: 20px;
+    margin-right: 20px !important;
+    align-items: center !important;
+}
+
+/* Buttons for the Edit Account and Logout */
+form {
+    padding: 0px !important;
+    margin-bottom: 0px !important;
+}
+
+.buttons {
+    display: flex;
+    align-items: end;
+    gap: 10px;
+}
+
+.feedbackButton {
+    text-align: center;
+    font-size: 14px;
+    font-family: glacialIndifferenceBold;
+    background: transparent;
+    color: white;
+    border: 2px solid white;
+    text-decoration: none;
+    cursor: pointer;
+    transition: 0.3s ease;
+    font-weight:bold;
+    padding: 0px !important;
+    width: 200px !important;
+    padding: 3px 10px 3px 10px !important; 
+}
+
+.reportButton {
+    text-align: center;
+    font-size: 14px;
+    font-family: glacialIndifferenceBold;
+    background: #FF3300;
+    color: black;
+    border: 2px solid #FF3300;
+    text-decoration: none;
+    cursor: pointer;
+    transition: 0.3s ease;
+    font-weight:bold;
+    padding: 0px !important;
+    width: 200px !important;
+    padding: 3px 10px 3px 10px !important; 
+}
+
+.buttons > *:first-child {
+    margin-left: auto;
+}
+
+.feedbackButton:hover {
+    background: white;
+    color: black;
+}
+
+.reportButton:hover {
+    transform: scale(1.1); 
+    transition: transform 0.2s ease-in-out; 
+}
+
+/* Text Block */
+.squadAccount {
+    margin-top: 20px !important;
+}
+
+.squadAcronym {
+    color: white;
+    font-family: glacialIndifferenceBold;
+    font-size: 20px;
+    padding-left: 50px !important;
+    text-transform: uppercase;
+    line-height: 14px;  
+}
+
+.squadName {
+    color: white;
+    font-family: glacialIndifferenceBold;
+    font-size: 50px;
+    line-height: 40px;
+    margin-bottom: 5px;
+}
+
+.squadAccountID {
+    color: white;
+    font-family: glacialIndifference;
+    font-size: 20px;
+    padding-left: 50px !important;
+    text-transform: uppercase;
+    line-height: 14px;  
+}
+
+.squadDescription {
+    color: white;
+    font-family: glacialIndifference;
+    font-size: 18px;
+    padding-left: 50px !important;
+    line-height: 14px;
+    font-style: italic ;
+}
+
+.tabsRow {
+    display: flex;
+    justify-content: flex-end; 
+    gap: 10px;
+}
+
+.tabs {
+    margin-top: 10px !important;
+    margin-bottom: 10px !important;
+    text-align: center;
+    font-size: 14px;
+    font-family: glacialIndifferenceBold;
+    background: white;
+    color: black;
+    text-decoration: none;
+    font-weight:bold;
+    padding: 0px !important;
+    width: 200px !important;
+    text-transform: uppercase !important;
+}
+
+.abyssPoints {
+    color: white;
+    font-family: gameCube;
+    font-size: 30px;
+    line-height: 40px;
+    margin-top: 20px !important;
+}
+
+.foxIconPoints {
+    width: 40px;
+    height: 40px;
+    object-fit: contain;
+    vertical-align: middle;
+}
+
+/* Main Content */
+.mainBody {
+    height: auto;
+    margin-bottom: 20px;
+}
+
+/* Stats Column */
+.squadStats {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100%;
+    gap: 30px;
+    margin-top: 20px;
+}
+
+.squadStatistics {
+    text-align: center;
+    color: white;
+    margin-top: 5px;
+    font-family: glacialIndifferenceBold;
+    font-size: 25px;
+    line-height: 25px;
+    padding: 10px;
+    text-transform: uppercase;
+}
+
+.statsContent {
+    display: block;
+    align-items: center !important;
+}
+
+.winRate {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 50vw; 
+    height: 50vw;
+    max-width: 300px;
+    max-height: 300px;
+    min-width: 100px; 
+    min-height: 100px;
+    border: solid white 2px;
+    border-radius: 50%;
+    display: flex;
+}
+
+.number {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 50px; 
+    color: white;
+    font-family: gameCube;
+}
+
+.statsLabel {
+    margin-bottom: 10px !important;
+    text-align: center;
+    font-size: 14px;
+    font-family: glacialIndifferenceBold;
+    background: white;
+    color: black;
+    text-decoration: none;
+    font-weight:bold;
+    padding: 0px !important;
+    width: 200px !important;
+    margin-top: 5px;
+}
+
+/* Main Feed */
+.feed {
+    height: 100%;
+}
+
+/* Status Box */
+.statusBox {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    margin-top: 20px;
+    padding: 15px;
+    border: 2px solid white;
+    background: transparent;
+    width: 100%;
+}
+
+.statusInput {
+    width: 100%;
+    height: 100px;
+    background: transparent;
+    border: black !important;
+    border-bottom: 1px solid white !important;
+    color: white;
+    font-family: glacialIndifference;
+    font-size: 14px;
+    padding: 10px;
+    resize: none;
+    outline: none;
+}
+
+.statusOptions {
+    display: flex;
+    align-items: center;
+    margin-top: 15px;
+    gap: 10px;
+    width: 100%;
+}
+
+.addLabelButton {
+    background: black;
+    color: black;
+    font-size: 12px;
+    border: none;
+    padding: 0px 10px;
+    cursor: pointer;
+    font-family: glacialIndifference;
+    font-size: 12px;
+    text-transform: uppercase;
+    background-color: white;
+}
+
+/* Label Modal */
+.labelModal {
+    background: rgba(0, 0, 0, 0.9) !important;
+    color: white !important;
+    font-family: glacialIndifference;
+    padding: 20px;
+    box-shadow: 0 0 10px white;
+    border-radius: 8px;
+    text-align: center;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 50vh !important;
+    display: none;
+}
+
+.modalHeader {
+    color: white;
+    font-family: glacialIndifferenceBold;
+    font-size: 14px;
+    line-height: 14px;
+    text-transform: uppercase;
+}
+
+.labelModal .modal-footer {
+    display: flex;
+    justify-content: space-between;
+    border: none !important;
+}
+
+/* Buttons */
+.modalButton {
+    font-size: 12px;
+    line-height: 12px;
+    font-family: glacialIndifferenceBold;
+    background: transparent;
+    color: white;
+    border: 2px solid white;
+    text-decoration: none;
+    cursor: pointer;
+    transition: 0.3s ease;
+    font-weight: bold;
+    padding: 3px 16px;
+    text-transform: uppercase;
+}
+
+.modalButton:hover {
+    background: white;
+    color: black;
+}
+
+/* Close Button */
+.closeModal {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    cursor: pointer;
+    font-size: 18px;
+    color: white;
+}
+
+.selectedLabels {
+    display: flex;
+    gap: 5px;
+    margin-left: 10px;
+}
+
+.labelTag {
+    background: gray;
+    color: black;
+    font-size: 12px;
+    padding: 0px 8px;
+    border-radius: 3px;
+    width: auto !important;
+}
+
+.imageUpload {
+    display: none;
+}
+
+.imageUploadLabel {
+    margin-top: 5px;
+    background: white;
+    color: black;
+    font-size: 12px;
+    padding: 0px 10px;
+    cursor: pointer;
+    border: 1px solid white;
+    font-family: glacialIndifference;
+    font-size: 12px;
+    text-transform: uppercase;
+    width: 100px;
+}
+
+/* Post Button */
+/* Style Select Dropdown */
+.postTypeSelect {
+    font-family: glacialIndifference;
+    font-size: 14px !important;
+    color: white !important;
+    background-color: transparent !important;
+    border: 2px solid white !important;
+    border-radius: 0 !important;
+    text-transform: uppercase !important;
+    width: 100%;
+    min-width: 150px;
+    padding: 8px;
+    appearance: none;
+}
+
+
+/* Input Field */
+#postLabelInput {
+    padding: 8px;
+    border: 2px solid white;
+    font-family: glacialIndifference;
+    background: transparent;
+    color: white;
+    font-size: 14px;
+    width: 100%;
+    margin: 10px 0;
+    outline: none;
+    text-transform: uppercase;
+}
+
+#customLabelInput::placeholder {
+    color: rgba(255, 255, 255, 0.5);
+}
+
+/* Dropdown Options */
+.postTypeSelect:focus,
+.postTypeSelect option {
+    color: white !important;
+    background-color: black !important;
+    font-family: glacialIndifference;
+    font-size: 12px !important;
+    border-radius: 0;
+}
+
+.selectContainer {
+    position: relative;
+    display: inline-block;
+}
+
+.selectContainer::after {
+    content: "▼"; 
+    font-size: 14px;
+    color: white;
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none; /* Prevent click interference */
+}
+
+.postButton {
+    background: transparent;
+    border: 2px solid white !important;
+    color: white;
+    font-size: 14px;
+    font-weight: bold;
+    border: none;
+    padding: 8px 16px;
+    cursor: pointer;
+    transition: 0.3s ease;
+}
+
+.postButton:hover {
+    background-color: white;
+    color: black;
+}
+
+/* Post */
+.post {
+    margin-top: 20px;
+}
+
+.date {
+    color: white;
+    font-family: glacialIndifference;
+    margin-top: 5px;
+    padding-bottom: 5px;
+    text-align: end;
+    font-size: 10px;
+    line-height: 14px;
+    text-transform: uppercase;
+    opacity: 50%;  
+}
+
+.attachedIMG {
+    max-height: 300px !important;
+}
+
+.caption {
+    color: white;
+    font-family: glacialIndifference;
+    margin-top: 10px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid white;
+    font-size: 14px;
+    line-height: 14px;  
+}
+
+.postedLabels {
+    display: flex;
+    gap: 5px;
+    margin-top: 10px;
+}
+
+.end {
+    color: white;
+    font-family: glacialIndifference;
+    margin-top: 20px;
+    padding-bottom: 5px;
+    text-align: center;
+    font-size: 10px;
+    line-height: 14px;
+    text-transform: uppercase;
+    opacity: 50%; 
+    margin-bottom: 20px;
+}
+
+/* Players Column */
+.squadPlayers {
+    height: 100%;
+    padding: 20px;
+}
+
+/* Individual Profile */
+.playerProfile {
+    display: flex; 
+    flex-direction: column; 
+    align-items: flex-end; 
+    border: 2px solid white;
+    padding: 10px;
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+.role {
+    margin-bottom: 10px !important;
+    text-align: center;
+    font-size: 14px;
+    font-family: glacialIndifferenceBold;
+    background: white;
+    color: black;
+    text-decoration: none;
+    font-weight:bold;
+    padding: 0px !important;
+    width: 200px !important;
+    margin-top: 5px;
+}
+
+.IGN {
+    text-align: end;
+    color: white;
+    margin-top: 5px;
+    font-family: glacialIndifferenceBold;
+    font-size: 25px;
+    line-height: 25px;
+    text-transform: uppercase;
+}
+
+/* Find Scrim Button */
+.findScrimButton {
+    position: fixed; 
+    text-align: center;
+    bottom: 50px; 
+    right: 50px; 
+    padding: 12px 24px; 
+    background-color: #ffcc00; 
+    color: black; 
+    text-decoration: none; 
+    border-radius: 25px; 
+    font-family: glacialIndifferenceBold; 
+    font-size: 24px;
+    width: 300px !important;
+    text-transform: uppercase;
+    font-weight: bold;
+    box-shadow: 0 0 15px rgba(255, 204, 0, 0.8); /* Initial glow */
+    transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+    z-index: 1000; /* Ensure the button is above other elements */
+    animation: glow 1.5s infinite alternate ease-in-out;
+}
+
+.findScrimButton.disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    pointer-events: none;
+}
+
+.findScrimButton:not(.disabled):hover {
+    transform: scale(1.02);
+    transition: transform 0.2s ease;
+}
+
+/* Glowing Animation */
+@keyframes glow {
+    0% {
+        box-shadow: 0 0 10px rgba(255, 204, 0, 0.8);
+    }
+    50% {
+        box-shadow: 0 0 20px rgba(255, 204, 0, 1);
+    }
+    100% {
+        box-shadow: 0 0 30px rgba(255, 204, 0, 1);
+    }
+}
+
+/* Hover Effect */
+.findScrimButton:hover {
+    background-color: #e6b800; /* Darker background on hover */
+    transform: scale(1.1); /* Slightly scale up on hover */
+    box-shadow: 0 0 40px rgba(255, 204, 0, 1); /* Stronger glow on hover */
+}
+
+/* Notification Modal */
+.modal-body {
+    text-align: left; /* Ensure content aligns to the left */
+}
+
+.customModal {
+    background: rgba(0, 0, 0, 0.9) !important;
+    color: white !important;
+    font-family: glacialIndifference;
+    padding: 20px;
+    box-shadow: 0 0 10px white;
+    border-radius: 8px;
+}
+
+.modal-header h5 {
+    color: white;
+    font-family: glacialIndifferenceBold;
+    font-size: 50px;
+    line-height: 40px;
+    text-transform: capitalize !important;
+}
+
+.notificationItem {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    padding: 10px 0;
+    justify-content: flex-end;
+}
+
+.notificationSender {
+    font-family: glacialIndifferenceBold;
+    font-size: 20px;
+    color: white;
+    line-height: 20px !important;
+    margin-top: 10px !important;
+    margin-bottom: 10px !important;
+}
+
+.notificationDate {
+    font-family: glacialIndifferenceBold;
+    font-size: 20px;
+    color: white;
+    line-height: 20px !important;
+}
+
+.notificationTime {
+    font-family: glacialIndifference;
+    font-size: 20px;
+    color: white;
+    margin-bottom: 5px;
+    line-height: 20px !important;
+}
+
+.notificationNotes {
+    font-family: glacialIndifference;
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.8);
+    margin-bottom: 20px;
+    line-height: 20px !important;
+}
+
+.notificationActions {
+    display: flex;
+    margin-right: 0 !important; /* Push the buttons to the right */
+    gap: 10px;
+    justify-content: end;
+}
+
+/* Buttons */
+.modalButtons {
+    font-size: 14px !important;
+    font-family: glacialIndifferenceBold !important;
+    background: transparent !important;
+    color: white !important;
+    border: 2px solid white !important;
+    text-decoration: none !important;
+    cursor: pointer !important;
+    transition: 0.3s ease !important;
+    font-weight: bold !important;
+    padding: 5px 20px !important;
+    text-transform: uppercase !important;
+}
+
+.modalButtons:hover {
+    background: white !important;
+    color: black !important;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* Content 1 */
+.abyssContainer {
+    position: relative;
+    top: 45%;  
+    right: 10%;  
+    transform: translateY(-50%);
+    text-align: center;
+}
+
+.customSpace {
+    margin-right: 5px;
+}
+
+.abyssText {
+    font-size: 150px;  
+    font-family: planetKosmos;  
+    color: white;  
+    text-transform: uppercase;  
+    text-shadow: 
+        0 0 5px rgba(255, 255, 255, 0.4),  
+        0 0 10px rgba(255, 255, 255, 0.2),  
+        0 0 15px rgba(255, 255, 255, 0.2);  
+    animation: glowAnimation 1s infinite alternate ease-in-out;
+    z-index: -1 !important;
+}
+
+@keyframes glowAnimation {
+    0% {
+        text-shadow: 
+            0 0 5px rgba(255, 255, 255, 0.4),  
+            0 0 10px rgba(255, 255, 255, 0.2),  
+            0 0 15px rgba(255, 255, 255, 0.2);
+    }
+    100% {
+        text-shadow: 
+            0 0 8px rgba(255, 255, 255, 0.5),  
+            0 0 16px rgba(255, 255, 255, 0.4),  
+            0 0 24px rgba(255, 255, 255, 0.3);
+    }
+}
+
+/* Sign-up Button */
+.signUpButton {
+    position: absolute;
+    padding: 0px 70px;
+    font-size: 30px;
+    letter-spacing: 2px;
+    font-family: glacialIndifferenceBold;
+    background: transparent;
+    color: white;
+    border: 2px solid white;
+    text-decoration: none;
+    cursor: pointer;
+    transition: 0.3s ease;
+    font-weight:bold;
+    top: 50%;
+    z-index: 10 !important; 
+    right: 7.5%;
+}
+
+/* Button Hover Effect */
+.signUpButton:hover {
+    background: white;
+    color: black;
+}
+
+/* Abyss Content */
+.abyssContent {
+    color: white;
+    position: absolute;
+    z-index: 9;
+    right: 7.5%;
+    top: 65%;
+    font-family: glacialIndifferenceBold;
+    text-transform: uppercase;
+    width: 450px;
+    font-size: 15px;
+    line-height: 17px;
+}
+
+.loginText {
+    color: white;
+    position: absolute;
+    z-index: 9;
+    right: 7.5%;
+    top: 56.7%;
+    width: 270px;
+    font-family: glacialIndifference;
+}
+
+.loginButtonEntry {
+    color: white;
+}
+
+/* Decorative Divider */
+.divider {
+    height: 100px;
+}
+
+.decoDivide {
+    display: flex;
+    width: 100%;
+    position: absolute;
+}
+
+.decoFoxDivide {
+    display: flex;
+    width: 100%;
+    position: absolute;
+    align-items: center;
+    justify-content: center;
+}
+
+.decoLine {
+    width: 45%;
+    height: 0.5px;
+    margin-top: 4.2%;
+    background-color: white; 
+    margin-right: 10px; 
+    position: absolute;
+}
+
+.glowingFox {
+    width: 100px; 
+    height: 100px;
+    background: url('../IMG/essentials/whiteVer.PNG') no-repeat center center;
+    background-size: contain;
+    animation: glowEffect 1s infinite alternate ease-in-out;
+}
+
+/* Optional Glow Animation */
+@keyframes glowEffect {
+    0% {
+        filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.8));
+    }
+    100% {
+        filter: drop-shadow(0 0 15px rgba(255, 255, 255, 1)); /* Orange glow */
+    }
+}
+
+.codeDeco {
+    color: white;
+    font-family: glacialIndifference;
+    position: absolute;
+    margin-top: 3.4%;
+    background-color: black !important;
+    padding: 0px 15px 0px 80px;
+    z-index: 10;
+}
+
+.decoBox {
+    height: 15px;
+    width: 15px;
+    border: solid white;
+    background-color: white;
+    position: absolute;
+    z-index: 11;
+    margin-top: 3.7%;
+    margin-left: 35px !important;
+}
+
+/* Events and Leaderboard Layer */
+/* Events */
+.eventsLeaderboard {
+    display: flex;
+    height: 1000px;
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+/* Skin Event */
+.skinBlocks {
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: 50px !important;
+    margin-left: 50px !important;
+}
+
+.skinBlock {
+    padding: 5px;
+}
+
+.skinBlock img {
+    height: auto !important;
+    width: 300px !important; 
+    margin: 5px; 
+}
+
+/* Text Block - Center */
+.textBlockCenter {
+    display: flex;
+    justify-content: center; 
+    align-items: center;
+    text-align: center;
+    margin-top: 50px !important;
+    margin-bottom: 120px !important;
+    margin-left: 50px !important;
+}
+
+.titleCenter {
+    position: absolute;
+    color: white;
+    font-family: glacialIndifferenceBold;
+    font-size: 50px;
+    padding-left: 50px !important;
+}
+
+.subtitleCenter {
+    position: absolute;
+    color: white;
+    font-family: glacialIndifferenceBold;
+    font-size: 14px;
+    padding-left: 50px !important;
+    margin-top: 60px !important;
+    text-transform: uppercase;
+}
+
+.descriptionCenter {
+    position: absolute;
+    color: white;
+    font-family: glacialIndifference;
+    font-size: 14px;
+    padding-left: 50px !important;
+    margin-top: 90px !important;
+    text-transform: uppercase;
+}
+
+/* YouTube Link */
+.videoCard {
+    margin-top: 30px !important;
+    width: 96.5%;              
+    height: 390px;           
+    margin-left: 50px !important;
+    background-color: #000;   
+    border-radius: 8px;
+    overflow: hidden;
+    margin: 20px auto;
+}
+  
+.videoCard a {
+    display: block;
+    width: 100%;
+    height: 100%;
+    text-decoration: none;
+    color: #fff;
+}
+
+.thumbnail {
+    width: 100%;
+    height: 100%;
+    position: relative;    
+    background-image: url("/IMG/essentials/youtubeLink2.png");
+    background-size: cover;
+    background-position: center; 
+}
+
+/* Leaderboards */
+/* Text Block - Right */
+.textBlockRight {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    text-align: right; 
+    margin-top: 50px !important;
+    margin-bottom: 120px !important;
+    width: 100vh !important;
+}
+
+.titleRight {
+    position: absolute;
+    color: white;
+    font-family: glacialIndifferenceBold;
+    font-size: 50px;
+    padding-left: 50px !important;
+}
+
+.subtitleRight {
+    position: absolute;
+    color: white;
+    font-family: glacialIndifferenceBold;
+    font-size: 14px;
+    padding-left: 50px !important;
+    margin-top: 60px !important;
+    text-transform: uppercase;
+}
+
+.descriptionRight {
+    position: absolute;
+    color: white;
+    font-family: glacialIndifference;
+    font-size: 14px;
+    padding-left: 50px !important;
+    margin-top: 90px !important;
+    text-transform: uppercase;
+}
+
+/* View More Button */
+.viewMoreButton {
+    position: absolute;
+    font-size: 14px;
+    font-family: glacialIndifferenceBold;
+    background: transparent;
+    color: white;
+    border: 2px solid white;
+    text-decoration: none;
+    cursor: pointer;
+    transition: 0.3s ease;
+    font-weight:bold;
+    padding: 0px !important;
+    width: 100px !important;
+    margin-top: 150px !important;
+}
+
+/* Button Hover Effect */
+.viewMoreButton:hover {
+    background: white;
+    color: black;
+}
+
+/* Leaderboards */
+/* Leaderboard Box Container */
+.leaderboardBox {
+    border: 2px solid white;
+    padding: 20px;
+    color: white;
+    font-family: glacialIndifferenceBold;
+}
+
+/* Each Row in the Box */
+.leaderboardRow {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;     
+    padding: 10px;
+}
+
+/* Header Row */
+.leaderboardHeader {
+    font-weight: bold;
+    text-transform: uppercase;
+    border-bottom: 1px solid white;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+}
+
+/* Rank Column (narrow) */
+.leaderboardRank {
+    width: 40px;
+    text-align: center;
+    font-size: 20px;
+}
+
+/* Squad Column (wider) */
+.leaderboardSquad {
+    flex: 1;       
+    display: flex;
+    align-items: center;
+    padding-left: 50px;
+}
+
+/* Points Column (narrow) */
+.leaderboardPoints {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    width: 120px;
+}
+
+/* Squad Logo */
+.squadLogo {
+    width: 40px;
+    height: 40px;
+    object-fit: cover;
+    margin-right: 30px;
+    border-radius: 50%;
+}
+
+/* Abyss Points */
+.foxIcon {
+    width: 20px;
+    height: 20px;
+    object-fit: contain;
+    margin-right: 5px;
+    vertical-align: middle;
+}
+
+.squadNameContainer {
+    display: flex;
+    flex-direction: column; 
+    gap: 2px; 
+    margin-left: 10px;
+}
+
+.shortName,
+.fullName {
+    margin: 0;
+    padding: 0;
+    line-height: 1;
+}
+
+.shortName {
+    font-family: glacialIndifferenceBold;
+    font-size: 14px;
+    text-transform: uppercase;
+    margin-bottom: 0 !important;
+}
+
+.fullName {
+    font-family: glacialIndifference;
+    font-size: 14px;
+    text-transform: uppercase;
+    margin-top: 0 !important;
+}
+
+/* Simple Divider */
+.simpleDivider {
+    margin-top: 50px !important;
+}
+
+.instructionsContainer {
+    margin-left: 15px !important;
+}
+
+/* Text Block - Left */
+.textBlockLeft {
+    display: flex;
+    justify-content: flex-start; 
+    align-items: center;
+    text-align: left;           
+    margin-top: 30px !important;
+    margin-bottom: 120px !important;
+    width: 100vh !important;
+}
+
+.titleLeft {
+    position: absolute;
+    color: white;
+    font-family: glacialIndifferenceBold;
+    font-size: 50px;
+    padding-left: 50px !important;
+    margin-top: 59px !important;
+}
+
+.subtitleLeft {
+    position: absolute;
+    color: white;
+    font-family: glacialIndifference;
+    font-size: 14px;
+    padding-left: 50px !important;
+    margin-top: 119px !important;
+    text-transform: uppercase;
+}
+
+.descriptionLeft {
+    position: absolute;
+    color: white;
+    font-family: glacialIndifference;
+    font-size: 14px;
+    padding-left: 50px !important;
+    margin-top: 0px !important;
+    text-transform: uppercase;
+}
+
+/* Decorative Divider - Right*/
+.decoDivideRight {
+    display: flex;
+    justify-content: flex-end;
+    width: 100%;
+    position: absolute;
+}
+
+.codeDecoRight {
+    color: white;
+    font-family: glacialIndifference;
+    position: absolute;
+    margin-top: 3.4%;
+    background-color: black !important;
+    padding: 0px 100px 0px 15px;
+    z-index: 10;
+    margin-right: 100px;
+}
+
+.decoLineRight {
+    width: 80%;
+    height: 0.5px;
+    margin-top: 4.2%;
+    background-color: white; 
+    margin-right: 15px; 
+    position: absolute;
+}
+
+.decoBoxRight {
+    height: 15px;
+    width: 15px;
+    border: solid white;
+    background-color: white;
+    position: absolute;
+    z-index: 11;
+    margin-top: 3.7%;
+    margin-left: 35px !important;
+    margin-right: 15px !important;
+}
+
+/* Instructions */
+.instructions {
+    height: 500px !important;
+}
+
+.instructionsOne {
+    font-family: glacialIndifference;
+    text-transform: uppercase;
+    color: white;
+    font-size: 14px;
+    line-height: 16px;
+    text-align: right;
+    padding: 20px;
+    margin-left: 20px !important;
+}
+
+.demoOne {
+    background-image: url('/IMG/essentials/instructionOne.png');
+    background-size: cover;
+    background-position: center;
+    width: 360px;
+    height: 270px; 
+    margin-left: 18px !important;
+    z-index: 20 !important;
+}
+
+.instructionsTwo {
+    font-family: glacialIndifference;
+    text-transform: uppercase;
+    color: white;
+    font-size: 14px;
+    line-height: 16px;
+    text-align: left;
+    padding: 20px;
+}
+
+.demoTwo {
+    background-image: url('/IMG/essentials/instructionTwo.png'); 
+    background-size: cover; 
+    background-position: center; 
+    width: 376px;
+    height: 305px;       
+    z-index: -1 !important;
+}
+
+.instructionsThree {
+    font-family: glacialIndifference;
+    text-transform: uppercase;
+    color: white;
+    font-size: 14px;
+    line-height: 16px;
+    text-align: left;
+    padding: 20px;
+}
+
+.demoThree {
+    background-image: url('/IMG/essentials/instructionThree.png'); 
+    background-size: cover;  
+    background-position: center; 
+    width: 380px;
+    height: 300px;    
+}
+
+.instructionsFour {
+    font-family: glacialIndifference;
+    text-transform: uppercase;
+    color: white;
+    font-size: 14px;
+    line-height: 16px;
+    text-align: left;
+    padding: 20px;
+    margin-right: 30px !important;
+}
+
+.demoFour {
+    background-image: url('/IMG/essentials/instructionFour.png'); 
+    background-size: cover;  
+    background-position: center; 
+    width: 355px;
+    height: 280px;    
+}
+
+/* Advertisment */
+.advertisement {
+    height: 160px;
+    margin-bottom: 20px;
+}
+
+.adIMG {
+    height: 120px;
+    width: auto;
+}
+
+/* Modals */
+body.modal-open {
+    position: fixed !important;
+    width: 100% !important;
+    overflow: hidden !important; 
+    padding-right: 0 !important; 
+    border-radius: 0 !important;
+}
+
+.modal-backdrop {
+    background-color: rgba(0, 0, 0, 100) !important;
+}
+
+.modalIcon {
+    display: flex;
+    align-items: center; 
+    justify-content: center; 
+    width: 100%; 
+    text-align: center; 
+    border-bottom: 0px solid rgba(0, 0, 0, 0%)!important; 
+    padding: 10px 0; 
+}
+
+/* Modal Background Cover */
+.modal-content {
+    background: black !important;
+    color: black !important; 
+    text-align: center;
+}
+
+.modal-body button {
+    font-size: 18px;
+    padding: 10px;
+    border-radius: 5px;
+    letter-spacing: 2px;
+    font-family: glacialIndifferenceBold;
+    background: transparent;
+    color: white;
+    border: 2px solid white;
+    border-radius: 0;
+    text-decoration: none;
+    cursor: pointer;
+    transition: 0.3s ease;
+    font-weight:bold;
+}
+
+.modal-body button:hover {
+    background: white;
+    color: black;
+}
+
+.click-outside-text {
+    font-size: 12px;
+    font-family: glacialIndifference;
+    opacity: 50%;
+    color: white;
+    margin-top: 10px;
+}
+
+/* Footer */
+footer .col-12 {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.aboutUsTop {
+    font-family: glacialIndifferenceBold;
+    text-transform: uppercase;
+    color: white;
+    font-size: 14px;
+    line-height: 16px;
+    text-align: center;
+    padding: 20px;
+    width: 650px;
+    margin-top: 50px;
+    padding: 0 !important;
+}
+
+.aboutUsBot {
+    font-family: glacialIndifference;
+    text-transform: uppercase;
+    color: white;
+    font-size: 14px;
+    line-height: 16px;
+    text-align: center;
+    padding: 20px;
+    width: 650px;
+    margin-top: 10px;
+    padding: 0 !important;
+}
+
+.socialMediaIcons {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 45px;
+    gap: 50px;
+}
+
+.socialMediaIcons i {
+    color: white;
+    font-size: 2rem; 
+    transition: transform 0.3s ease, color 0.3s ease; 
+}
+
+.socialMediaIcons i:hover {
+    transform: scale(1.2); 
+    color: #f0f0f0; 
+}
+
+.footIcon {
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+/* NEW modal */
+.customModal {
+    background: rgba(0, 0, 0) !important;
+    color: white !important;
+    font-family: glacialIndifference;
+    padding: 20px;
+    box-shadow: 0 0 10px white;
+    height: 70vh !important;
+}
+
+.modal-header h5 {
+    color: white;
+    font-family: glacialIndifferenceBold;
+    font-size: 50px;
+    line-height: 40px;
+    text-transform: capitalize !important;
+}
+
+.modal-footer {
+    display: flex;
+    justify-content: space-between;
+}
+
+.form-label {
+    font-family: glacialIndifferenceBold !important;
+    text-transform: uppercase !important;
+    color: white;
+    font-family: glacialIndifferenceBold;
+    font-size: 16px;
+    margin-top: 10px;
+}
+
+/* Buttons */
+.modalButtons {
+    font-size: 14px;
+    font-family: glacialIndifferenceBold;
+    background: transparent;
+    color: white;
+    border: 2px solid white;
+    text-decoration: none;
+    cursor: pointer;
+    transition: 0.3s ease;
+    font-weight: bold;
+    padding: 5px 20px;
+}
+
+.modalButtons:hover {
+    background: white;
+    color: black;
+}
+
+.customModal .modal-header,
+.customModal .modal-footer {
+    border: none !important;
+}
+
+.modal-dialog.modal-dialog-end {
+    margin-left: auto;
+    margin-right: 50px;
+    margin-top: 50px;
+    margin-bottom: 0;
+    max-width: 800px; /* Adjust width as needed */
+}
+
+/* Stop Bootstrap from forcing scroll to top */
+.modal.fade .modal-dialog {
+    transition: none !important;
+}
+
+/* Allow background scrolling */
+body.modal-open {
+    overflow: auto !important;
+    padding-right: 0 !important;
+}
+
+.notification {
+    border-top: solid white 2px;
+    margin: 0px;
+    padding: 20px;
+    font-size: 20px;
+    font-family: glacialIndifference;
+}
+
+/* Squad Design */
+.scrim-cardOnNotif {
+    border: 1px solid white;
+    border-radius: 8px;
+    height: 130px; /* Fixed height for uniform cards */
+    background-color: rgba(0, 0, 0, 0.3);
+    transition: all 0.1s ease;
+    overflow: hidden;
+    margin-bottom: 10px;
+    padding: 10px;
+    margin-top: 5px;
+}
+
+.opponentOnNotif {
+    line-height: 20px;
+}
+
+.squadNameOnNotif {
+    color: white;
+    font-family: glacialIndifference;
+    text-align: end;
+    font-size: 30px;
+    line-height: 32px;
+}
+
+/* Status */
+.scrimButtons {
+    position: absolute !important;
+    gap: 5px !important;
+    display: flex !important;
+    justify-self: center !important;
+    align-items: center !important; 
+    flex-direction: column !important;
+}
+
+.acceptOnNotif {
+    text-align: center !important;
+    font-size: 14px !important;
+    font-family: glacialIndifferenceBold !important;
+    background: #33CC33 !important;
+    color: black !important;
+    border: 2px solid #33CC33 !important;
+    text-decoration: none !important;
+    cursor: pointer !important;
+    transition: 0.3s ease !important;
+    font-weight:bold !important;
+    padding: 0px !important;
+    width: 200px !important;
+    /* padding: 3px 10px 3px 10px !important;  */
+    margin-bottom: 5px !important;
+}
+
+.acceptOnNotif:hover {
+    transform: scale(1.05) !important; 
+    transition: transform 0.2s ease-in-out !important; 
+}
+
+/* Changed */
+.acceptedOnNotif {
+    text-align: center !important;
+    font-size: 14px !important;
+    font-family: glacialIndifferenceBold !important;
+    background: #33CC33 !important;
+    color: black !important;
+    border: 2px solid #33CC33 !important;
+    text-decoration: none !important;
+    transition: 0.3s ease !important;
+    font-weight:bold !important;
+    padding: 0px !important;
+    width: 200px !important;
+    /* padding: 3px 10px 3px 10px !important;  */
+    margin-bottom: 5px !important;
+    opacity: 50%;
+}
+
+.declinedOnNotif {
+    text-align: center !important;
+    font-size: 14px !important;
+    font-family: glacialIndifferenceBold !important;
+    background: #FF3300 !important;
+    color: black !important;
+    border: 2px solid #FF3300 !important;
+    text-decoration: none !important;
+    transition: 0.3s ease !important;
+    font-weight:bold !important;
+    padding: 0px !important;
+    width: 200px !important;
+    margin-bottom: 5px !important;
+    opacity: 50%;
+}
+
+.pendingOnNotif {
+    text-align: center !important;
+    font-size: 14px !important;
+    font-family: glacialIndifferenceBold !important;
+    background: white !important;
+    color: black !important;
+    border: 2px solid white !important;
+    text-decoration: none !important;
+    transition: 0.3s ease !important;
+    font-weight:bold !important;
+    padding: 0px !important;
+    width: 200px !important;
+    margin-bottom: 5px !important;
+    opacity: 50%;
+}
+
+.declineOnNotif {
+    text-align: center !important;
+    font-size: 14px !important;
+    font-family: glacialIndifferenceBold !important;
+    background: #FF3300 !important;
+    color: black !important;
+    border: 2px solid #FF3300 !important;
+    text-decoration: none !important;
+    cursor: pointer !important;
+    transition: 0.3s ease !important;
+    font-weight:bold !important;
+    padding: 0px !important;
+    width: 200px !important;
+    margin-bottom: 5px !important;
+}
+
+.declineOnNotif:hover {
+    transform: scale(1.05) !important; 
+    transition: transform 0.2s ease-in-out !important; 
+}
+
+.verifyOnNotif {
+    text-align: center !important;
+    font-size: 14px !important;
+    font-family: glacialIndifferenceBold !important;
+    background: white !important;
+    color: black !important;
+    border: 2px solid white !important;
+    text-decoration: none !important;
+    cursor: pointer !important;
+    transition: 0.3s ease !important;
+    font-weight:bold !important;
+    padding: 0px !important;
+    width: 200px !important;
+    margin-bottom: 5px !important;
+}
+
+.verifyOnNotif:hover {
+    transform: scale(1.05); 
+    transition: transform 0.2s ease-in-out; 
+}
+
+.new {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+/* .scrimAccept, .scrimDecline {
+    text-align: center;
+    font-size: 14px;
+    font-family: glacialIndifferenceBold;
+    background: transparent;
+    color: white;
+    border: 2px solid white;
+    text-decoration: none;
+    cursor: pointer;
+    transition: 0.3s ease;
+    font-weight:bold;
+    padding: 0px !important;
+    width: 200px !important;
+    padding: 3px 10px 3px 10px !important; 
+} */
+
+.rejected {
+    background: #FF3300;
+    color: black;
+    border: 2px solid #FF3300;
+}
+
+.timeAndDateOnNotif {
+    color: white;
+    display: flex;
+    gap: 10px;
+    text-align: end;
+    justify-content: end;
+    font-family: glacialIndifference;
+    font-size: 16px;
+    line-height: 15px;
+}
+
+.noGamesOnNotif {
+    color: white;
+    display: flex;
+    gap: 20px;
+    text-align: end;
+    justify-content: end;
+    font-family: glacialIndifferenceBold;
+    font-size: 16px;
+    line-height: 15px;
+}
+
+.modal-body {
+    overflow-y: auto; 
+    overflow-x: hidden;
+    margin-bottom: 20px;
+}
+
+/* Design ng Scrollbar */
+.modal-body::-webkit-scrollbar {
+    width: 6px;
+}
+.modal-body::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.3);
+}
+.modal-body::-webkit-scrollbar-thumb {
+    background: white;
+    border-radius: 3px;
+}
+.modal-body::-webkit-scrollbar-thumb:hover {
+    background: white;
+}
+
+.notifEnd {
+    color: white;
+    font-family: glacialIndifference;
+    padding-bottom: 5px;
+    text-align: center;
+    font-size: 10px;
+    line-height: 14px;
+    text-transform: uppercase;
+    opacity: 50%; 
+}
+
+.time {
+    color: white;
+    font-family: glacialIndifference;
+    font-size: 15px;
+    line-height: 14px;
+    text-transform: uppercase;
+    opacity: 50%;  
+}
+
+.notifCount {
+    background-color: #FF3300;
+    border-radius: 20%;
+    color: white;
+    font-family: glacialIndifference;
+    font-size: 15px;
+    line-height: 10px !important;
+    padding: 5px;
+    text-decoration: none !important;
+}
+
+span {
+    text-decoration: none;
+    margin: 0 !important;
+    text-decoration: none !important;
+}
+
+.scrim-card-contentOnNotif {
+    padding: 15px 15px 20px 15px !important;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center !important;
+}
+
+.vs {
+    font-size: 14px !important;
+}
