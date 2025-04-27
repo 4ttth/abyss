@@ -238,6 +238,29 @@ strong {
     line-height: 18px;
 }
 
+/* NAVBAR OVERFLOW */
+.navBarOverflow {
+    height: calc(100vh - 300px);
+    overflow-y: auto; 
+    overflow-x: hidden;
+    margin-bottom: 20px;
+}
+
+/* Design ng Scrollbar */
+.navBarOverflow::-webkit-scrollbar {
+    width: 6px;
+}
+.navBarOverflow::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.3);
+}
+.navBarOverflow::-webkit-scrollbar-thumb {
+    background: white;
+    border-radius: 3px;
+}
+.navBarOverflow::-webkit-scrollbar-thumb:hover {
+    background: white;
+}
+
 
 /* Icon positioning */
 .nav-icon {
