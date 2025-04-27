@@ -48,7 +48,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['verify_submit'])) {
                 $stmtFile->execute([$verificationID, $uploadPath]);
                 $proofID = $pdo->lastInsertId();
 
-                $pythonScript = 'C:/xampp/htdocs/abyss/Python/ML-OCR/battleResults.py';
+                $pythonScript = '/var/www/html/abyss/Python/ML-OCR/battleResults.py';
                 $command = "python " . escapeshellcmd($pythonScript) . " " . escapeshellarg($uploadPath) . " 2>&1";
                 $output = shell_exec($command);
 
