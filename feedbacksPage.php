@@ -1,7 +1,7 @@
 <?php
 session_start(); // Start the session
 require_once 'includes/dbh.inc.php'; // Database connection
-require_once 'includes/userHomepage.inc.php'; // Squad details logic
+require_once 'includes/userhomepage.inc.php'; // Squad details logic
 
 // Initialize user data from session
 $user = $_SESSION['user'] ?? ['username' => 'Guest', 'Squad_ID' => 'N/A'];
