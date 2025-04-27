@@ -16,58 +16,111 @@ require_once 'includes/login_view.inc.php';
 </head>
 
 <body class="customPageBackground">
-    <div class="container vh-100 d-flex align-items-center">
-        <div class="row justify-content-end w-100">
-            <div class="col-6">
-                <div class="backButton">
-                    <a href="index.php">
-                        <i class="bi bi-box-arrow-left backButton"></i>
-                    </a>
-                </div>
+    <div class="introScreen">
+        <div class="loadingAnimation"></div>
+    </div>
 
-                <div class="logo">
-                    <a class="navbar-brand" href="index.php">
-                        <img src="IMG/essentials/whiteVer.PNG" class="logoPicture" alt="ABYSS">
-                        <div class="logoText">abyss</div>
-                    </a>
-                </div>
-
-                <!-- Error Alert -->
-                <?php if (isset($_SESSION['error_login'])) : ?>
-                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                        <?= $_SESSION['error_login'] ?>
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                    </div>
-                    <?php unset($_SESSION['error_login']); ?>
-                <?php endif; ?>
-
-                <form action="includes/login.inc.php" method="post">
-                    <!-- Username Field -->
-                    <div class="form-group mt-3">
-                        <label class="form-label title">USERNAME</label>
-                        <input type="text" name="username" class="form-control plchldr" placeholder="Enter username" required>
-                    </div>
-    
-                    <!-- Password Field -->
-                    <div class="form-group mt-3">
-                        <label class="form-label title">PASSWORD</label>
-                        <div class="input-group">
-                            <input type="password" name="password" id="password" class="form-control plchldr" placeholder="Enter password" required>
-                            <button class="btn eye" type="button" id="togglePassword">
-                                <i class="bi bi-eye"></i>
+    <div class="pageContent hiddenContent">
+        <!-- Navigation Bar -->
+        <div class="container-fluid">        
+            <div class="row">
+                <div class="container-fluid navigationBar">
+                    <!-- Logo Layer -->
+                    <div class="logoLayer">
+                        <!-- Logo and Name -->
+                        <a class="navbar-brand" href="index.php">
+                            <img src="IMG/essentials/whiteVer.PNG" class="logoPicture" alt="ABYSS">
+                            <div class="logoText">abyss</div>
+                        </a>
+                        
+                        <form class="searchBar" action="guestSearchResultsPage.php" method="GET">
+                            <input class="searchInput" type="search" name="query" placeholder="Search Squads" aria-label="Search">
+                            <button class="searchButton" type="submit">
+                                <img src="IMG/essentials/whiteVer.PNG" alt="Search">
                             </button>
+                        </form>
+                    
+                        <!-- Account Logo Button -->
+                        <button class="accountLogo" data-bs-toggle="modal" data-bs-target="#loginSignupModal">
+                            <i class="bi bi-person-circle"></i>
+                        </button>                        
+                    
+                        <!-- Navbar Toggle Button -->
+                        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" 
+                            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                            <span class="navbar-toggler-icon"></span>
+                        </button>
+                    </div>
+                    
+                    <ul class="nav">
+                        <li class="nav-item">
+                            <a class="nav-link" aria-current="page" href="index.php">HOME</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="guestDiscoverPage.php">DISCOVER</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="aboutUsPage.php">ABOUT US</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="container vh-100 d-flex align-items-center">
+            <div class="row justify-content-end w-100">
+                <div class="col-6">
+                    <div class="backButton">
+                        <a href="index.php">
+                            <i class="bi bi-box-arrow-left backButton"></i>
+                        </a>
+                    </div>
+
+                    <div class="logo">
+                        <a class="navbar-brand" href="index.php">
+                            <img src="IMG/essentials/whiteVer.PNG" class="logoPicture" alt="ABYSS">
+                            <div class="logoText">abyss</div>
+                        </a>
+                    </div>
+
+                    <!-- Error Alert -->
+                    <?php if (isset($_SESSION['error_login'])) : ?>
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            <?= $_SESSION['error_login'] ?>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                         </div>
-                    </div>
-    
-                    <!-- Login Button -->
-                    <div class="text-end mt-4">
-                        <button type="submit" class="btn loginButton">LOG IN</button>
-                        <div class="text">Don't have an account yet? <a href="signupPage.php" class="loginButtonEntry">Sign up</a></div>
-                    </div>
-                </form>
+                        <?php unset($_SESSION['error_login']); ?>
+                    <?php endif; ?>
 
-                <?php check_login_errors(); ?>
+                    <form action="includes/login.inc.php" method="post">
+                        <!-- Username Field -->
+                        <div class="form-group mt-3">
+                            <label class="form-label title">USERNAME</label>
+                            <input type="text" name="username" class="form-control plchldr" placeholder="Enter username" 
+                                value="<?php echo isset($_SESSION['login_username']) ? htmlspecialchars($_SESSION['login_username']) : ''; ?>" required>
+                        </div>
 
+                        <!-- Password Field -->
+                        <div class="form-group mt-3">
+                            <label class="form-label title">PASSWORD</label>
+                            <div class="input-group">
+                                <input type="password" name="password" id="password" class="form-control plchldr" placeholder="Enter password" required>
+                                <button class="btn eye" type="button" id="togglePassword">
+                                    <i class="bi bi-eye"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Login Button -->
+                        <div class="text-end mt-4">
+                            <button type="submit" class="btn loginButton">LOG IN</button>
+                            <div class="text">Don't have an account yet? <a href="signupPage.php" class="loginButtonEntry">Sign up</a></div>
+                        </div>
+                    </form>
+
+                    <?php check_login_errors(); ?>
+
+                </div>
             </div>
         </div>
     </div>

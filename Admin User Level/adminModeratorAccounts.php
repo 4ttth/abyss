@@ -102,12 +102,17 @@ if (isset($_GET['error'])) {
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="adminContentManagement.php">
-                            <span class="nav-text">CONTENT MANAGEMENT</span>
+                            <span class="nav-text">EVENT MANAGEMENT</span>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" href="../Admin User Level/adminModeratorAccounts.php">
-                            <span class="nav-text">MODERATOR ACCOUNTS</span>
+                        <a class="nav-link" href="adminInstructionsManagement.php">
+                            <span class="nav-text">INSTRUCTION MANAGEMENT</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="adminModeratorAccounts.php">
+                            <span class="nav-text active">MODERATOR ACCOUNTS</span>
                         </a>
                     </li>
                     <li class="nav-item">

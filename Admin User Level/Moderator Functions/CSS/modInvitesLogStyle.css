@@ -393,6 +393,14 @@ table.dataTable thead {
     text-transform: uppercase;
 }
 
+tbody {
+    border-color: inherit;
+    border-style: solid;
+    border-width: 0;
+    color: white;
+    font-family: 'glacialIndifference';
+}
+
 table.dataTable tbody td {
     border: solid white .5px;
 }
