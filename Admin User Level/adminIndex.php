@@ -49,8 +49,13 @@ if (!in_array($_SESSION['user']['Role'], ['Admin'])) {
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="../Admin User Level/adminContentManagement.php">
-                            <span class="nav-text">CONTENT MANAGEMENT</span>
+                        <a class="nav-link" href="adminContentManagement.php">
+                            <span class="nav-text">EVENT MANAGEMENT</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="adminInstructionsManagement.php">
+                            <span class="nav-text">INSTRUCTION MANAGEMENT</span>
                         </a>
                     </li>
                     <li class="nav-item">
@@ -129,7 +134,12 @@ if (!in_array($_SESSION['user']['Role'], ['Admin'])) {
 
         <div class="container-fluid row mainBody">
             <div class="col analytics">
-                <!-- Analytics -->
+                <iframe width="1500" height="800" 
+                src="https://lookerstudio.google.com/embed/reporting/71150ab3-cd01-4ce8-b5f2-1d93c8a88937/page/sa3HF?authuser=3" 
+                frameborder="0" style="border:0; padding:0; margin-top:50px" 
+                allowfullscreen 
+                sandbox="allow-storage-access-by-user-activation allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox">
+                </iframe>
             </div>
         </div>
     </div>

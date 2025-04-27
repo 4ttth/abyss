@@ -33,3 +33,8 @@ function is_input_empty($username, $pwd) {
 function is_username_wrong($result) {
     return !$result; // Returns true if no user is found
 }
+
+// Add this new validation function
+function is_player_login($result) {
+    return !empty($result['IGN']) && $result['IGN'] === $_POST['username'];
+}

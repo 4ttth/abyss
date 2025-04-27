@@ -225,7 +225,7 @@ try {
                         <div class="adNoteText">
                             <strong><?= htmlspecialchars($note['Subject']) ?></strong><br>
                             <?= htmlspecialchars($note['Message']) ?>
-                            <div class="text-muted small mt-2">
+                            <div class="texter text-white small mt-2">
                                 Posted by <?= htmlspecialchars($note['Username']) ?> 
                                 on <?= date('M j, Y g:i A', strtotime($note['Created_At'])) ?>
                             </div>

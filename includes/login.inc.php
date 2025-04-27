@@ -20,7 +20,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         }
 
         // Fetch user data
-        $result = get_user($pdo, $username);
+        $result = get_user_or_player($pdo, $username);
 
         // Validate credentials
         if (is_username_wrong($result)) {
@@ -45,8 +45,10 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $_SESSION['user'] = [
             'User_ID' => $result["User_ID"],
             'Username' => htmlspecialchars($result["Username"]),
-            'Role' => $result["Role"], // Ensure Role is included
-            'Squad_ID' => $result["Squad_ID"] ?? null
+            'Role' => $result["Role"],
+            'Squad_ID' => $result["Squad_ID"] ?? null,
+            'is_player' => is_player_login($result),
+            'Player_ID' => $result["Player_ID"] ?? null
         ];
 
         // Check penalty status
@@ -60,21 +62,26 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         }
 
         // Redirect based on role
-        switch ($_SESSION['user']['Role']) {
-            case 'Admin':
-                header("Location: ../Admin User Level/adminIndex.php");
-                break;
-            case 'Moderator':
-                header("Location: ../Moderator User Level/modIndex.php");
-                break;
-            default:
-                if ($_SESSION["penalized"]) {
-                    $_SESSION['error_login'] = "You are penalized!";
-                    header("Location: ../loginPage.php");
-                } else {
-                    header("Location: ../userHomepage.php");
-                }
-                break;
+        if ($_SESSION['user']['is_player']) {
+            header("Location: ../playerDashboard.php");
+        } else {
+            // Keep your existing role-based redirection
+            switch ($_SESSION['user']['Role']) {
+                case 'Admin':
+                    header("Location: ../Admin User Level/adminIndex.php");
+                    break;
+                case 'Moderator':
+                    header("Location: ../Moderator User Level/modIndex.php");
+                    break;
+                default:
+                    if ($_SESSION["penalized"]) {
+                        $_SESSION['error_login'] = "You are penalized!";
+                        header("Location: ../loginPage.php");
+                    } else {
+                        header("Location: ../userHomepage.php");
+                    }
+                    break;
+            }
         }
 
         die();

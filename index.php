@@ -19,7 +19,7 @@
         function gtag(){dataLayer.push(arguments);}
         gtag('js', new Date());
 
-        gtag('config', 'G-1PTW197N36');
+        gtag('config', 'G-X9S6R362WJ');
     </script>
 
 </head>
@@ -196,7 +196,7 @@
                         </div>
                     </div>
 
-                    <!-- Leaderboard Box -->
+                    <!-- TRIAL LEADERBOARD -->
                     <div class="leaderboardBox">
                         <!-- Table Header -->
                         <div class="leaderboardRow leaderboardHeader">
@@ -204,186 +204,44 @@
                             <div class="leaderboardSquad">SQUAD</div>
                             <div class="leaderboardPoints">ABYSS POINTS</div>
                         </div>
-                        
-                        <!-- Top 1 -->
-                        <div class="leaderboardRow">
-                            <div class="leaderboardRank">1</div>
-                            <div class="leaderboardSquad">
-                                <img src="IMG/squadLogos/1.jpg" alt="Squad Logo" class="squadLogo">
-                                
-                                <div class="squadNameContainer">
-                                    <div class="shortName">VST</div>
-                                    <div class="fullName">VESTA HEAVEN</div>
-                                </div>
-                            </div>
-                            
-                            <div class="leaderboardPoints">
-                                <img src="IMG/essentials/whiteVer.PNG" alt="Fox Icon" class="foxIcon">
-                                34,712
-                            </div>
-                        </div>
 
-                        <!-- Top 2 -->
-                        <div class="leaderboardRow">
-                            <div class="leaderboardRank">2</div>
-                            <div class="leaderboardSquad">
-                                <img src="IMG/squadLogos/2.jpg" alt="Squad Logo" class="squadLogo">
-                                
-                                <div class="squadNameContainer">
-                                    <div class="shortName">LSB</div>
-                                    <div class="fullName">LYCEUM SHARKS</div>
-                                </div>
-                            </div>
-                            
-                            <div class="leaderboardPoints">
-                                <img src="IMG/essentials/whiteVer.PNG" alt="Fox Icon" class="foxIcon">
-                                31,223
-                            </div>
-                        </div>
+                        <?php
+                        try {
+                            $stmt = $pdo->prepare("SELECT Squad_Acronym, Squad_Name, abyss_score 
+                                                FROM tbl_squadprofile 
+                                                ORDER BY abyss_score DESC 
+                                                LIMIT 10");
+                            $stmt->execute();
+                            $leaderboard = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-                        <!-- Top 3 -->
-                        <div class="leaderboardRow">
-                            <div class="leaderboardRank">3</div>
-                            <div class="leaderboardSquad">
-                                <img src="IMG/squadLogos/3.jpg" alt="Squad Logo" class="squadLogo">
-                                
-                                <div class="squadNameContainer">
-                                    <div class="shortName">C++</div>
-                                    <div class="fullName">C++ ESPORTS</div>
-                                </div>
-                            </div>
-                            
-                            <div class="leaderboardPoints">
-                                <img src="IMG/essentials/whiteVer.PNG" alt="Fox Icon" class="foxIcon">
-                                29,175
-                            </div>
-                        </div>
-
-                        <!-- Top 4 -->
-                        <div class="leaderboardRow">
-                            <div class="leaderboardRank">4</div>
-                            <div class="leaderboardSquad">
-                                <img src="IMG/squadLogos/4.jpg" alt="Squad Logo" class="squadLogo">
-                                
-                                <div class="squadNameContainer">
-                                    <div class="shortName">Hero</div>
-                                    <div class="fullName">HERO GAMERPACT</div>
-                                </div>
-                            </div>
-                            
-                            <div class="leaderboardPoints">
-                                <img src="IMG/essentials/whiteVer.PNG" alt="Fox Icon" class="foxIcon">
-                                29,173
-                            </div>
-                        </div> 
-                           
-                        <!-- Top 5 -->
-                        <div class="leaderboardRow">
-                            <div class="leaderboardRank">5</div>
-                            <div class="leaderboardSquad">
-                                <img src="IMG/squadLogos/5.jpg" alt="Squad Logo" class="squadLogo">
-                                
-                                <div class="squadNameContainer">
-                                    <div class="shortName">BABY</div>
-                                    <div class="fullName">BABY GIRLS</div>
-                                </div>
-                            </div>
-                            
-                            <div class="leaderboardPoints">
-                                <img src="IMG/essentials/whiteVer.PNG" alt="Fox Icon" class="foxIcon">
-                                24,764
-                            </div>
-                        </div> 
-
-                        <!-- Top 6 -->
-                        <div class="leaderboardRow">
-                            <div class="leaderboardRank">6</div>
-                            <div class="leaderboardSquad">
-                                <img src="IMG/squadLogos/10.jpg" alt="Squad Logo" class="squadLogo">
-                                
-                                <div class="squadNameContainer">
-                                    <div class="shortName">BLCK</div>
-                                    <div class="fullName">BLACKLIST INTERNATIONAL</div>
-                                </div>
-                            </div>
-                            
-                            <div class="leaderboardPoints">
-                                <img src="IMG/essentials/whiteVer.PNG" alt="Fox Icon" class="foxIcon">
-                                23,783
-                            </div>
-                        </div> 
-
-                        <!-- Top 7 -->
-                        <div class="leaderboardRow">
-                            <div class="leaderboardRank">7</div>
-                            <div class="leaderboardSquad">
-                                <img src="IMG/squadLogos/6.png" alt="Squad Logo" class="squadLogo">
-                                
-                                <div class="squadNameContainer">
-                                    <div class="shortName">BLTW</div>
-                                    <div class="fullName">BOLTWO ESPORTS</div>
-                                </div>
-                            </div>
-                            
-                            <div class="leaderboardPoints">
-                                <img src="IMG/essentials/whiteVer.PNG" alt="Fox Icon" class="foxIcon">
-                                21,846
-                            </div>
-                        </div> 
-
-                        <!-- Top 8 -->
-                        <div class="leaderboardRow">
-                            <div class="leaderboardRank">8</div>
-                            <div class="leaderboardSquad">
-                                <img src="IMG/squadLogos/7.jpg" alt="Squad Logo" class="squadLogo">
-                                
-                                <div class="squadNameContainer">
-                                    <div class="shortName">OZ</div>
-                                    <div class="fullName">WIZARDS OF OZ</div>
-                                </div>
-                            </div>
-                            
-                            <div class="leaderboardPoints">
-                                <img src="IMG/essentials/whiteVer.PNG" alt="Fox Icon" class="foxIcon">
-                                18,863
-                            </div>
-                        </div> 
-
-                        <!-- Top 9 -->
-                        <div class="leaderboardRow">
-                            <div class="leaderboardRank">9</div>
-                            <div class="leaderboardSquad">
-                                <img src="IMG/squadLogos/8.jpg" alt="Squad Logo" class="squadLogo">
-                                
-                                <div class="squadNameContainer">
-                                    <div class="shortName">BABY</div>
-                                    <div class="fullName">MIYEON ESPORTS</div>
-                                </div>
-                            </div>
-                            
-                            <div class="leaderboardPoints">
-                                <img src="IMG/essentials/whiteVer.PNG" alt="Fox Icon" class="foxIcon">
-                                18,022
-                            </div>
-                        </div> 
-
-                        <!-- Top 10 -->
-                        <div class="leaderboardRow">
-                            <div class="leaderboardRank">10</div>
-                            <div class="leaderboardSquad">
-                                <img src="IMG/squadLogos/9.jpg" alt="Squad Logo" class="squadLogo">
-                                
-                                <div class="squadNameContainer">
-                                    <div class="shortName">X</div>
-                                    <div class="fullName">THALASSOPHOBIA</div>
-                                </div>
-                            </div>
-                            
-                            <div class="leaderboardPoints">
-                                <img src="IMG/essentials/whiteVer.PNG" alt="Fox Icon" class="foxIcon">
-                                13,981
-                            </div>
-                        </div> 
+                            foreach ($leaderboard as $index => $squad) {
+                                echo '<div class="leaderboardRow">';
+                                echo '  <div class="leaderboardRank">' . ($index + 1) . '</div>';
+                                echo '  <div class="leaderboardSquad">';
+                                echo '      <div class="squadNameContainer">';
+                                echo '          <div class="shortName">' . htmlspecialchars($squad['Squad_Acronym']) . '</div>';
+                                echo '          <div class="fullName">' . htmlspecialchars($squad['Squad_Name']) . '</div>';
+                                echo '      </div>';
+                                echo '  </div>';
+                                echo '  <div class="leaderboardPoints">';
+                                echo '      <img src="IMG/essentials/whiteVer.PNG" alt="Fox Icon" class="foxIcon">';
+                                echo        number_format($squad['abyss_score']);
+                                echo '  </div>';
+                                echo '</div>';
+                            }
+                        } catch (PDOException $e) {
+                            echo '<div class="leaderboardRow">';
+                            echo '  <div class="leaderboardRank">-</div>';
+                            echo '  <div class="leaderboardSquad">';
+                            echo '      <div class="squadNameContainer">';
+                            echo '          <div class="shortName">ERR</div>';
+                            echo '          <div class="fullName">Unable to load</div>';
+                            echo '      </div>';
+                            echo '  </div>';
+                            echo '  <div class="leaderboardPoints">---</div>';
+                            echo '</div>';
+                        }
+                        ?>
                     </div>
                 </div>
             </div>
@@ -417,45 +275,46 @@
         <!-- Instructions -->
         <div class="container-fluid instructionsContainer">
             <div class="row d-flex instructions">
-                <div class="col-3 steps">
-                    <div class="row instructionsOne">
-                        <strong>Sign Up & Create a Squad</strong> 
-                        <br>Register an account on the platform and set up your squad by adding team details, including in-game names (IGNs), ranks, and roles. Ensure your squad has 6-7 members, including a coach, to be officially recognized.
-                    </div>
-                    <div class="row demoOne">
+                <!-- ECHO ECHO -->
+                    <?php
+                    $instruction = $pdo->query("SELECT * FROM tbl_instructions WHERE Show_Status = 'Shown' LIMIT 1")->fetch();
+                    ?>
+                    <?php if ($instruction): ?>
+                        <div class="col-3 steps">
+                            <div class="row instructionsOne">
+                                <strong><?php echo htmlspecialchars($instruction['Step1_Title']); ?></strong>
+                                <br><?php echo htmlspecialchars($instruction['Step1_Content']); ?></div>
+                            <div class="row demoOne">
+                                
+                            </div>
+                        </div>
+                        <div class="col-3 steps">
+                        <div class="row demoTwo">
 
-                    </div>
-                </div>
+                        </div>
+                            <div class="row instructionsTwo">
+                                <strong><?php echo htmlspecialchars($instruction['Step2_Title']); ?></strong>
+                                <br><?php echo htmlspecialchars($instruction['Step2_Content']); ?></div>
+                        </div>
+                        <div class="col-3 steps">
+                            <div class="row instructionsThree">
+                                <strong><?php echo htmlspecialchars($instruction['Step3_Title']); ?></strong>
+                                <br><?php echo htmlspecialchars($instruction['Step3_Content']); ?></div>
+                            <div class="row demoThree">
 
-                <div class="col-3 steps">
-                    <div class="row demoTwo">
+                            </div>
+                        </div>
+                        <div class="col-3 steps">
+                        <div class="row demoFour">
 
-                    </div>
-                    <div class="row instructionsTwo">
-                        <strong>Find & Challenge Opponents</strong> 
-                        <br>Use the matchmaking system to search for squads that match your rank and skill level. Send scrim requests, negotiate match details, and finalize an agreement with the opposing team.
-                    </div>
-                </div>
-
-                <div class="col-3 steps">
-                    <div class="row instructionsThree">
-                        <strong>Schedule & Play the Scrim</strong> 
-                        <br>Once both squads confirm the challenge, schedule the match by selecting the date and time. Receive notifications and reminders before the game, then compete in your scheduled scrim.
-                    </div>
-                    <div class="row demoThree">
-
-                    </div>
-                </div>
-
-                <div class="col-3 steps">
-                    <div class="row demoFour">
-
-                    </div>
-                    <div class="row instructionsFour">
-                        <strong>Submit Results & Feedback</strong> 
-                        <br>After the match, upload a screenshot of the final score, review the match experience, and report any issues if necessary. Your squad’s performance will be updated in the system, helping you track progress and improve your gameplay.
-                    </div>
-                </div>
+                        </div>
+                            <div class="row instructionsFour">
+                                <strong><?php echo htmlspecialchars($instruction['Step4_Title']); ?></strong>
+                                <br><?php echo htmlspecialchars($instruction['Step4_Content']); ?></div>
+                        </div>
+                    <?php else: ?>
+                        <p>No active instruction yet.</p>
+                    <?php endif; ?>
             </div>
         </div>
 
@@ -542,6 +401,15 @@
     </div>
 
     <!-- Javascript -->
+       <!-- Google tag -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-1PTW197N36"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'G-X9S6R362WJ');
+    </script>
     <script src="JS/script.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 </body>

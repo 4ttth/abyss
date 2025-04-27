@@ -103,21 +103,50 @@ $qrcode = (new QRCode)->render($qrURL);
         <div class="loadingAnimation"></div>
     </div>
     <div class="pageContent hiddenContent">
-        <div class="container-fluid">
-            <div class="row w-100">
-                <div class="col content">
-                    <div class="logo">
+        <!-- Navigation Bar -->
+        <div class="container-fluid jos">        
+            <div class="row">
+                <div class="container-fluid navigationBar">
+                    <!-- Logo Layer -->
+                    <div class="logoLayer">
+                        <!-- Logo and Name -->
                         <a class="navbar-brand" href="index.php">
                             <img src="IMG/essentials/whiteVer.PNG" class="logoPicture" alt="ABYSS">
                             <div class="logoText">abyss</div>
                         </a>
-
-                        <div class="backButton">
-                            <a href="index.php">
-                                <i class="bi bi-box-arrow-left backButton"></i>
-                            </a>
-                        </div>
+                        
+                        <form class="searchBar" aria-disabled="true" style="opacity: 0.5; pointer-events: none;">
+                            <input class="searchInput" type="search" name="query" placeholder="Search Squads" aria-label="Search" disabled>
+                            <button class="searchButton" type="submit" disabled>
+                                <img src="IMG/essentials/whiteVer.PNG" alt="Search">
+                            </button>
+                        </form>              
+                    
+                        <!-- Navbar Toggle Button -->
+                        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" 
+                            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                            <span class="navbar-toggler-icon"></span>
+                        </button>
                     </div>
+                    
+                    <ul class="nav">
+                        <li class="nav-item">
+                            <a class="nav-link" aria-current="page" href="index.php">HOME</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="guestDiscoverPage.php">DISCOVER</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="aboutUsPage.php">ABOUT US</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="container-fluid jis">
+            <div class="row w-100">
+                <div class="col content">
                     <?php if (isset($_SESSION['error'])): ?>
                         <div class="alert alert-danger">
                             <?= $_SESSION['error'];
@@ -175,7 +204,8 @@ $qrcode = (new QRCode)->render($qrURL);
                             <?php $playerIndex = 1; ?>
                             <?php foreach ($players as $player): ?>
                                 <div class="memberProfile">
-                                    <div class="role"><?= htmlspecialchars($player['Role']) ?> &nbsp; // &nbsp; player 00<?= $playerIndex ?></div>
+                                    
+                                    <div class="role"><?= htmlspecialchars($player['Role']) ?> &nbsp; // &nbsp; <?= htmlspecialchars($player['View_ID']) ?></div>
                                     <div class="IGN"><?= htmlspecialchars($player['IGN']) ?></div>
                                     <div class="detailsTitle">NAME</div>
                                     <div class="detailsDescription"><?= htmlspecialchars($player['Full_Name']) ?></div>
