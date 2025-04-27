@@ -6,6 +6,52 @@ if (!in_array($_SESSION['user']['Role'], ['Admin'])) {
     header("Location: ../loginPage.php");
     exit("Access Denied!");
 }
+
+// Get counts from database
+try {
+    // Pending Reports
+    $stmt = $pdo->query("SELECT COUNT(*) FROM tbl_reports WHERE Report_Status = 'Pending'");
+    $reportCount = $stmt->fetchColumn();
+
+    // Pending Verification Requests
+    $stmt = $pdo->query("SELECT COUNT(*) FROM tbl_verificationrequests WHERE Status = 'Pending'");
+    $requestCount = $stmt->fetchColumn();
+
+    // Total Users (Players)
+    $stmt = $pdo->query("SELECT COUNT(*) FROM tbl_useraccount WHERE Role = 'User'");
+    $userCount = $stmt->fetchColumn();
+    
+
+    // SOMETHING DOESNT WORK WHEN I ADD THIS
+    // Active Squads (members logged in within 30 days)
+    $stmt = $pdo->query("SELECT COUNT(DISTINCT u.Squad_ID) 
+    FROM tbl_useraccount u
+    JOIN tbl_userlogin l ON u.User_ID = l.User_ID
+    WHERE l.Login_Time >= NOW() - INTERVAL 30 DAY AND u.Role = 'User'");
+    $activeSquads = $stmt->fetchColumn();
+
+    // Inactive Squads
+    $stmt = $pdo->query("SELECT COUNT(DISTINCT u.Squad_ID) 
+    FROM tbl_useraccount u
+    WHERE u.Role = 'User' AND u.Squad_ID NOT IN (
+        SELECT DISTINCT u2.Squad_ID 
+        FROM tbl_useraccount u2
+        JOIN tbl_userlogin l ON u2.User_ID = l.User_ID
+        WHERE l.Login_Time >= NOW() - INTERVAL 30 DAY AND u2.Role = 'User'
+    )");
+    $inactiveSquads = $stmt->fetchColumn();
+
+    // Squads on Timeout
+    $stmt = $pdo->query("SELECT COUNT(DISTINCT Squad_ID) 
+    FROM tbl_penalties 
+    WHERE Status = 'Active' 
+    AND Penalty_Type = 'Timeout'");
+    $timeoutSquads = $stmt->fetchColumn();
+    
+} catch (PDOException $e) {
+    // Handle error
+    die("Database error: " . $e->getMessage());
+}
 ?>
 
 <!doctype html>
@@ -38,7 +84,7 @@ if (!in_array($_SESSION['user']['Role'], ['Admin'])) {
                     </div>
                 </a>
             </div>
-            
+           
             <!-- Vertical Nav Links -->
             <div class="navBarOverflow">
                 <ul class="nav flex-column">
@@ -49,7 +95,12 @@ if (!in_array($_SESSION['user']['Role'], ['Admin'])) {
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="../adminContentManagement.php">
-                            <span class="nav-text">CONTENT MANAGEMENT</span>
+                            <span class="nav-text">EVENT MANAGEMENT</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="../adminInstructionsManagement.php">
+                            <span class="nav-text">INSTRUCTION MANAGEMENT</span>
                         </a>
                     </li>
                     <li class="nav-item">
@@ -58,44 +109,44 @@ if (!in_array($_SESSION['user']['Role'], ['Admin'])) {
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="modSquadAccounts.php">
+                        <a class="nav-link" href="../Moderator Functions/modSquadAccounts.php">
                             <span class="nav-text">SQUAD ACCOUNTS</span>
                         </a>
                     </li>
                     <!-- Moderator Priivileges -->
                     <li class="nav-item">
-                    <a class="nav-link active" href="modIndex.php">
+                    <a class="nav-link active" href="../Moderator Functions/modIndex.php">
                             <span class="nav-text">MODERATOR INDEX</span>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="modReports.php">
+                        <a class="nav-link" href="../Moderator Functions/modReports.php">
                             REPORTS
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="modFeedbacks.php">
+                        <a class="nav-link" href="../Moderator Functions/modFeedbacks.php">
                             FEEDBACKS
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="modRequests.php">
+                        <a class="nav-link" href="../Moderator Functions/modRequests.php">
                             <span class="nav-text">VERIFICATION REQUESTS</span>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="modScrimsLog.php">
+                        <a class="nav-link" href="../Moderator Functions/modScrimsLog.php">
                             <span class="nav-text">SCRIMS LOG</span>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="modInvitesLog.php">
+                        <a class="nav-link" href="../Moderator Functions/modInvitesLog.php">
                             <span class="nav-text">INVITES LOG</span>
                         </a>
                     </li>
                 </ul>
             </div>
-            
+           
             <!-- Account Logo (at bottom) -->
             <div class="nav-footer">
                 <form action="../includes/logout.inc.php" method="post">
@@ -134,22 +185,22 @@ if (!in_array($_SESSION['user']['Role'], ['Admin'])) {
                         <!-- Report Count -->
                         <div class="winRate">
                             <div class="statsContent">
-                                <div class="number">4</div>
-                            <div class="statsLabel">REPORTS</div>
+                                <div class="number"><?= $reportCount ?></div>
+                                <div class="statsLabel">REPORTS</div>
                             </div>
                         </div>
                         <!-- Request Count -->
                         <div class="winRate">
                             <div class="statsContent">
-                                <div class="number">2</div>
-                            <div class="statsLabel">REQUESTS</div>
+                                <div class="number"><?= $requestCount ?></div>
+                                <div class="statsLabel">REQUESTS</div>
                             </div>
                         </div>
                         <!-- New User Count -->
                         <div class="winRate">
                             <div class="statsContent">
-                                <div class="number">13</div>
-                            <div class="statsLabel">NEW USERS</div>
+                                <div class="number"><?= $userCount ?></div>
+                                <div class="statsLabel">NEW USERS</div>
                             </div>
                         </div>
                     </div>
@@ -160,22 +211,22 @@ if (!in_array($_SESSION['user']['Role'], ['Admin'])) {
                         <!-- Active Squads -->
                         <div class="winRate">
                             <div class="statsContent">
-                                <div class="number">304</div>
-                            <div class="statsLabel">ACTIVE SQUADS</div>
+                            <div class="number"><?= $activeSquads ?></div>
+                                <div class="statsLabel">ACTIVE SQUADS</div>
                             </div>
                         </div>
                         <!-- Inactive Squads -->
                         <div class="winRate">
                             <div class="statsContent">
-                                <div class="number">4</div>
-                            <div class="statsLabel">INACTIVE SQUADS</div>
+                                <div class="number"><?= $inactiveSquads ?></div>
+                                <div class="statsLabel">INACTIVE SQUADS</div>
                             </div>
                         </div>
                         <!-- Squads on Timeout -->
                         <div class="winRate">
                             <div class="statsContent">
-                                <div class="number">5</div>
-                            <div class="statsLabel">SQUADS ON TIMEOUT</div>
+                                <div class="number"><?= $timeoutSquads ?></div>
+                                <div class="statsLabel">SQUADS ON TIMEOUT</div>
                             </div>
                         </div>
                     </div>
@@ -184,27 +235,27 @@ if (!in_array($_SESSION['user']['Role'], ['Admin'])) {
             </div>
             <!-- Admin Notes -->
             <div class="col-xl-4 col-md-12 adminNotes">
-                <!-- Header -->
-                <div class=" row titleRight">
-                    ADMIN NOTES
-                </div>
-                <!-- Admin Note Post -->
-                <div class=" adNote">
-                    <img src="IMG/essentials/whiteVer.PNG" alt="Fox Icon" class="foxIcon">
-                    <div class="adNoteText">
-                        <strong>Squad Verification:</strong> Check pending squad requests regularly. Approve or reject based on provided details.
+                <div class="row titleRight">ADMIN NOTES</div>
+                <?php
+                $sql = "SELECT tbl_admin_notes.*, tbl_useraccount.Username 
+                        FROM tbl_admin_notes 
+                        JOIN tbl_useraccount ON tbl_admin_notes.Admin_ID = tbl_useraccount.User_ID
+                        ORDER BY Created_At DESC";
+                $result = $pdo->query($sql);
+                while ($note = $result->fetch()) : ?>
+                    <div class="adNote">
+                        <img src="IMG/essentials/whiteVer.PNG" alt="Fox Icon" class="foxIcon">
+                        <div class="adNoteText">
+                            <strong><?= htmlspecialchars($note['Subject']) ?></strong><br>
+                            <?= htmlspecialchars($note['Message']) ?>
+                            <div class="texter text-white small mt-2">
+                                Posted by <?= htmlspecialchars($note['Username']) ?> 
+                                on <?= date('M j, Y g:i A', strtotime($note['Created_At'])) ?>
+                            </div>
+                        </div>
                     </div>
-                </div>
-                <!-- Sample 2 -->
-                <div class=" adNote">
-                    <img src="IMG/essentials/whiteVer.PNG" alt="Fox Icon" class="foxIcon">
-                    <div class="adNoteText">
-                        <strong>Reports Handling:</strong> Review player reports fairly. Mark them as Pending, Reviewed, or Action Taken accordingly.
-                    </div>
-                </div>
-
+                <?php endwhile; ?>
             </div>
-
         </div>
 
         <!-- Analytics -->

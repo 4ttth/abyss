@@ -29,7 +29,7 @@ document.getElementById('penaltyForm').addEventListener('submit', function(e) {
     
     const formData = new FormData(this);
     
-    fetch('includes/apply_penalty.inc.php', {
+    fetch('includes/applyPenalty.php', {
         method: 'POST',
         body: formData
     })

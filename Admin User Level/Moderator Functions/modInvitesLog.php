@@ -2,11 +2,11 @@
 session_start();
 require_once '../../includes/dbh.inc.php';
 
+
 if (!in_array($_SESSION['user']['Role'], ['Admin'])) {
     header("Location: ../loginPage.php");
     exit("Access Denied!");
 }
-
 
 $sql = "SELECT
             Schedule_ID,
@@ -52,7 +52,7 @@ $result = $pdo->query($sql);
                     </div>
                 </a>
             </div>
-            
+           
             <!-- Vertical Nav Links -->
             <div class="navBarOverflow">
                 <ul class="nav flex-column">
@@ -63,7 +63,12 @@ $result = $pdo->query($sql);
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="../adminContentManagement.php">
-                            <span class="nav-text">CONTENT MANAGEMENT</span>
+                            <span class="nav-text">EVENT MANAGEMENT</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="../adminInstructionsManagement.php">
+                            <span class="nav-text">INSTRUCTION MANAGEMENT</span>
                         </a>
                     </li>
                     <li class="nav-item">
@@ -72,44 +77,44 @@ $result = $pdo->query($sql);
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="modSquadAccounts.php">
+                        <a class="nav-link" href="../Moderator Functions/modSquadAccounts.php">
                             <span class="nav-text">SQUAD ACCOUNTS</span>
                         </a>
                     </li>
                     <!-- Moderator Priivileges -->
                     <li class="nav-item">
-                    <a class="nav-link" href="modIndex.php">
+                    <a class="nav-link" href="../Moderator Functions/modIndex.php">
                             <span class="nav-text">MODERATOR INDEX</span>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="modReports.php">
+                        <a class="nav-link" href="../Moderator Functions/modReports.php">
                             REPORTS
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="modFeedbacks.php">
+                        <a class="nav-link" href="../Moderator Functions/modFeedbacks.php">
                             FEEDBACKS
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="modRequests.php">
+                        <a class="nav-link" href="../Moderator Functions/modRequests.php">
                             <span class="nav-text">VERIFICATION REQUESTS</span>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="modScrimsLog.php">
+                        <a class="nav-link" href="../Moderator Functions/modScrimsLog.php">
                             <span class="nav-text">SCRIMS LOG</span>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" href="modInvitesLog.php">
+                        <a class="nav-link active" href="../Moderator Functions/modInvitesLog.php">
                             <span class="nav-text">INVITES LOG</span>
                         </a>
                     </li>
                 </ul>
             </div>
-            
+           
             <!-- Account Logo (at bottom) -->
             <div class="nav-footer">
                 <form action="../includes/logout.inc.php" method="post">
