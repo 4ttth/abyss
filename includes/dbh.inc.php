@@ -35,7 +35,7 @@ try {
         $stmt1->execute();
         
         // Step 2: Update Squad Profiles Based on Active Penalties
-        $updateSql = "UPDATE tbl_squadprofiles s
+        $updateSql = "UPDATE tbl_squadprofile s
                       LEFT JOIN (
                           SELECT DISTINCT Squad_ID
                           FROM tbl_penalties
