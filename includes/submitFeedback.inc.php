@@ -3,7 +3,7 @@ session_start();
 require_once 'dbh.inc.php';
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST' || !isset($_POST['submit_feedback'])) {
-    header("Location: /feedbacksPage.php");
+    header("Location: ../feedbacksPage.php");
     exit();
 }
 
@@ -15,7 +15,7 @@ $details = filter_input(INPUT_POST, 'feedback_details', FILTER_SANITIZE_STRING);
 
 // Check required fields
 if (!$userID || !$receiverID || !$category || !$details) {
-    header("Location: /feedbacksPage.php?error=missing_fields");
+    header("Location: ../feedbacksPage.php?error=missing_fields");
     exit();
 }
 
@@ -24,7 +24,7 @@ try {
     $stmt = $pdo->prepare("SELECT 1 FROM tbl_squadprofile WHERE Squad_ID = ? LIMIT 1");
     $stmt->execute([$receiverID]);
     if (!$stmt->fetch()) {
-        header("Location: /feedbacksPage.php?error=invalid_squad");
+        header("Location: ../feedbacksPage.php?error=invalid_squad");
         exit();
     }
 
@@ -40,11 +40,11 @@ try {
     
     $stmt->execute([$userID, $receiverID, $category, $details]);
     
-    header("Location: /feedbackSuccess.php");
+    header("Location: ../feedbackSuccess.php");
     exit();
 
 } catch (PDOException $e) {
     error_log("Feedback Error: " . $e->getMessage());
-    header("Location: /feedbacksPage.php?error=database_error");
+    header("Location: ../feedbacksPage.php?error=database_error");
     exit();
 }

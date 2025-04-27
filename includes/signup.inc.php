@@ -33,7 +33,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         // IF ERROR, REDIRECT BACK TO SIGNUP PAGE
         if ($errors) {
             $_SESSION["errors_signup"] = $errors;
-            header("Location: /signupPage.php");
+            header("Location: ../signupPage.php");
             die();
         }
 
@@ -69,13 +69,13 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         sendEmailToSquad($pdo, $accountNumber, $subject, $body);
 
         $_SESSION['success'] = "Signup successful! Please verify your email.";
-        header("Location: /index.php");
+        header("Location: ../index.php");
         die();
     } catch (PDOException $e) {
         die("Query failed: " . $e->getMessage());
     }
 } else {
-    header("Location: /index.php");
+    header("Location: ../index.php");
     die();
 }
 ?>

@@ -33,7 +33,7 @@ $(document).ready(function() {
        
         // Fetch members via AJAX
         $.ajax({
-            url: 'includes/get_members.php',
+            url: '../includes/get_members.php',
             method: 'POST',
             data: { squad_id: squadId },
             dataType: 'json',

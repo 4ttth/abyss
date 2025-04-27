@@ -28,6 +28,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $pdo->rollBack();
         $_SESSION['error'] = "Error deleting report: " . $e->getMessage();
     }
-    header("Location: /Moderator User Level/modReports.php");
+    header("Location: ../Moderator User Level/modReports.php");
     exit();
 }

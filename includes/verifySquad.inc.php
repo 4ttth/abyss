@@ -28,7 +28,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 throw new Exception("Proof file is required.");
             }
 
-            $uploadDir = '/uploads/verification/';
+            $uploadDir = '../uploads/verification/';
             $fileName = uniqid('proof_') . '_' . basename($_FILES['Proof_File']['name']);
             $targetPath = $uploadDir . $fileName;
 
@@ -56,15 +56,15 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $stmt->execute([$squadID, $squadLevel, $proofType, $proofFile]);
 
         $_SESSION['success'] = "Verification request submitted successfully!";
-        header("Location: /squadCreation.php");
+        header("Location: ../squadCreation.php");
         exit();
 
     } catch (Exception $e) {
         $_SESSION['error'] = "Error: " . $e->getMessage();
-        header("Location: /squadCreation.php");
+        header("Location: ../squadCreation.php");
         exit();
     }
 } else {
-    header("Location: /squadCreation.php");
+    header("Location: ../squadCreation.php");
     exit();
 }

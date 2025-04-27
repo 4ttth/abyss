@@ -1,9 +1,9 @@
 <?php
 session_start();
-require_once 'includes/dbh.inc.php';
+require_once '../../includes/dbh.inc.php';
 
 if (!in_array($_SESSION['user']['Role'], ['Admin'])) {
-    header("Location: /loginPage.php");
+    header("Location: ../loginPage.php");
     exit("Access Denied!");
 }
 
@@ -47,58 +47,58 @@ $result = $pdo->query($sql);
             <div class="navBarOverflow">
                 <ul class="nav flex-column">
                     <li class="nav-item firstItem">
-                        <a class="nav-link" href="/adminIndex.php">
+                        <a class="nav-link" href="../adminIndex.php">
                             HOME
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/adminContentManagement.php">
+                        <a class="nav-link" href="../adminContentManagement.php">
                             <span class="nav-text">EVENT MANAGEMENT</span>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/adminInstructionsManagement.php">
+                        <a class="nav-link" href="../adminInstructionsManagement.php">
                             <span class="nav-text">INSTRUCTION MANAGEMENT</span>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/adminModeratorAccounts.php">
+                        <a class="nav-link" href="../adminModeratorAccounts.php">
                             <span class="nav-text">MODERATOR ACCOUNTS</span>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/Moderator Functions/modSquadAccounts.php">
+                        <a class="nav-link" href="../Moderator Functions/modSquadAccounts.php">
                             <span class="nav-text">SQUAD ACCOUNTS</span>
                         </a>
                     </li>
                     <!-- Moderator Priivileges -->
                     <li class="nav-item">
-                    <a class="nav-link" href="/Moderator Functions/modIndex.php">
+                    <a class="nav-link" href="../Moderator Functions/modIndex.php">
                             <span class="nav-text">MODERATOR INDEX</span>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/Moderator Functions/modReports.php">
+                        <a class="nav-link" href="../Moderator Functions/modReports.php">
                             REPORTS
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" href="/Moderator Functions/modFeedbacks.php">
+                        <a class="nav-link active" href="../Moderator Functions/modFeedbacks.php">
                             FEEDBACKS
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/Moderator Functions/modRequests.php">
+                        <a class="nav-link" href="../Moderator Functions/modRequests.php">
                             <span class="nav-text">VERIFICATION REQUESTS</span>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/Moderator Functions/modScrimsLog.php">
+                        <a class="nav-link" href="../Moderator Functions/modScrimsLog.php">
                             <span class="nav-text">SCRIMS LOG</span>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/Moderator Functions/modInvitesLog.php">
+                        <a class="nav-link" href="../Moderator Functions/modInvitesLog.php">
                             <span class="nav-text">INVITES LOG</span>
                         </a>
                     </li>
@@ -107,7 +107,7 @@ $result = $pdo->query($sql);
            
             <!-- Account Logo (at bottom) -->
             <div class="nav-footer">
-                <form action="includes/logout.inc.php" method="post">
+                <form action="../includes/logout.inc.php" method="post">
                     <button class="accountLogo" data-bs-toggle="modal" data-bs-target="#loginSignupModal">
                             <i class="bi bi-box-arrow-left"></i>
                     </button>

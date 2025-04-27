@@ -42,6 +42,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $pdo->rollBack();
         $_SESSION['error'] = "Error updating player: " . $e->getMessage();
     }
-    header("Location: /editSquad.php");
+    header("Location: ../editSquad.php");
     exit();
 }

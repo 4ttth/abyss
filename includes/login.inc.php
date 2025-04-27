@@ -34,7 +34,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         // Handle errors
         if ($errors) {
             $_SESSION["error_login"] = reset($errors);
-            header("Location: /loginPage.php");
+            header("Location: ../loginPage.php");
             die();
         }
 
@@ -63,22 +63,22 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
         // Redirect based on role
         if ($_SESSION['user']['is_player']) {
-            header("Location: /playerDashboard.php");
+            header("Location: ../playerDashboard.php");
         } else {
             // Keep your existing role-based redirection
             switch ($_SESSION['user']['Role']) {
                 case 'Admin':
-                    header("Location: /Admin User Level/adminIndex.php");
+                    header("Location: ../Admin User Level/adminIndex.php");
                     break;
                 case 'Moderator':
-                    header("Location: /Moderator User Level/modIndex.php");
+                    header("Location: ../Moderator User Level/modIndex.php");
                     break;
                 default:
                     if ($_SESSION["penalized"]) {
                         $_SESSION['error_login'] = "You are penalized!";
-                        header("Location: /loginPage.php");
+                        header("Location: ../loginPage.php");
                     } else {
-                        header("Location: /userHomepage.php");
+                        header("Location: ../userHomepage.php");
                     }
                     break;
             }
@@ -90,6 +90,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         die("Query failed: " . $e->getMessage());
     }
 } else {
-    header("Location: /loginPage.php");
+    header("Location: ../loginPage.php");
     die();
 }

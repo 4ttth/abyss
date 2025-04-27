@@ -6,7 +6,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     // Check if user has squad
     if (!isset($_SESSION['user']['Squad_ID']) || empty($_SESSION['user']['Squad_ID'])) {
         $_SESSION['error'] = "Non-existent squad. Please create a squad first.";
-        header("Location: /signup.php");
+        header("Location: ../signup.php");
         exit();
     }
 

@@ -3,7 +3,7 @@ session_start();
 require_once 'dbh.inc.php';
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST' || !isset($_POST['submit_report'])) {
-    header("Location: /reportsPage.php");
+    header("Location: ../reportsPage.php");
     exit();
 }
 
@@ -15,7 +15,7 @@ $details = filter_input(INPUT_POST, 'report_details', FILTER_SANITIZE_STRING);
 
 // 2. Basic validation
 if (!$reporterID || !$reportedSquadID || !$category || !$details) {
-    header("Location: /reportsPage.php?error=invalid_input");
+    header("Location: ../reportsPage.php?error=invalid_input");
     exit();
 }
 
@@ -29,16 +29,16 @@ if (isset($_FILES['proof_file']) && $_FILES['proof_file']['error'] === UPLOAD_ER
     $fileSize = $_FILES['proof_file']['size'];
     
     if (!in_array($fileType, $allowedTypes)) {  // Fixed this line - added missing parenthesis
-        header("Location: /reportsPage.php?error=invalid_file_type");
+        header("Location: ../reportsPage.php?error=invalid_file_type");
         exit();
     }
     
     if ($fileSize > $maxSize) {
-        header("Location: /reportsPage.php?error=file_too_large");
+        header("Location: ../reportsPage.php?error=file_too_large");
         exit();
     }
     
-    $uploadDir = '/uploads/reports/';
+    $uploadDir = '../uploads/reports/';
     if (!is_dir($uploadDir)) {
         mkdir($uploadDir, 0755, true);
     }
@@ -47,7 +47,7 @@ if (isset($_FILES['proof_file']) && $_FILES['proof_file']['error'] === UPLOAD_ER
     $proofPath = $uploadDir . uniqid('report_', true) . '.' . $fileExt;
     
     if (!move_uploaded_file($_FILES['proof_file']['tmp_name'], $proofPath)) {
-        header("Location: /reportsPage.php?error=file_upload");
+        header("Location: ../reportsPage.php?error=file_upload");
         exit();
     }
 }
@@ -79,7 +79,7 @@ try {
     $_SESSION['report_submitted'] = true;
 
     // Then redirect
-    header("Location: /reportSuccess.php");
+    header("Location: ../reportSuccess.php");
     exit();
     
 } catch (PDOException $e) {
@@ -87,6 +87,6 @@ try {
     if ($proofPath && file_exists($proofPath)) {
         unlink($proofPath);
     }
-    header("Location: /reportsPage.php?error=db_error");
+    header("Location: ../reportsPage.php?error=db_error");
     exit();
 }

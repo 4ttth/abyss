@@ -1,21 +1,21 @@
 @font-face {
     font-family: planetKosmos;
-    src: url(/CSS/fonts/planet_kosmos/PLANK___.TTF);
+    src: url(../CSS/fonts/planet_kosmos/PLANK___.TTF);
 }
 
 @font-face {
     font-family: glacialIndifference;
-    src: url(/CSS/fonts/glacial-indifference/GlacialIndifference-Regular.otf);
+    src: url(../CSS/fonts/glacial-indifference/GlacialIndifference-Regular.otf);
 }
 
 @font-face {
     font-family: glacialIndifferenceBold;
-    src: url(/CSS/fonts/glacial-indifference/GlacialIndifference-Bold.otf);
+    src: url(../CSS/fonts/glacial-indifference/GlacialIndifference-Bold.otf);
 }
 
 @font-face {
     font-family: gameCube;
-    src: url(/CSS/fonts/gamecuben/GameCube.ttf);
+    src: url(../CSS/fonts/gamecuben/GameCube.ttf);
 }
 
 /* Entire Page */
@@ -327,7 +327,7 @@ strong {
     width: 100px; 
     height: 100px;
     margin-top: 20px !important;
-    background: url('/IMG/essentials/whiteVer.PNG') no-repeat center center;
+    background: url('../IMG/essentials/whiteVer.PNG') no-repeat center center;
     background-size: contain;
     animation: glowEffect 1s infinite alternate ease-in-out;
 }
@@ -630,7 +630,7 @@ footer .col-12 {
 .loadingAnimation {
     width: 400px; 
     height: 400px;
-    background-image: url('/IMG/essentials/loadingAnimation.gif'); 
+    background-image: url('../IMG/essentials/loadingAnimation.gif'); 
     background-size: cover;
 }
 

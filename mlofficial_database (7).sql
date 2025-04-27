@@ -84,10 +84,10 @@ CREATE TABLE `tbl_contentmanagement` (
 --
 
 INSERT INTO `tbl_contentmanagement` (`Content_ID`, `Event_Name`, `Event_Duration`, `Event_Details`, `Promotional_Content`, `Youtube_Link`, `Youtube_Banner`, `Advertisement_Link`, `Advertisement_Banner`, `Is_Displayed`) VALUES
-(1, 'KISHIN DENSETU', 'draw event will be available on 02/03/2025', 'Obtain event-exclusive items such as Chat Bubble and more!', 'IMG/essentials/advertisement.png', 'https://www.youtube.com/watch?v=aYlB6u7YOWQ', '/IMG/essentials/youtubeLink2.png', 'https://play.google.com/store/apps/details?id=com.hhgame.mlbbvn&hl=en-US&pli=1', 'IMG/essentials/advertisement.png', 1),
-(2, 'SQUAD BATTLE ROYALE', 'event available from 01/06/2025 to 01/07/2025', 'Team-based strategy battle with rewards for top performers.', 'Join your squad and fight for the championship title with exclusive in-game items.', 'https://www.youtube.com/watch?v=zFgB6gT-KYQ', '/IMG/essentials/youtubeLink3.png', 'https://www.example.com', 'IMG/essentials/advertisement2.png', 0),
-(3, 'NEW SEASON LAUNCH', 'starting on 10/05/2025', 'Welcome the new season with updates, skins, and exciting challenges.', 'Seasonal content with exclusive rewards for new season champions.', 'https://www.youtube.com/watch?v=dQw4w9WgXcQ', '/IMG/essentials/youtubeLink4.png', 'https://www.storelink.com', 'IMG/essentials/advertisement3.png', 0),
-(4, 'EXCLUSIVE OFFERS', 'special offers until 15/05/2025', 'Enjoy discounts and bonus items in this special limited-time event.', 'Get premium content at discounted rates for a limited time!', 'https://www.youtube.com/watch?v=nNfiVmDDYc0', '/IMG/essentials/youtubeLink5.png', 'https://www.deals.com', 'IMG/essentials/advertisement4.png', 0);
+(1, 'KISHIN DENSETU', 'draw event will be available on 02/03/2025', 'Obtain event-exclusive items such as Chat Bubble and more!', 'IMG/essentials/advertisement.png', 'https://www.youtube.com/watch?v=aYlB6u7YOWQ', '../IMG/essentials/youtubeLink2.png', 'https://play.google.com/store/apps/details?id=com.hhgame.mlbbvn&hl=en-US&pli=1', 'IMG/essentials/advertisement.png', 1),
+(2, 'SQUAD BATTLE ROYALE', 'event available from 01/06/2025 to 01/07/2025', 'Team-based strategy battle with rewards for top performers.', 'Join your squad and fight for the championship title with exclusive in-game items.', 'https://www.youtube.com/watch?v=zFgB6gT-KYQ', '../IMG/essentials/youtubeLink3.png', 'https://www.example.com', 'IMG/essentials/advertisement2.png', 0),
+(3, 'NEW SEASON LAUNCH', 'starting on 10/05/2025', 'Welcome the new season with updates, skins, and exciting challenges.', 'Seasonal content with exclusive rewards for new season champions.', 'https://www.youtube.com/watch?v=dQw4w9WgXcQ', '../IMG/essentials/youtubeLink4.png', 'https://www.storelink.com', 'IMG/essentials/advertisement3.png', 0),
+(4, 'EXCLUSIVE OFFERS', 'special offers until 15/05/2025', 'Enjoy discounts and bonus items in this special limited-time event.', 'Get premium content at discounted rates for a limited time!', 'https://www.youtube.com/watch?v=nNfiVmDDYc0', '../IMG/essentials/youtubeLink5.png', 'https://www.deals.com', 'IMG/essentials/advertisement4.png', 0);
 
 -- --------------------------------------------------------
 
@@ -656,19 +656,19 @@ CREATE TABLE `tbl_verificationrequests` (
 --
 
 INSERT INTO `tbl_verificationrequests` (`Request_ID`, `Squad_ID`, `Squad_Name`, `Squad_Level`, `Proof_Type`, `Proof_File`, `Status`, `Date_Submitted`, `Date_Reviewed`) VALUES
-(1, 60976, NULL, 'Amateur', 'Official Team Registration', '/uploads/verification/proof_67ee4869a47762.32581965.png', 'Pending', '2025-04-03 08:35:53', NULL),
-(2, 38224, NULL, 'Amateur', 'Certificate of Enrollment', '/uploads/verification/proof_67f38ac364d644.88134231.jpg', 'Pending', '2025-04-07 08:20:19', NULL),
-(3, 86771, NULL, 'Amateur', 'Certificate of Enrollment', '/uploads/verification/proof_67f38f2d6b7076.48371957.jpg', 'Pending', '2025-04-07 08:39:09', NULL),
-(4, 81346, NULL, 'Amateur', 'Certificate of Enrollment', '/uploads/verification/proof_67f3919537f847.09702721.jpg', 'Pending', '2025-04-07 08:49:25', NULL),
-(5, 28670, NULL, 'Collegiate', 'Official Team Registration', '/uploads/verification/proof_67f393b093a455.47413859.jpg', 'Approved', '2025-04-07 08:58:24', '2025-04-07 06:15:48'),
-(6, 96990, NULL, 'Professional', 'Tournament Participation', '/uploads/verification/proof_67f39d12178616.70366738.jpg', 'Approved', '2025-04-07 09:38:26', '2025-04-07 05:39:06'),
-(7, 54892, NULL, 'Amateur', 'Certificate of Enrollment', '/uploads/verification/proof_67f39f34db9c75.62616713.jpg', 'Pending', '2025-04-07 09:47:32', NULL),
-(8, 78910, NULL, 'Amateur', 'Certificate of Enrollment', '/uploads/verification/proof_67f3a0b709aa30.49888957.jpg', 'Pending', '2025-04-07 09:53:59', NULL),
-(9, 26601, NULL, 'Amateur', 'Certificate of Enrollment', '/uploads/verification/proof_67f3a26287dd87.46825107.jpg', 'Pending', '2025-04-07 10:01:06', NULL),
-(10, 72997, NULL, 'Professional', 'Tournament Participation', '/uploads/verification/proof_67f3a48ddef4a1.11534830.jpg', 'Approved', '2025-04-07 10:10:21', '2025-04-08 00:20:21'),
-(11, 98078, NULL, 'Amateur', 'Certificate of Enrollment', '/uploads/verification/proof_67f3a6132f6d76.49148977.jpg', 'Pending', '2025-04-07 10:16:51', NULL),
-(12, 64652, NULL, 'Amateur', 'Certificate of Enrollment', '/uploads/verification/proof_67f3bd3d3810b1.77893890.pdf', 'Pending', '2025-04-07 11:55:41', NULL),
-(13, 59427, NULL, 'Amateur', 'Certificate of Enrollment', '/uploads/verification/proof_67f3cecf2192c3.48382666.pdf', 'Pending', '2025-04-07 13:10:39', NULL);
+(1, 60976, NULL, 'Amateur', 'Official Team Registration', '../uploads/verification/proof_67ee4869a47762.32581965.png', 'Pending', '2025-04-03 08:35:53', NULL),
+(2, 38224, NULL, 'Amateur', 'Certificate of Enrollment', '../uploads/verification/proof_67f38ac364d644.88134231.jpg', 'Pending', '2025-04-07 08:20:19', NULL),
+(3, 86771, NULL, 'Amateur', 'Certificate of Enrollment', '../uploads/verification/proof_67f38f2d6b7076.48371957.jpg', 'Pending', '2025-04-07 08:39:09', NULL),
+(4, 81346, NULL, 'Amateur', 'Certificate of Enrollment', '../uploads/verification/proof_67f3919537f847.09702721.jpg', 'Pending', '2025-04-07 08:49:25', NULL),
+(5, 28670, NULL, 'Collegiate', 'Official Team Registration', '../uploads/verification/proof_67f393b093a455.47413859.jpg', 'Approved', '2025-04-07 08:58:24', '2025-04-07 06:15:48'),
+(6, 96990, NULL, 'Professional', 'Tournament Participation', '../uploads/verification/proof_67f39d12178616.70366738.jpg', 'Approved', '2025-04-07 09:38:26', '2025-04-07 05:39:06'),
+(7, 54892, NULL, 'Amateur', 'Certificate of Enrollment', '../uploads/verification/proof_67f39f34db9c75.62616713.jpg', 'Pending', '2025-04-07 09:47:32', NULL),
+(8, 78910, NULL, 'Amateur', 'Certificate of Enrollment', '../uploads/verification/proof_67f3a0b709aa30.49888957.jpg', 'Pending', '2025-04-07 09:53:59', NULL),
+(9, 26601, NULL, 'Amateur', 'Certificate of Enrollment', '../uploads/verification/proof_67f3a26287dd87.46825107.jpg', 'Pending', '2025-04-07 10:01:06', NULL),
+(10, 72997, NULL, 'Professional', 'Tournament Participation', '../uploads/verification/proof_67f3a48ddef4a1.11534830.jpg', 'Approved', '2025-04-07 10:10:21', '2025-04-08 00:20:21'),
+(11, 98078, NULL, 'Amateur', 'Certificate of Enrollment', '../uploads/verification/proof_67f3a6132f6d76.49148977.jpg', 'Pending', '2025-04-07 10:16:51', NULL),
+(12, 64652, NULL, 'Amateur', 'Certificate of Enrollment', '../uploads/verification/proof_67f3bd3d3810b1.77893890.pdf', 'Pending', '2025-04-07 11:55:41', NULL),
+(13, 59427, NULL, 'Amateur', 'Certificate of Enrollment', '../uploads/verification/proof_67f3cecf2192c3.48382666.pdf', 'Pending', '2025-04-07 13:10:39', NULL);
 
 --
 -- Indexes for dumped tables

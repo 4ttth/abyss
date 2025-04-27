@@ -1,5 +1,5 @@
 <?php
-include("includes/dbh.inc.php"); // Your database connection
+include("../includes/dbh.inc.php"); // Your database connection
 session_start();
 
 if (isset($_POST['add_instruction'])) {
@@ -103,38 +103,38 @@ $instructions = $pdo->query("SELECT * FROM tbl_instructions ORDER BY Instruction
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/Admin User Level/Moderator Functions/modSquadAccounts.php">
+                        <a class="nav-link" href="../Admin User Level/Moderator Functions/modSquadAccounts.php">
                             <span class="nav-text">SQUAD ACCOUNTS</span>
                         </a>
                     </li>
                     <!-- Moderator Priivileges -->
                     <li class="nav-item">
-                    <a class="nav-link" href="/Admin User Level/Moderator Functions/modIndex.php">
+                    <a class="nav-link" href="../Admin User Level/Moderator Functions/modIndex.php">
                             <span class="nav-text">MODERATOR INDEX</span>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/Admin User Level/Moderator Functions/modReports.php">
+                        <a class="nav-link" href="../Admin User Level/Moderator Functions/modReports.php">
                             REPORTS
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/Admin User Level/Moderator Functions/modFeedbacks.php">
+                        <a class="nav-link" href="../Admin User Level/Moderator Functions/modFeedbacks.php">
                             FEEDBACKS
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/Admin User Level/Moderator Functions/modRequests.php">
+                        <a class="nav-link" href="../Admin User Level/Moderator Functions/modRequests.php">
                             <span class="nav-text">VERIFICATION REQUESTS</span>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/Admin User Level/Moderator Functions/modScrimsLog.php">
+                        <a class="nav-link" href="../Admin User Level/Moderator Functions/modScrimsLog.php">
                             <span class="nav-text">SCRIMS LOG</span>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/Admin User Level/Moderator Functions/modInvitesLog.php">
+                        <a class="nav-link" href="../Admin User Level/Moderator Functions/modInvitesLog.php">
                             <span class="nav-text">INVITES LOG</span>
                         </a>
                     </li>
@@ -143,7 +143,7 @@ $instructions = $pdo->query("SELECT * FROM tbl_instructions ORDER BY Instruction
             
             <!-- Account Logo (at bottom) -->
             <div class="nav-footer">
-                <form action="includes/logout.inc.php" method="post">
+                <form action="../includes/logout.inc.php" method="post">
                     <button class="accountLogo" data-bs-toggle="modal" data-bs-target="#loginSignupModal">
                             <i class="bi bi-box-arrow-left"></i>
                     </button>

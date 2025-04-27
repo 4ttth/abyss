@@ -12,7 +12,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     if (empty($squadName) || empty($squadAcr) || empty($squadLevel)) {
         $_SESSION['error'] = "Please fill in all required squad fields.";
-        header("Location: /squadCreation.php");
+        header("Location: ../squadCreation.php");
         exit();
     }
 
@@ -60,12 +60,12 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $pdo->commit();
 
         $_SESSION['success'] = "Squad created successfully!";
-        header("Location: /userHomepage.php");
+        header("Location: ../userHomepage.php");
         exit();
     } catch (Exception $e) {
         $pdo->rollBack();
         $_SESSION['error'] = "Error creating squad: " . $e->getMessage();
-        header("Location: /squadCreation.php");
+        header("Location: ../squadCreation.php");
         exit();
     }
 }

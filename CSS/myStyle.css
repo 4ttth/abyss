@@ -1,21 +1,21 @@
 @font-face {
     font-family: planetKosmos;
-    src: url(/CSS/fonts/planet_kosmos/PLANK___.TTF);
+    src: url(../CSS/fonts/planet_kosmos/PLANK___.TTF);
 }
 
 @font-face {
     font-family: glacialIndifference;
-    src: url(/CSS/fonts/glacial-indifference/GlacialIndifference-Regular.otf);
+    src: url(../CSS/fonts/glacial-indifference/GlacialIndifference-Regular.otf);
 }
 
 @font-face {
     font-family: glacialIndifferenceBold;
-    src: url(/CSS/fonts/glacial-indifference/GlacialIndifference-Bold.otf);
+    src: url(../CSS/fonts/glacial-indifference/GlacialIndifference-Bold.otf);
 }
 
 @font-face {
     font-family: gameCube;
-    src: url(/CSS/fonts/gamecuben/GameCube.ttf);
+    src: url(../CSS/fonts/gamecuben/GameCube.ttf);
 }
 
 /* Entire Page */
@@ -47,7 +47,7 @@ strong {
 .glowingFoxIntro {
     width: 200px; 
     height: 200px;
-    background-image: url('/IMG/essentials/whiteVer.PNG'); 
+    background-image: url('../IMG/essentials/whiteVer.PNG'); 
     background-size: cover;
     opacity: 0;
     animation: foxAnimation 3s ease-in-out forwards;
@@ -70,7 +70,7 @@ strong {
 
 /* Guin Background */
 .topBackground {
-    background: url('/IMG/backgrounds/guinBackground.jpg') no-repeat center center;
+    background: url('../IMG/backgrounds/guinBackground.jpg') no-repeat center center;
     background-size: cover;
     background-attachment: scroll; 
     width: 100%;
@@ -356,7 +356,7 @@ strong {
     width: 100px; 
     height: 100px;
     margin-top: 20px !important;
-    background: url('/IMG/essentials/whiteVer.PNG') no-repeat center center;
+    background: url('../IMG/essentials/whiteVer.PNG') no-repeat center center;
     background-size: contain;
     animation: glowEffect 1s infinite alternate ease-in-out;
 }
@@ -759,7 +759,7 @@ strong {
 }
 
 .demoOne {
-    background-image: url('/IMG/essentials/instructionOne.png');
+    background-image: url('../IMG/essentials/instructionOne.png');
     background-size: cover;
     background-position: center;
     width: 360px;
@@ -781,7 +781,7 @@ strong {
 }
 
 .demoTwo {
-    background-image: url('/IMG/essentials/instructionTwo.png'); 
+    background-image: url('../IMG/essentials/instructionTwo.png'); 
     background-size: cover; 
     background-position: center; 
     width: 376px;
@@ -801,7 +801,7 @@ strong {
 }
 
 .demoThree {
-    background-image: url('/IMG/essentials/instructionThree.png'); 
+    background-image: url('../IMG/essentials/instructionThree.png'); 
     background-size: cover;  
     background-position: center; 
     width: 380px;
@@ -822,7 +822,7 @@ strong {
 }
 
 .demoFour {
-    background-image: url('/IMG/essentials/instructionFour.png'); 
+    background-image: url('../IMG/essentials/instructionFour.png'); 
     background-size: cover;  
     background-position: center; 
     width: 355px;

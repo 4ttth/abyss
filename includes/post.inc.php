@@ -4,13 +4,13 @@ require_once 'dbh.inc.php';
 
 // Prevent duplicate submissions
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-    header("Location: /userHomepage.php");
+    header("Location: ../userHomepage.php");
     exit();
 }
 
 // Validate session and Squad_ID
 if (!isset($_SESSION['user']['Squad_ID']) || empty($_SESSION['user']['Squad_ID'])) {
-    header("Location: /userHomepage.php?error=invalid_squad");
+    header("Location: ../userHomepage.php?error=invalid_squad");
     exit();
 }
 
@@ -20,7 +20,7 @@ error_log("Attempting post insertion for Squad_ID: $squadID"); // Debug logging
 
 // Validate core content
 if (empty(trim($_POST['content']))) {
-    header("Location: /userHomepage.php?error=empty_content");
+    header("Location: ../userHomepage.php?error=empty_content");
     exit();
 }
 
@@ -32,12 +32,12 @@ $imageURL = null;
 
 // File upload handling with validation
 if (isset($_FILES['imageUpload']) && $_FILES['imageUpload']['error'] === UPLOAD_ERR_OK) {
-    $uploadDir = '/uploads/';
+    $uploadDir = '../uploads/';
     
     // Create directory if needed
     if (!is_dir($uploadDir) && !mkdir($uploadDir, 0755, true)) {
         error_log("Failed to create upload directory");
-        header("Location: /userHomepage.php?error=upload_failed");
+        header("Location: ../userHomepage.php?error=upload_failed");
         exit();
     }
 
@@ -46,7 +46,7 @@ if (isset($_FILES['imageUpload']) && $_FILES['imageUpload']['error'] === UPLOAD_
     $allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
     
     if (!in_array($finfo->file($_FILES['imageUpload']['tmp_name']), $allowedTypes)) {
-        header("Location: /userHomepage.php?error=invalid_image");
+        header("Location: ../userHomepage.php?error=invalid_image");
         exit();
     }
 
@@ -58,7 +58,7 @@ if (isset($_FILES['imageUpload']) && $_FILES['imageUpload']['error'] === UPLOAD_
     if (move_uploaded_file($_FILES['imageUpload']['tmp_name'], $targetPath)) {
         $imageURL = $targetPath;
     } else {
-        header("Location: /userHomepage.php?error=upload_failed");
+        header("Location: ../userHomepage.php?error=upload_failed");
         exit();
     }
 }
@@ -78,7 +78,7 @@ try {
     
     if ($checkStmt->fetch()) {
         $pdo->rollBack();
-        header("Location: /userHomepage.php?error=duplicate_post");
+        header("Location: ../userHomepage.php?error=duplicate_post");
         exit();
     }
 
@@ -97,12 +97,12 @@ try {
     ]);
 
     $pdo->commit();
-    header("Location: /userHomepage.php?post=success");
+    header("Location: ../userHomepage.php?post=success");
     exit();
 
 } catch (PDOException $e) {
     $pdo->rollBack();
     error_log("Database Error: " . $e->getMessage() . " [Squad_ID: $squadID]");
-    header("Location: /userHomepage.php?error=database_error");
+    header("Location: ../userHomepage.php?error=database_error");
     exit();
 }

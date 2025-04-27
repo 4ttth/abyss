@@ -10,13 +10,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['verify_submit'])) {
     $squadID = $_SESSION['user']['Squad_ID'] ?? null;
 
     if (!$scrimID || !$yourScore || !$opponentScore || !$squadID) {
-        header("Location: /matchVerificationPage.php?scrim_id=$scrimID&error=missing_fields");
+        header("Location: ../matchVerificationPage.php?scrim_id=$scrimID&error=missing_fields");
         exit();
     }
 
     try {
         if (empty($_FILES['proof_files']['name'][0])) {
-            header("Location: /matchVerificationPage.php?scrim_id=$scrimID&error=no_files");
+            header("Location: ../matchVerificationPage.php?scrim_id=$scrimID&error=no_files");
             exit();
         }
 
@@ -24,7 +24,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['verify_submit'])) {
         $stmt->execute([$scrimID, $squadID, $yourScore, $opponentScore]);
         $verificationID = $pdo->lastInsertId();
 
-        $uploadDir = '/uploads/match_proofs/';
+        $uploadDir = '../uploads/match_proofs/';
         if (!file_exists($uploadDir)) {
             mkdir($uploadDir, 0755, true);
         }
@@ -76,7 +76,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['verify_submit'])) {
 
         if ($victoryCount != $yourScore || $defeatCount != $opponentScore) {
             $_SESSION['ocr_mismatch'] = true;
-            header("Location: /matchVerificationPage.php?scrim_id=$scrimID");
+            header("Location: ../matchVerificationPage.php?scrim_id=$scrimID");
             exit();
         }
 
@@ -103,17 +103,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['verify_submit'])) {
         }
 
         $_SESSION['verification_submitted'] = true;
-        header("Location: /verificationSuccess.php");
+        header("Location: ../verificationSuccess.php");
         exit();
 
     } catch (PDOException $e) {
         die("❌ DATABASE ERROR: " . $e->getMessage());
     } catch (Exception $e) {
-        header("Location: /matchVerificationPage.php?scrim_id=$scrimID&error=general");
+        header("Location: ../matchVerificationPage.php?scrim_id=$scrimID&error=general");
         exit();
     }
 } else {
-    header("Location: /invitesPage.php");
+    header("Location: ../invitesPage.php");
     exit();
 }
 ?>
