@@ -399,7 +399,7 @@ $verificationData = $stmt->fetchAll(PDO::FETCH_ASSOC);
                     </div>
                 </div>
 
-                <form action="includes/matchVerification.inc.php" method="post" enctype="multipart/form-data">
+                <form action="includes/matchverification.inc.php" method="post" enctype="multipart/form-data">
                     <input type="hidden" name="scrim_id" value="<?= $_GET['scrim_id'] ?? '' ?>">
                     
                     <div class="row line">
