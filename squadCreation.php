@@ -71,7 +71,7 @@ $hostName = "https://" . $config['HOST_NAME'];
 $squadID = $_SESSION['user']['Squad_ID'] ?? 'N/A';
 $encodedsquadID = base64_encode($squadID);
 $encodedUsername = base64_encode($user['Username'] ?? 'Guest');
-$qrURL = $hostName . "/abyss/playerCreation.php?squad_id=" . $encodedsquadID . "&username=" . $encodedUsername;
+$qrURL = $hostName . "/playerCreation.php?squad_id=" . $encodedsquadID . "&username=" . $encodedUsername;
 $options = new QROptions([
     'version' => 5,
     'eccLevel' => QRCode::ECC_H,

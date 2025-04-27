@@ -2,9 +2,9 @@
 // htdocs/abyss/pythonTrial.php
 
 // Set absolute paths
-$baseDir = "C:/xampp/htdocs";
-$pythonScript = "$baseDir/abyss/Python/ML-OCR/playerVerification.py";
-$uploadDir = "$baseDir/abyss/uploads/";
+$baseDir = "/var/www/html/abyss/";
+$pythonScript = "$baseDir/Python/ML-OCR/playerVerification.py";
+$uploadDir = "$baseDir/uploads/";
 
 // Function to handle file upload
 function processUpload($file, $uploadDir) {
