@@ -67,7 +67,7 @@ if (isset($_SESSION['user']['Squad_ID'])) {
 
 // Generate QR Code URL
 $config = include('includes/config.php');
-$hostName = "http://" . $config['HOST_NAME'];
+$hostName = "https://" . $config['HOST_NAME'];
 $squadID = $_SESSION['user']['Squad_ID'] ?? 'N/A';
 $encodedsquadID = base64_encode($squadID);
 $encodedUsername = base64_encode($user['Username'] ?? 'Guest');
