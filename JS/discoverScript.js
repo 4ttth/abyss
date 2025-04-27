@@ -114,7 +114,7 @@ function postStatus() {
     formData.append("post_type", postType);
     formData.append("image", image);
 
-    fetch("includes/post_status.php", {
+    fetch("/includes/post_status.php", {
         method: "POST",
         body: formData
     })
@@ -180,7 +180,7 @@ ${reason.join('\n')}`);
 document.addEventListener('DOMContentLoaded', function() {
     // Update notification badge count
     function updateNotificationBadge() {
-        fetch('includes/getUnreadNotifications.php')
+        fetch('/includes/getUnreadNotifications.php')
             .then(response => response.json())
             .then(data => {
                 const badge = document.querySelector('.notification-badge');
@@ -195,7 +195,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Mark all as read
     document.querySelector('.markAllRead')?.addEventListener('click', function() {
-        fetch('includes/markNotificationsRead.php', {
+        fetch('/includes/markNotificationsRead.php', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -219,7 +219,7 @@ document.addEventListener('DOMContentLoaded', function() {
 //         btn.innerHTML = '<i class="bi bi-arrow-repeat spin"></i>';
 //     });
 
-//     fetch('includes/handleInviteResponse.php', {
+//     fetch('/includes/handleInviteResponse.php', {
 //         method: 'POST',
 //         headers: { 'Content-Type': 'application/json' },
 //         body: JSON.stringify({ 
@@ -267,7 +267,7 @@ function respondToInvite(scheduleId, action) {
         btn.innerHTML = '<i class="bi bi-arrow-repeat spin"></i>';
     });
 
-    fetch('includes/handleInviteResponse.php', {
+    fetch('/includes/handleInviteResponse.php', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ 
@@ -308,7 +308,7 @@ function respondToInvite(scheduleId, action) {
 }
 
 function fetchNotificationModal() {
-    fetch('includes/getNotifications.php')
+    fetch('/includes/getNotifications.php')
         .then(response => response.text())
         .then(html => {
             document.querySelector('.modal-body').innerHTML = html;
@@ -317,7 +317,7 @@ function fetchNotificationModal() {
 
 // Update the counter
 function updateNotificationCount() {
-    fetch('includes/getNotificationCount.php')
+    fetch('/includes/getNotificationCount.php')
         .then(response => response.json())
         .then(data => {
             const counter = document.querySelector('.notifCount');
@@ -348,7 +348,7 @@ document.getElementById('fileInput').addEventListener('change', function() {
 
 // Function to check for new messages periodically
 function checkNewMessages() {
-    fetch('includes/getUnreadCount.inc.php')
+    fetch('/includes/getUnreadCount.inc.php')
         .then(response => response.json())
         .then(data => {
             const badge = document.querySelector('.nav-linkIcon[href="inboxPage.php"] .notifCount');

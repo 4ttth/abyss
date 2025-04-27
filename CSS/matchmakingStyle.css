@@ -1,18 +1,18 @@
 @font-face {
     font-family: planetKosmos;
-    src: url(../CSS/fonts/planet_kosmos/PLANK___.TTF);
+    src: url(/CSS/fonts/planet_kosmos/PLANK___.TTF);
 }
 
 
 @font-face {
     font-family: glacialIndifference;
-    src: url(../CSS/fonts/glacial-indifference/GlacialIndifference-Regular.otf);
+    src: url(/CSS/fonts/glacial-indifference/GlacialIndifference-Regular.otf);
 }
 
 
 @font-face {
     font-family: glacialIndifferenceBold;
-    src: url(../CSS/fonts/glacial-indifference/GlacialIndifference-Bold.otf);
+    src: url(/CSS/fonts/glacial-indifference/GlacialIndifference-Bold.otf);
 }
 
 
@@ -32,7 +32,7 @@
 .loadingAnimation {
     width: 400px;
     height: 400px;
-    background-image: url('../IMG/essentials/loadingAnimation.gif');
+    background-image: url('/IMG/essentials/loadingAnimation.gif');
     background-size: cover;
 }
 
@@ -50,7 +50,7 @@
 
 /* Guin Background */
 .topBackground {
-    background: url('../IMG/backgrounds/guinBackground.jpg') no-repeat center center;
+    background: url('/IMG/backgrounds/guinBackground.jpg') no-repeat center center;
     background-size: cover;
     background-attachment: scroll;
     width: 100%;

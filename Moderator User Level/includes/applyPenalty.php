@@ -3,7 +3,7 @@ session_start();
 header('Content-Type: application/json'); // Must be first output
 error_reporting(0); // Disable error display
 
-require_once '../../includes/dbh.inc.php';
+require_once '/includes/dbh.inc.php';
 
 try {
     if ($_SERVER["REQUEST_METHOD"] !== "POST") {

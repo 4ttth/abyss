@@ -94,7 +94,7 @@
                     "type": "Ko-Fi"
                 }
             ],
-            "install-path": "../chillerlan/php-qrcode"
+            "install-path": "/chillerlan/php-qrcode"
         },
         {
             "name": "chillerlan/php-settings-container",
@@ -163,7 +163,7 @@
                     "type": "ko_fi"
                 }
             ],
-            "install-path": "../chillerlan/php-settings-container"
+            "install-path": "/chillerlan/php-settings-container"
         },
         {
             "name": "phpmailer/phpmailer",
@@ -247,7 +247,7 @@
                     "type": "github"
                 }
             ],
-            "install-path": "../phpmailer/phpmailer"
+            "install-path": "/phpmailer/phpmailer"
         }
     ],
     "dev": true,

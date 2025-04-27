@@ -2,8 +2,8 @@
 error_reporting(E_ALL);
 ini_set('display_errors', 'on');
 session_start(); // Start the session
-require_once 'includes/dbh.inc.php'; // Database connection
-require_once 'includes/userHomepage.inc.php'; // Squad details logic
+require_once '/includes/dbh.inc.php'; // Database connection
+require_once '/includes/userHomepage.inc.php'; // Squad details logic
 
 
 // ====== NEW CODE START ======
@@ -399,7 +399,7 @@ $unreadMessageCount = countUnreadMessages($pdo, $_SESSION['user']['Squad_ID']);
             <div class="squadDetailsContent">
                 <div class="buttons">
                     <a href="editSquad.php" class="editAccount">EDIT ACCOUNT</a>
-                    <form class="logout" action="includes/logout.inc.php" method="post">
+                    <form class="logout" action="/includes/logout.inc.php" method="post">
                         <button class="editAccount"> LOGOUT </button>
                     </form>  
                 </div>
@@ -470,7 +470,7 @@ $unreadMessageCount = countUnreadMessages($pdo, $_SESSION['user']['Squad_ID']);
             <!-- Main Feed -->
             <div class="col-6">
                 <div class="feed">
-                    <form id="postForm" action="includes/post.inc.php" method="post" enctype="multipart/form-data">
+                    <form id="postForm" action="/includes/post.inc.php" method="post" enctype="multipart/form-data">
                         <div class="statusBox">
                             <!-- Textarea for post content -->
                             <textarea name="content" id="contentInput" class="statusInput" placeholder="Share your thoughts, Coach!" required></textarea>

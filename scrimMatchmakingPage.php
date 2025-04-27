@@ -1,6 +1,6 @@
 <?php
     session_start(); // Start the session
-    require_once 'includes/dbh.inc.php'; // Database connection
+    require_once '/includes/dbh.inc.php'; // Database connection
     $squadID = $_SESSION['user']['Squad_ID'];
     $stmt = $pdo->prepare("SELECT * FROM tbl_squadprofile WHERE Squad_ID = ?"); // Ensure the table name is correct
     $stmt->execute([$squadID]);

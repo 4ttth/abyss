@@ -7,7 +7,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     // Check if user is admin (additional security)
     if (!isset($_SESSION['user']) || $_SESSION['user']['Role'] !== 'Admin') {
-        header("Location: ../loginPage.php");
+        header("Location: /loginPage.php");
         exit();
     }
 
@@ -18,13 +18,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     // Error handling
     if (empty($email) || empty($username) || empty($password) || empty($confirm_password)) {
-        header("Location: ../Admin User Level/adminModeratorAccounts.php?error=emptyfields");
+        header("Location: /Admin User Level/adminModeratorAccounts.php?error=emptyfields");
         exit();
     } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        header("Location: ../Admin User Level/adminModeratorAccounts.php?error=invalidemail");
+        header("Location: /Admin User Level/adminModeratorAccounts.php?error=invalidemail");
         exit();
     } elseif ($password !== $confirm_password) {
-        header("Location: ../Admin User Level/adminModeratorAccounts.php?error=passwordmismatch");
+        header("Location: /Admin User Level/adminModeratorAccounts.php?error=passwordmismatch");
         exit();
     }
 
@@ -34,11 +34,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $usernameExists = get_username($pdo, $username);
 
         if ($emailExists) {
-            header("Location: ../Admin User Level/adminModeratorAccounts.php?error=emailtaken");
+            header("Location: /Admin User Level/adminModeratorAccounts.php?error=emailtaken");
             exit();
         }
         if ($usernameExists) {
-            header("Location: ../Admin User Level/adminModeratorAccounts.php?error=usernametaken");
+            header("Location: /Admin User Level/adminModeratorAccounts.php?error=usernametaken");
             exit();
         }
 
@@ -51,15 +51,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $stmt = $pdo->prepare($sql);
         $stmt->execute([$email, $hashedPwd, $username, $account_number]);
 
-        header("Location: ../Admin User Level/adminModeratorAccounts.php?success=accountadded");
+        header("Location: /Admin User Level/adminModeratorAccounts.php?success=accountadded");
         exit();
 
     } catch (PDOException $e) {
-        header("Location: ../Admin User Level/adminModeratorAccounts.php?error=sqlerror");
+        header("Location: /Admin User Level/adminModeratorAccounts.php?error=sqlerror");
         exit();
     }
 
 } else {
-    header("Location: ../Admin User Level/adminModeratorAccounts.php");
+    header("Location: /Admin User Level/adminModeratorAccounts.php");
     exit();
 }

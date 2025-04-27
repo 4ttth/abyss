@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once 'includes/dbh.inc.php';
+require_once '/includes/dbh.inc.php';
 
 use chillerlan\QRCode\{QRCode, QROptions};
 require_once 'vendor/autoload.php';
@@ -66,7 +66,7 @@ if (isset($_SESSION['user']['Squad_ID'])) {
 }
 
 // Generate QR Code URL
-$config = include('includes/config.php');
+$config = include('/includes/config.php');
 $hostName = "https://" . $config['HOST_NAME'];
 $squadID = $_SESSION['user']['Squad_ID'] ?? 'N/A';
 $encodedsquadID = base64_encode($squadID);
@@ -171,7 +171,7 @@ $qrcode = (new QRCode)->render($qrURL);
                         </div>
 
                         <div class="text">
-                            <form action="includes/logout.inc.php" method="post">
+                            <form action="/includes/logout.inc.php" method="post">
                                 <button class="logoutButton"> LOGOUT </button>
                             </form>
                         </div>
@@ -241,7 +241,7 @@ $qrcode = (new QRCode)->render($qrURL);
                         VERIFY YOUR SQUAD LEVEL
                     </div>
                     <?php endif;?>
-                    <form action="includes/squadcreate.inc.php" method="post">
+                    <form action="/includes/squadcreate.inc.php" method="post">
                         <?php if ($verificationStatus === 'Pending') : ?>
                         <div class="row">
                             <!-- Squad Name Field -->
@@ -328,7 +328,7 @@ $qrcode = (new QRCode)->render($qrURL);
                             <!-- Signup Button -->
                             <div class="col-4 text-end mt-3">
                             <?php if ($verificationStatus === 'Pending') : ?>
-                                <form action="includes/squadcreate.inc.php" method="post">
+                                <form action="/includes/squadcreate.inc.php" method="post">
                                     <button type="submit" class="btn loginButton">CREATE SQUAD</button>
                                     <?php endif; ?>
                                 </form>
@@ -517,7 +517,7 @@ $qrcode = (new QRCode)->render($qrURL);
                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body">
-                                    <form id="squadVerificationForm" action="includes/verifySquad.inc.php" method="post" enctype="multipart/form-data">
+                                    <form id="squadVerificationForm" action="/includes/verifySquad.inc.php" method="post" enctype="multipart/form-data">
                                         <div class="mb-3">
                                             <label class="form-label">SQUAD LEVEL</label>
                                             <div class="dropdown-wrapper">
@@ -684,7 +684,7 @@ $qrcode = (new QRCode)->render($qrURL);
 
     // Use AJAX to refresh player list without reloading
     setInterval(function() {
-        fetch('includes/fetchPlayers.inc.php?squad_id=<?= urlencode($squadID) ?>')
+        fetch('/includes/fetchPlayers.inc.php?squad_id=<?= urlencode($squadID) ?>')
             .then(response => response.text())
             .then(data => {
                 document.querySelector('.profiles').innerHTML = data;

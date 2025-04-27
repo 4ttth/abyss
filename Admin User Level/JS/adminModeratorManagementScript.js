@@ -97,7 +97,7 @@ function resetPassword(modId) {
     if (confirm('Are you sure you want to reset this moderator\'s password?')) {
         // AJAX call to reset password
         $.ajax({
-            url: '../includes/reset_moderator_password.inc.php',
+            url: '/includes/reset_moderator_password.inc.php',
             method: 'POST',
             data: { mod_id: modId },
             success: function(response) {
@@ -114,7 +114,7 @@ function deleteAccount(modId) {
     if (confirm('Are you sure you want to delete this moderator account?')) {
         // AJAX call to delete account
         $.ajax({
-            url: '../includes/delete_moderator.inc.php',
+            url: '/includes/delete_moderator.inc.php',
             method: 'POST',
             data: { mod_id: modId },
             dataType: 'json',
@@ -154,7 +154,7 @@ $(document).on('click', '.show-logs', function() {
     
     // Fetch logs via AJAX
     $.ajax({
-        url: '../includes/get_moderator_logs.php',
+        url: '/includes/get_moderator_logs.php',
         method: 'POST',
         data: { moderator_id: modId },
         dataType: 'json',

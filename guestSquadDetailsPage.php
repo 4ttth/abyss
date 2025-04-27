@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once 'includes/dbh.inc.php';
+require_once '/includes/dbh.inc.php';
 
 // Get Squad_ID from URL
 $squadID = $_GET['id'] ?? null;

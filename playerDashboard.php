@@ -1,7 +1,7 @@
 <?php
 session_start(); // Start the session
-require_once 'includes/dbh.inc.php'; // Database connection
-require_once 'includes/userHomepage.inc.php'; // Squad details logic
+require_once '/includes/dbh.inc.php'; // Database connection
+require_once '/includes/userHomepage.inc.php'; // Squad details logic
 
 
 // ====== NEW CODE START ======
@@ -353,7 +353,7 @@ $unreadMessageCount = countUnreadMessages($pdo, $_SESSION['user']['Squad_ID']);
         <div class="squadDetails">
             <div class="squadDetailsContent">
                 <div class="buttons">
-                    <form class="logout" action="includes/logout.inc.php" method="post">
+                    <form class="logout" action="/includes/logout.inc.php" method="post">
                         <button class="editAccount"> LOGOUT </button>
                     </form>  
                 </div>

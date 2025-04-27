@@ -1,6 +1,6 @@
 <?php
 session_start(); // Start the session
-require_once 'includes/dbh.inc.php'; // Database connection
+require_once '/includes/dbh.inc.php'; // Database connection
 
 // Initialize user data from session with proper fallback values
 $user = isset($_SESSION['user']) ? $_SESSION['user'] : [

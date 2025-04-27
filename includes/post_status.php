@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once '../includes/dbh.inc.php'; 
+require_once '/includes/dbh.inc.php'; 
 
 // Ensure the user is logged in
 if (!isset($_SESSION['user']['Squad_ID'])) {
@@ -20,7 +20,7 @@ if (!empty($_FILES['image']['name'])) {
     $imageName = basename($_FILES['image']['name']);
     $imagePath = $uploadDir . time() . "_" . $imageName;
 
-    if (move_uploaded_file($_FILES['image']['tmp_name'], "../" . $imagePath)) {
+    if (move_uploaded_file($_FILES['image']['tmp_name'], "/" . $imagePath)) {
         $imageURL = $imagePath;
     } else {
         echo json_encode(["status" => "error", "message" => "Image upload failed"]);

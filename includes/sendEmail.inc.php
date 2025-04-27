@@ -2,7 +2,7 @@
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
-require '../vendor/autoload.php'; // Autoload PHPMailer
+require '/vendor/autoload.php'; // Autoload PHPMailer
 
 require_once 'dbh.inc.php'; // Database connection
 

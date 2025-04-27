@@ -58,7 +58,7 @@ function toggleDisplay(contentId, currentDisplay) {
     const newDisplay = currentDisplay === 1 ? 0 : 1;
 
     $.ajax({
-        url: '../includes/updateDisplay.inc.php',
+        url: '/includes/updateDisplay.inc.php',
         method: 'POST',
         data: {
             content_id: contentId,

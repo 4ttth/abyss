@@ -1,9 +1,9 @@
 <?php
 session_start();
-require_once '../includes/dbh.inc.php';
+require_once '/includes/dbh.inc.php';
 
 if (!in_array($_SESSION['user']['Role'], ['Moderator'])) {
-    header("Location: ../loginPage.php");
+    header("Location: /loginPage.php");
     exit("Access Denied!");
 }
 
@@ -88,7 +88,7 @@ try {
             <!-- Vertical Nav Links -->
             <ul class="nav flex-column">
                 <li class="nav-item firstItem">
-                    <a class="nav-link active" href="../Moderator User Level/modIndex.php">
+                    <a class="nav-link active" href="/Moderator User Level/modIndex.php">
                         HOME
                     </a>
                 </li>
@@ -126,7 +126,7 @@ try {
            
             <!-- Account Logo (at bottom) -->
             <div class="nav-footer">
-                <form action="../includes/logout.inc.php" method="post">
+                <form action="/includes/logout.inc.php" method="post">
                     <button class="accountLogo" data-bs-toggle="modal" data-bs-target="#loginSignupModal">
                             <i class="bi bi-box-arrow-left"></i>
                     </button>

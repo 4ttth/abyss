@@ -5,7 +5,7 @@
 
 <?php else : ?>
     <?php 
-    header("Location: ../index.php");
+    header("Location: /index.php");
     exit;?>
 <?php endif; ?>
 </body>

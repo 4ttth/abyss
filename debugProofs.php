@@ -1,5 +1,5 @@
 <?php
-require_once 'includes/dbh.inc.php';
+require_once '/includes/dbh.inc.php';
 
 echo "<h2>📄 Latest Uploaded Proofs (OCR Scan Results)</h2>";
 echo "<table border='1' cellpadding='10'>";
