@@ -33,7 +33,7 @@ $(document).ready(function() {
        
         // Fetch members via AJAX
         $.ajax({
-            url: '/includes/get_members.php',
+            url: 'includes/get_members.php',
             method: 'POST',
             data: { squad_id: squadId },
             dataType: 'json',
@@ -109,7 +109,7 @@ $(document).ready(function () {
         const formData = $('#penaltyForm').serialize();
 
         $.ajax({
-            url: '/includes/applyPenalty.php',
+            url: 'includes/applyPenalty.php',
             type: 'POST',
             dataType: 'json', // Expect JSON response
             data: formData,

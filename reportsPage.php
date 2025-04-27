@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once '/includes/dbh.inc.php';
+require_once 'includes/dbh.inc.php';
 
 // Check if user is logged in
 if (!isset($_SESSION['user'])) {
@@ -284,7 +284,7 @@ $unreadMessageCount = countUnreadMessages($pdo, $_SESSION['user']['Squad_ID']);
                     </div>
                 </div>
 
-                <form action="/includes/reportUser.inc.php" method="post" enctype="multipart/form-data">
+                <form action="includes/reportUser.inc.php" method="post" enctype="multipart/form-data">
                     <!-- Hidden field for the reported squad ID -->
                     <input type="hidden" name="reported_squad_id" value="<?= htmlspecialchars($reportedSquadID) ?>">
                     

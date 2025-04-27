@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once '/includes/signup_view.inc.php';
+require_once 'includes/signup_view.inc.php';
 ?>
 
 <!doctype html>
@@ -94,7 +94,7 @@ require_once '/includes/signup_view.inc.php';
                     }
                     ?>
 
-                    <form action="/includes/signup.inc.php" method="post">
+                    <form action="includes/signup.inc.php" method="post">
                         <!-- Email Field -->
                         <div class="form-group mt-3">
                             <label class="form-label title">EMAIL</label>

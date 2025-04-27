@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once '/includes/dbh.inc.php';
+require_once 'includes/dbh.inc.php';
 
 
 if (!in_array($_SESSION['user']['Role'], ['Admin'])) {
@@ -111,7 +111,7 @@ $result = $pdo->query($sql);
            
             <!-- Account Logo (at bottom) -->
             <div class="nav-footer">
-                <form action="/includes/logout.inc.php" method="post">
+                <form action="includes/logout.inc.php" method="post">
                     <button class="accountLogo" data-bs-toggle="modal" data-bs-target="#loginSignupModal">
                             <i class="bi bi-box-arrow-left"></i>
                     </button>

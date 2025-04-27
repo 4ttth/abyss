@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once '/includes/dbh.inc.php';
+require_once 'includes/dbh.inc.php';
 
 // 1. Validate session FIRST
 if (!isset($_SESSION['user']['Role']) || !in_array($_SESSION['user']['Role'], ['Moderator'])) {

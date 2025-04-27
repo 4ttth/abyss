@@ -29,7 +29,7 @@ document.getElementById('penaltyForm').addEventListener('submit', function(e) {
     
     const formData = new FormData(this);
     
-    fetch('/includes/applyPenalty.php', {
+    fetch('includes/applyPenalty.php', {
         method: 'POST',
         body: formData
     })
@@ -53,7 +53,7 @@ function deleteReport(reportId) {
         const data = new URLSearchParams();
         data.append('report_id', reportId);
 
-        fetch('/includes/delete_report.inc.php', {
+        fetch('includes/delete_report.inc.php', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded',

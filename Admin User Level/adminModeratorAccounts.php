@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once '/includes/dbh.inc.php';
+require_once 'includes/dbh.inc.php';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit_note'])) {
 
@@ -156,7 +156,7 @@ if (isset($_GET['error'])) {
             
             <!-- Account Logo (at bottom) -->
             <div class="nav-footer">
-                <form action="/includes/logout.inc.php" method="post">
+                <form action="includes/logout.inc.php" method="post">
                     <button class="accountLogo" data-bs-toggle="modal" data-bs-target="#loginSignupModal">
                             <i class="bi bi-box-arrow-left"></i>
                     </button>
@@ -300,7 +300,7 @@ if (isset($_GET['error'])) {
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <form action="/includes/add_moderator.inc.php" method="post">
+                        <form action="includes/add_moderator.inc.php" method="post">
                             <!-- Email -->
                             <div class="mb-3">
                                 <label class="form-label">EMAIL ADDRESS</label>

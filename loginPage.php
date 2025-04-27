@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once '/includes/login_view.inc.php';
+require_once 'includes/login_view.inc.php';
 ?>
 
 <!doctype html>
@@ -92,7 +92,7 @@ require_once '/includes/login_view.inc.php';
                         <?php unset($_SESSION['error_login']); ?>
                     <?php endif; ?>
 
-                    <form action="/includes/login.inc.php" method="post">
+                    <form action="includes/login.inc.php" method="post">
                         <!-- Username Field -->
                         <div class="form-group mt-3">
                             <label class="form-label title">USERNAME</label>

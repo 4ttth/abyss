@@ -1,7 +1,7 @@
 <?php
 session_start(); // Start the session
-require_once '/includes/dbh.inc.php'; // Database connection
-require_once '/includes/userHomepage.inc.php'; // Squad details logic
+require_once 'includes/dbh.inc.php'; // Database connection
+require_once 'includes/userHomepage.inc.php'; // Squad details logic
 
 // ====== NEW CODE START ======
 // Initialize user data from session with proper fallback values
@@ -399,7 +399,7 @@ $verificationData = $stmt->fetchAll(PDO::FETCH_ASSOC);
                     </div>
                 </div>
 
-                <form action="/includes/matchVerification.inc.php" method="post" enctype="multipart/form-data">
+                <form action="includes/matchVerification.inc.php" method="post" enctype="multipart/form-data">
                     <input type="hidden" name="scrim_id" value="<?= $_GET['scrim_id'] ?? '' ?>">
                     
                     <div class="row line">

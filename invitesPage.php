@@ -1,6 +1,6 @@
 <?php
 session_start(); // Essential for maintaining user session
-require_once '/includes/dbh.inc.php'; // Database connection (same as homepage)
+require_once 'includes/dbh.inc.php'; // Database connection (same as homepage)
 
 
 // Initialize user data from session (same as homepage)

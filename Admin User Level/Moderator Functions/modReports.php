@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once '/includes/dbh.inc.php';
+require_once 'includes/dbh.inc.php';
 
 
 if (!in_array($_SESSION['user']['Role'], ['Admin'])) {
@@ -112,7 +112,7 @@ $result = $pdo->query($sql);
            
             <!-- Account Logo (at bottom) -->
             <div class="nav-footer">
-                <form action="/includes/logout.inc.php" method="post">
+                <form action="includes/logout.inc.php" method="post">
                     <button class="accountLogo" data-bs-toggle="modal" data-bs-target="#loginSignupModal">
                             <i class="bi bi-box-arrow-left"></i>
                     </button>
@@ -193,7 +193,7 @@ $result = $pdo->query($sql);
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <form action="/includes/applyPenalty.php" method="post" id="penaltyForm">
+                        <form action="includes/applyPenalty.php" method="post" id="penaltyForm">
                             <input type="hidden" id="penaltyReportId" name="report_id">
                            
                             <!-- Penalty Type Selection -->
@@ -251,7 +251,7 @@ $result = $pdo->query($sql);
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form action="/includes/applyPenalty.php" method="post" id="penaltyForm">
+                    <form action="includes/applyPenalty.php" method="post" id="penaltyForm">
                         <!-- Hidden Field for Report ID -->
                         <input type="hidden" id="penaltyReportId" name="report_id">
 

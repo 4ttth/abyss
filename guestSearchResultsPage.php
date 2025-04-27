@@ -1,7 +1,7 @@
 <?php
 // Start session and include DB connection
 session_start();
-require_once '/includes/dbh.inc.php'; // Make sure this sets up the $pdo object
+require_once 'includes/dbh.inc.php'; // Make sure this sets up the $pdo object
 
 // Retrieve and sanitize the search query (using 'query' from the form input)
 $searchQuery = isset($_GET['query']) ? trim($_GET['query']) : '';

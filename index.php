@@ -119,7 +119,7 @@
             <div class="row d-flex eventsLeaderboard">
                  <!-- Admin Content Start -->
                  <?php
-                    require_once '/includes/dbh.inc.php';
+                    require_once 'includes/dbh.inc.php';
 
                     // Fetch active content
                     $activeContent = $pdo->query("

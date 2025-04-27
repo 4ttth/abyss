@@ -1,6 +1,6 @@
 <?php
 session_start(); // Start the session
-require_once '/includes/dbh.inc.php'; // Database connection
+require_once 'includes/dbh.inc.php'; // Database connection
 
 // Fetch public posts from all squads
 try {

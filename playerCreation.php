@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once '/includes/dbh.inc.php';
+require_once 'includes/dbh.inc.php';
 
 $encodedsquadID = $_GET['squad_id'] ?? null;
 $squadID = base64_decode($encodedsquadID);
@@ -42,7 +42,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $stmt = $pdo->prepare("INSERT INTO tbl_playerprofile (Squad_ID, IGN, Full_Name, Game_ID, Current_Rank, Current_Star, Highest_Rank, Highest_Star, Role, Hero_1, Hero_2, Hero_3) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
     $stmt->execute([$squadID, $IGN, $Full_Name, $Game_ID, $Current_Rank, $Current_Star, $Highest_Rank, $Highest_Star, $Role, $Hero_1, $Hero_2, $Hero_3]);
 
-    header("Location: /includes/logout2.inc.php");
+    header("Location: includes/logout2.inc.php");
     exit();
 }
 ?>
@@ -70,7 +70,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <h5 class="modal-title" id="addPlayerModalLabel">ADD PLAYER PROFILE</h5>
     </div>
     <div class="modal-body">
-        <form action="/includes/playercreate.inc.php" method="post">
+        <form action="includes/playercreate.inc.php" method="post">
             <div class="mb-3">
                 <label class="form-label">IN-GAME NAME</label>
                 <input type="text" name="IGN" class="form-control plchldr" placeholder="Enter IGN" required>

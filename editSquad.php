@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once '/includes/dbh.inc.php';
+require_once 'includes/dbh.inc.php';
 
 // Redirect if not logged in or no squad
 if (!isset($_SESSION['user']['Squad_ID']) || empty($_SESSION['user']['Squad_ID'])) {
@@ -277,7 +277,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body">
-                                    <form action="/includes/playercreate.inc.php" method="post">
+                                    <form action="includes/playercreate.inc.php" method="post">
                                         <div class="mb-3">
                                             <label class="form-label">IN-GAME NAME</label>
                                             <input type="text" name="IGN" class="form-control plchldr" placeholder="Enter IGN" required>
@@ -609,7 +609,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body">
-                                    <form id="squadVerificationForm" action="/includes/verifySquad.inc.php" method="post" enctype="multipart/form-data">
+                                    <form id="squadVerificationForm" action="includes/verifySquad.inc.php" method="post" enctype="multipart/form-data">
                                         <div class="mb-3">
                                             <label class="form-label">SQUAD LEVEL</label>
                                             <div class="dropdown-wrapper">

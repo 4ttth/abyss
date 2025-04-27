@@ -1,5 +1,5 @@
 <?php
-include("/includes/dbh.inc.php"); // Your database connection
+include("includes/dbh.inc.php"); // Your database connection
 session_start();
 
 if (isset($_POST['add_instruction'])) {
@@ -143,7 +143,7 @@ $instructions = $pdo->query("SELECT * FROM tbl_instructions ORDER BY Instruction
             
             <!-- Account Logo (at bottom) -->
             <div class="nav-footer">
-                <form action="/includes/logout.inc.php" method="post">
+                <form action="includes/logout.inc.php" method="post">
                     <button class="accountLogo" data-bs-toggle="modal" data-bs-target="#loginSignupModal">
                             <i class="bi bi-box-arrow-left"></i>
                     </button>
