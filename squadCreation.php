@@ -684,7 +684,7 @@ $qrcode = (new QRCode)->render($qrURL);
 
     // Use AJAX to refresh player list without reloading
     setInterval(function() {
-        fetch('includes/fetchPlayers.inc.php?squad_id=<?= urlencode($squa) ?>')
+        fetch('includes/fetchPlayers.inc.php?squad_id=<?= urlencode($squadID) ?>')
             .then(response => response.text())
             .then(data => {
                 document.querySelector('.profiles').innerHTML = data;
