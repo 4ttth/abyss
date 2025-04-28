@@ -97,8 +97,9 @@ $unreadMessageCount = countUnreadMessages($pdo, $_SESSION['user']['Squad_ID']);
 </head>
 
 <body class="customPageBackground">
+    <!-- Loading Screen for Landing Page -->
     <div class="introScreen">
-        <div class="loadingAnimation"></div>
+        <div class="glowingFoxIntro"></div>
     </div>
 
 
