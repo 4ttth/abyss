@@ -59,7 +59,7 @@ if (isset($_POST['add_carousel'])) {
 }
 
 // Handle Show Instruction
-if (isset($_POST['show_carousel'])) {
+if (isset($_POST['show_video'])) {
     $carousel_id = $_POST['carousel_id'];
 
     // Hide all first
@@ -128,12 +128,12 @@ $carousels = $pdo->query("SELECT * FROM tbl_carousels ORDER BY Carousel_ID ASC")
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" href="adminCarouselManagement.php">
+                        <a class="nav-link" href="adminCarouselManagement.php">
                             <span class="nav-text">CAROUSEL MANAGEMENT</span>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="adminVideoAdManagement.php">
+                        <a class="nav-link active" href="adminVideoAdManagement.php">
                             <span class="nav-text">VIDEO AD MANAGEMENT</span>
                         </a>
                     </li>
@@ -222,10 +222,8 @@ $carousels = $pdo->query("SELECT * FROM tbl_carousels ORDER BY Carousel_ID ASC")
             <table class="display reportsTable" id="reportsTable">
             <thead>
                     <tr>
-                        <th>Carousel ID</th>
-                        <th>Image 1</th>
-                        <th>Image 2</th>
-                        <th>Image 3</th>
+                        <th>Advertisement_ID</th>
+                        <th>Video Advertisement</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
@@ -240,20 +238,6 @@ $carousels = $pdo->query("SELECT * FROM tbl_carousels ORDER BY Carousel_ID ASC")
                                 No Image
                             <?php endif; ?>
                         </td>
-                        <td>
-                            <?php if (!empty($carousel['Image2'])): ?>
-                                <img src="<?php echo htmlspecialchars($carousel['Image2']); ?>" alt="Image 2" style="width: 100px; height: auto;">
-                            <?php else: ?>
-                                No Image
-                            <?php endif; ?>
-                        </td>
-                        <td>
-                            <?php if (!empty($carousel['Image3'])): ?>
-                                <img src="<?php echo htmlspecialchars($carousel['Image3']); ?>" alt="Image 3" style="width: 100px; height: auto;">
-                            <?php else: ?>
-                                No Image
-                            <?php endif; ?>
-                        </td>
                         <td class="buttonColumn">
                             <form method="POST">
                                 <input type="hidden" name="carousel_id" value="<?php echo $carousel['Carousel_ID']; ?>">
@@ -262,7 +246,7 @@ $carousels = $pdo->query("SELECT * FROM tbl_carousels ORDER BY Carousel_ID ASC")
                                         <i class="bi bi-eye-fill"></i> Active
                                     </button>
                                 <?php else: ?>
-                                    <button type="submit" name="show_carousel" class="buttons show-button">Show</button>
+                                    <button type="submit" name="show_video" class="buttons show-button">Show</button>
                                 <?php endif; ?>
                             </form>
                         </td>
@@ -278,28 +262,19 @@ $carousels = $pdo->query("SELECT * FROM tbl_carousels ORDER BY Carousel_ID ASC")
         <div class="modal-dialog">
             <div class="modal-content customModal">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="addContentModalLabel">ADD NEW CAROUSEL</h5>
+                    <h5 class="modal-title" id="addContentModalLabel">ADD NEW VIDEO ADVERTISEMENT</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <form method="POST" enctype="multipart/form-data">
                     <div class="modal-body">
-
                         <div class="mb-3">
-                            <label class="form-label">IMAGE 1</label>
-                            <input type="file" name="image1" class="form-control" accept="image/*">
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">IMAGE 2</label>
-                            <input type="file" name="image2" class="form-control" accept="image/*">
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">IMAGE 3</label>
-                            <input type="file" name="image3" class="form-control" accept="image/*">
+                            <label class="form-label">VIDEO ADVERTISEMENT</label>
+                            <input type="file" name="videoAd" class="form-control" accept="video/*">
                         </div>
 
                     </div>
                     <div class="modal-footer">
-                        <button type="submit" name="add_carousel" class="modalButtons">ADD IMAGES</button>
+                        <button type="submit" name="add_video" class="modalButtons">ADD VIDEO</button>
                     </div>
                 </form>
             </div>
@@ -312,7 +287,7 @@ $carousels = $pdo->query("SELECT * FROM tbl_carousels ORDER BY Carousel_ID ASC")
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     const openModalBtn = document.getElementById('openModalBtn');
-    const modal = document.getElementById('addCarouselModal');
+    const modal = document.getElementById('addVideoAdModal');
     const closeModalBtn = document.getElementById('closeModalBtn');
 
     // Open Modal

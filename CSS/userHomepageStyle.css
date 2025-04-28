@@ -747,7 +747,7 @@ form {
 /* Players Column */
 .squadPlayers {
     height: 100%;
-    padding: 20px;
+    padding: 0px 20px 20px 20px;
 }
 
 .role {
@@ -2088,4 +2088,16 @@ span {
     display: flex; 
     flex-direction: column; 
     align-items: flex-end; 
+}
+
+.validation {
+    color: white !important;
+    font-family: glacialIndifference !important;
+    font-size: 14px !important;
+    margin-top: 10px !important;
+    text-align: center !important;
+    text-align: left !important;
+    opacity: 50% !important;
+    text-align: center !important;
+    text-transform: uppercase;
 }

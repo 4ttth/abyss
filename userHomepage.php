@@ -557,6 +557,7 @@ $unreadMessageCount = countUnreadMessages($pdo, $_SESSION['user']['Squad_ID']);
 
             <!-- Players Column -->
             <div class="col-3" >
+            <p class="validation">Players can log in using their IGN as the username <br> and the squad password to access squad profile</p>
                 <div class="squadPlayers">
                     <?php foreach ($players as $player): ?>
                         <div class="playerProfile">
