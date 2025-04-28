@@ -22,6 +22,14 @@ $status = "Pending"; // Default status
 $createdAt = date('Y-m-d H:i:s'); // Current timestamp
 
 try {
+    // Validate scrim date and time
+    $scrimDateTime = strtotime("$scrimDate $scrimTime");
+    $currentDateTime = time();
+
+    if ($scrimDateTime <= $currentDateTime) {
+        throw new Exception("You cannot schedule a scrim in the past.");
+    }
+    
     // Fetch challenger squad details
     $challengerQuery = "SELECT Squad_Acronym, Squad_Description, Squad_Level FROM tbl_squadprofile WHERE Squad_ID = ?";
     $challengerStmt = $pdo->prepare($challengerQuery);
