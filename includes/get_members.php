@@ -27,7 +27,7 @@ try {
    
     // Query database
     $stmt = $pdo->prepare("
-        SELECT IGN, Current_Rank, Current_Star, Highest_Rank, Highest_Star, Role, Hero_1, Hero_2, Hero_3
+        SELECT IGN, First_Name, Last_Name, Game_ID, Current_Rank, Current_Star, Highest_Rank, Highest_Star, Role, Hero_1, Hero_2, Hero_3
         FROM tbl_playerprofile
         WHERE Squad_ID = ?
     ");
