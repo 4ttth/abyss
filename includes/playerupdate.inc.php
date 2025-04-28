@@ -8,7 +8,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         
         $sql = "UPDATE tbl_playerprofile SET
             IGN = ?,
-            Full_Name = ?,
+            First_Name = ?,
+            Last_Name = ?,
             Game_ID = ?,
             Current_Rank = ?,
             Current_Star = ?,
@@ -23,7 +24,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $stmt = $pdo->prepare($sql);
         $stmt->execute([
             $_POST['IGN'],
-            $_POST['Full_Name'],
+            $_POST['First_Name'],
+            $_POST['Last_Name'],
             $_POST['Game_ID'],
             $_POST['Current_Rank'],
             $_POST['Current_Star'],
