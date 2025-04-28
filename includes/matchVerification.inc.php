@@ -51,7 +51,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['verify_submit'])) {
                 $pythonScript = '/var/www/html/abyss/Python/ML-OCR/battleResults.py';
                 $command = "python3" . escapeshellcmd($pythonScript) . " " . escapeshellarg($uploadPath) . " 2>&1";
                 $output = shell_exec($command);
-
+                
                 $ocrResult = json_decode($output, true);
                 if (!is_array($ocrResult)) {
                     $ocrResult = ['battleID' => 'Not found', 'resultStatus' => 'Not found'];
