@@ -2,7 +2,8 @@
 session_start();
 require_once '../includes/dbh.inc.php';
 
-if (!in_array($_SESSION['user_role'], ['Admin'])) {
+if (!in_array($_SESSION['user']['Role'], ['Admin'])) {
+    header("Location: ../loginPage.php");
     exit("Access Denied!");
 }
 
@@ -10,13 +11,79 @@ if (!isset($pdo)) {
     die("Database connection failed!");
 }
 
+// Handle form submission
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit'])) {
+    try {
+        // Process form data
+        $event_name = $_POST['event_name'];
+        $event_duration = $_POST['event_duration'];
+        $event_details = $_POST['event_details'];
+        $youtube_link = $_POST['youtube_link'] ?? null;
+        $advertisement_link = $_POST['advertisement_link'] ?? null;
+        
+        // File upload handling
+        $upload_dir = "../uploads/content/";
+        
+        // Process promotional content
+        $promotional_content = null;
+        if (!empty($_FILES['promotional_content']['name'])) {
+            $promo_file = $upload_dir . basename($_FILES['promotional_content']['name']);
+            move_uploaded_file($_FILES['promotional_content']['tmp_name'], $promo_file);
+            $promotional_content = $promo_file;
+        }
+        
+        // Process youtube banner
+        $youtube_banner = null;
+        if (!empty($_FILES['youtube_banner']['name'])) {
+            $yt_banner = $upload_dir . basename($_FILES['youtube_banner']['name']);
+            move_uploaded_file($_FILES['youtube_banner']['tmp_name'], $yt_banner);
+            $youtube_banner = $yt_banner;
+        }
+        
+        // Process advertisement banner
+        $advertisement_banner = null;
+        if (!empty($_FILES['advertisement_banner']['name'])) {
+            $ad_banner = $upload_dir . basename($_FILES['advertisement_banner']['name']);
+            move_uploaded_file($_FILES['advertisement_banner']['tmp_name'], $ad_banner);
+            $advertisement_banner = $ad_banner;
+        }
+        
+        // Insert into database
+        $sql = "INSERT INTO tbl_contentmanagement 
+                (Event_Name, Event_Duration, Event_Details, Promotional_Content, 
+                 Youtube_Link, Youtube_Banner, Advertisement_Link, Advertisement_Banner, Is_Displayed) 
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, 0)";
+        
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute([
+            $event_name, 
+            $event_duration, 
+            $event_details, 
+            $promotional_content,
+            $youtube_link,
+            $youtube_banner,
+            $advertisement_link,
+            $advertisement_banner
+        ]);
+        
+        // Refresh the page to show the new content
+        header("Location: adminContentManagement.php");
+        exit();
+        
+    } catch (PDOException $e) {
+        die("Error adding content: " . $e->getMessage());
+    }
+}
+
 $sql = "SELECT Content_ID, Event_Name, Event_Duration, Event_Details, Promotional_Content, Youtube_Link, Youtube_Banner, Advertisement_Link, Advertisement_Banner, Is_Displayed FROM tbl_contentmanagement";
 $result = $pdo->query($sql);
 
 if (!$result) {
-    die("Query failed: " . $pdo->error);
+    die("Query failed: " . $pdo->errorInfo()[2]);
 }
+
 ?>
+
 
 <!doctype html>
 <html lang="en">
@@ -51,34 +118,74 @@ if (!$result) {
             </div>
             
             <!-- Vertical Nav Links -->
-            <ul class="nav flex-column">
-                <li class="nav-item firstItem">
-                    <a class="nav-link" href="adminIndex.php">
-                        HOME
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link active" href="adminContentManagement.php">
-                        <span class="nav-text">CONTENT MANAGEMENT</span>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="adminModeratorManagement.php">
-                        <span class="nav-text">MODERATOR MANAGEMENT</span>
-                    </a>
-                </li>
-                <li class="nav-item lastItem">
-                    <a class="nav-link" href="adminAccountManagement.php">
-                        <span class="nav-text">ACCOUNT MANAGEMENT</span>
-                    </a>
-                </li>
-            </ul>
+            <div class="navBarOverflow">
+                <ul class="nav flex-column">
+                    <li class="nav-item firstItem">
+                        <a class="nav-link" href="adminIndex.php">
+                            HOME
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="adminContentManagement.php">
+                            <span class="nav-text">EVENT MANAGEMENT</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="adminInstructionsManagement.php">
+                            <span class="nav-text">INSTRUCTION MANAGEMENT</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="adminModeratorAccounts.php">
+                            <span class="nav-text">MODERATOR ACCOUNTS</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="../Admin User Level/Moderator Functions/modSquadAccounts.php">
+                            <span class="nav-text">SQUAD ACCOUNTS</span>
+                        </a>
+                    </li>
+                    <!-- Moderator Priivileges -->
+                    <li class="nav-item">
+                    <a class="nav-link" href="../Admin User Level/Moderator Functions/modIndex.php">
+                            <span class="nav-text">MODERATOR INDEX</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="../Admin User Level/Moderator Functions/modReports.php">
+                            REPORTS
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="../Admin User Level/Moderator Functions/modFeedbacks.php">
+                            FEEDBACKS
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="../Admin User Level/Moderator Functions/modRequests.php">
+                            <span class="nav-text">VERIFICATION REQUESTS</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="../Admin User Level/Moderator Functions/modScrimsLog.php">
+                            <span class="nav-text">SCRIMS LOG</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="../Admin User Level/Moderator Functions/modInvitesLog.php">
+                            <span class="nav-text">INVITES LOG</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
             
             <!-- Account Logo (at bottom) -->
             <div class="nav-footer">
-                <button class="accountLogo" data-bs-toggle="modal" data-bs-target="#loginSignupModal">
-                    <i class="bi bi-box-arrow-left"></i>
-                </button>
+                <form action="../includes/logout.inc.php" method="post">
+                    <button class="accountLogo" data-bs-toggle="modal" data-bs-target="#loginSignupModal">
+                            <i class="bi bi-box-arrow-left"></i>
+                    </button>
+                </form>
             </div>
         </div>
 
@@ -87,7 +194,7 @@ if (!$result) {
             <!-- Header -->
             <div class="row textBlockLeft">
                 <div class="titleLeft">
-                    CONTENT MANAGEMENT
+                    EVENT MANAGEMENT
                 </div>
                 <div class="descriptionLeft">
                     LOG AS OF <strong>MARCH 24, 2025</strong>
@@ -126,11 +233,11 @@ if (!$result) {
                 <tbody>
                     <?php while ($row = $result->fetch(PDO::FETCH_ASSOC)): ?>
                         <tr>
-                            <td><?= $row['Content_ID'] ?></td>
-                            <td><?= $row['Event_Name'] ?></td>
-                            <td><?= $row['Event_Duration'] ?></td>
-                            <td><?= $row['Event_Details'] ?></td>
-                            <<td class="buttonColumn">
+                            <td><?= htmlspecialchars($row['Content_ID']) ?></td>
+                            <td><?= htmlspecialchars($row['Event_Name']) ?></td>
+                            <td><?= htmlspecialchars($row['Event_Duration']) ?></td>
+                            <td><?= htmlspecialchars($row['Event_Details']) ?></td>
+                            <td class="buttonColumn">
                                 <?php if (!empty($row['Promotional_Content'])): ?>
                                     <img src="<?= htmlspecialchars($row['Promotional_Content']) ?>" alt="Promotional Content" width="100">
                                 <?php else: ?>
@@ -167,11 +274,14 @@ if (!$result) {
                             </td>
                             <td class="buttonColumn">
                                 <?php if ($row['Is_Displayed'] == 1): ?>
-                                    <button class="buttons" style="opacity: 0.5; pointer-events: none;" disabled>
-                                        <i class="bi bi-eye-fill"></i>
+                                    <button class="buttons" style="opacity: 0.5;" disabled>
+                                        <i class="bi bi-eye-fill"></i> Active
                                     </button>
                                 <?php else: ?>
-                                    <button class="buttons" onclick="toggleDisplay(<?= $row['Content_ID'] ?>, <?= $row['Is_Displayed'] ?>)">Show</button>
+                                    <button class="buttons" 
+                                            onclick="toggleDisplay(<?= $row['Content_ID'] ?>, <?= $row['Is_Displayed'] ?>)">
+                                        Show
+                                    </button>
                                 <?php endif; ?>
                             </td>
                         </tr>
@@ -189,9 +299,8 @@ if (!$result) {
                     <h5 class="modal-title" id="addContentModalLabel">ADD NEW CONTENT</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body">
-                    <form action="includes/add_content.inc.php" method="post" enctype="multipart/form-data">
-                        
+                <form action="adminContentManagement.php" method="post" enctype="multipart/form-data">
+                    <div class="modal-body">
                         <div class="mb-3">
                             <label class="form-label">EVENT NAME</label>
                             <input type="text" name="event_name" class="form-control plchldr" placeholder="Enter event name" required>
@@ -209,7 +318,7 @@ if (!$result) {
 
                         <div class="mb-3">
                             <label class="form-label">PROMOTIONAL CONTENT</label>
-                            <input type="file" name="promotional_content" class="form-control">
+                            <input type="file" name="promotional_content" class="form-control" accept="image/*">
                         </div>
 
                         <div class="mb-3">
@@ -219,7 +328,7 @@ if (!$result) {
 
                         <div class="mb-3">
                             <label class="form-label">YOUTUBE BANNER</label>
-                            <input type="file" name="youtube_banner" class="form-control">
+                            <input type="file" name="youtube_banner" class="form-control" accept="image/*">
                         </div>
 
                         <div class="mb-3">
@@ -229,9 +338,8 @@ if (!$result) {
 
                         <div class="mb-3">
                             <label class="form-label">ADVERTISEMENT BANNER</label>
-                            <input type="file" name="advertisement_banner" class="form-control">
+                            <input type="file" name="advertisement_banner" class="form-control" accept="image/*">
                         </div>
-
                     </div>
                     <div class="modal-footer">
                         <button type="submit" name="submit" class="modalButtons">ADD CONTENT</button>
@@ -240,7 +348,7 @@ if (!$result) {
             </div>
         </div>
     </div>
-
+    
     <!-- Javascript -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>

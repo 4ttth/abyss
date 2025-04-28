@@ -1,0 +1,640 @@
+@font-face {
+    font-family: planetKosmos;
+    src: url(../CSS/fonts/planet_kosmos/PLANK___.TTF);
+}
+
+@font-face {
+    font-family: glacialIndifference;
+    src: url(../CSS/fonts/glacial-indifference/GlacialIndifference-Regular.otf);
+}
+
+@font-face {
+    font-family: glacialIndifferenceBold;
+    src: url(../CSS/fonts/glacial-indifference/GlacialIndifference-Bold.otf);
+}
+
+@font-face {
+    font-family: gameCube;
+    src: url(../CSS/fonts/gamecuben/GameCube.ttf);
+}
+
+body {
+    background-color: black !important;
+    overflow-x: hidden;
+    width: 100vw;
+}
+
+strong {
+    font-family: glacialIndifferenceBold;
+}
+
+
+/* Intro Animation */
+.introScreen {
+    position: fixed;
+    width: 100%;
+    height: 100vh;
+    background-color: black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+
+.loadingAnimation {
+    width: 400px; 
+    height: 400px;
+    background-image: url('../IMG/essentials/loadingAnimation.gif'); 
+    background-size: cover;
+}
+
+.hiddenContent {
+    opacity: 0;
+}
+
+.showContent {
+    opacity: 1;
+    transition: opacity .5s ease-in-out;
+}
+
+/* Navigation Bar - Logo Layer */
+/* Logo & Name */
+.navbar-brand {
+    display: flex;
+    align-items: center;
+}
+
+.logoLayer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+.logo-stack {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px; /* Space between image and text */
+    width: 100%;
+    margin-top: 20px;
+}
+
+.logoPicture {
+    width: 80px;
+    height: auto;
+    margin-right: 16px;
+    object-fit: contain; 
+}
+
+.logoText {
+    font-size: 50px;
+    padding-top: 5px;
+    color: white; 
+    font-family: planetKosmos;
+    margin-right: 40px;
+    letter-spacing: 2px;
+    width: 100%;
+    line-height: 30px;
+    text-align: center;
+}
+
+/* Search Bar */
+.searchBar {
+    display: flex;
+    align-items: center;
+    border: 1px solid white; 
+    border-radius: 30px;
+    padding: 5px 15px;
+    background: transparent; 
+    width: 90vw; 
+    height: 40px;
+    position: relative;
+    margin-left: 5px;
+}
+
+/* Input Field */
+.searchInput {
+    border: none;
+    background: transparent;
+    outline: none;
+    width: 100%;
+    color: white;
+    font-size: 16px;
+    padding: 5px;
+    font-family: glacialIndifference;
+    font-size: 18px !important;
+}
+
+/* Search Button */
+.searchButton {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 5px;
+    position: absolute;
+    right: 10px;
+}
+
+/* Search Button Icon */
+.searchButton img {
+    width: 25px;
+    height: 25px;
+}
+
+/* Placeholder Color */
+.searchInput::placeholder {
+    color: rgba(255, 255, 255, 0.7);
+    font-family: glacialIndifference;
+    font-size: 18px !important;
+}
+
+/* Account Logo Placeholder */
+.accountLogo {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.accountLogo i {
+    font-size: 32px; 
+    color: white;
+}
+
+/* Hover effect */
+.accountLogo:hover {
+    size: 120% !important;
+}
+
+
+/* Navigation Bar - Options Layer */
+.navigationBar {
+    background-color: black;
+    color: white;
+    position: fixed;
+    padding-top:20px;
+    padding-left: 20px !important;
+    font-family: glacialIndifferenceBold;
+    font-size: 18px;
+    letter-spacing: 3px;
+    padding-bottom: 5px;
+    box-shadow: 0px 0px 10px white;
+    z-index: 500;
+    width: 320px !important;
+    height: 100%;
+    border-right: solid white 1px;
+}
+
+.navBarOverflow {
+    height: calc(100vh - 300px);
+    overflow-y: scroll; 
+    overflow-x: hidden;
+    margin-bottom: 20px;
+}
+
+.logoLayer {
+    position: sticky;
+    top: 0;
+    background-color: black;
+    z-index: 10;
+    padding-bottom: 10px;
+}
+
+.nav-footer {
+    position: sticky;
+    bottom: 0;
+    background-color: black;
+    z-index: 10;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    text-align: center;
+}
+
+/* Design ng Scrollbar */
+.navBarOverflow::-webkit-scrollbar {
+    width: 6px;
+}
+.navBarOverflow::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.3);
+}
+.navBarOverflow::-webkit-scrollbar-thumb {
+    background: white;
+    border-radius: 3px;
+}
+.navBarOverflow::-webkit-scrollbar-thumb:hover {
+    background: white;
+}
+
+.navigationBar .nav-link {
+    display: flex;
+    color: white;
+    margin-right: 100px;
+    margin-top: 10px;
+    margin-bottom: 20px;
+    gap: 20px;
+    align-items: center;
+}
+
+.nav-text {
+    flex: 1;
+    text-align: left;
+    padding-right: 15px;
+    min-width: 0; /* Fixes flexbox overflow issues */
+    line-height: 18px;
+}
+
+/* Icon positioning */
+.nav-icon {
+    flex-shrink: 0;
+    font-size: 1.2rem;
+}
+
+.firstItem {
+    margin-top: 50px !important;
+}
+
+.lastItem {
+    margin-bottom: 8rem !important;
+}
+
+.nav-link.active {
+    color: white !important;
+}
+
+.nav-link.active {
+    color: white !important;
+    text-shadow: 
+        0 0 10px rgba(255, 255, 255),  
+        0 0 15px rgba(255, 255, 255),  
+        0 0 20px rgba(255, 255, 255);
+    font-weight: bold;
+}
+
+.nav-link:hover {
+    color: white !important;
+    text-shadow: 
+        0 0 10px rgba(255, 255, 255),  
+        0 0 15px rgba(255, 255, 255),  
+        0 0 20px rgba(255, 255, 255);
+    font-weight: bold;
+}
+
+/* Main Body */
+.header {
+    display: flex;
+    margin-left: 320px !important;
+    padding: 30px !important;
+}
+
+/* Text Block - Left */
+.textBlockLeft {
+    display: flex;
+    justify-content: flex-start; 
+    align-items: center;
+    text-align: left;       
+}
+
+.titleLeft {
+    position: relative;
+    color: white;
+    font-family: glacialIndifferenceBold;
+    font-size: 50px;
+    line-height: 40px;
+}
+
+.descriptionLeft {
+    position: relative;
+    color: white;
+    font-family: glacialIndifference;
+    font-size: 18px;
+    text-transform: uppercase;
+}
+
+.mainBody {
+    display: flex;
+    padding-left: 350px !important;
+    margin-top: 50px !important;
+    max-width: 100% !important;
+}
+
+/* Decorative Divider - Right*/
+.decoDivideRight {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    position: absolute;
+    margin-top: .5rem;
+}
+
+.codeDecoRight {
+    color: white;
+    font-family: glacialIndifference;
+    position: absolute;
+    margin-top: 4.2rem;
+    background-color: black !important;
+    padding: 0px 100px 0px 30px;
+    z-index: 10;
+    margin-right: 100px;
+    margin-left: 60rem;
+}
+
+.decoLineRight {
+    width: 100%;
+    height: 1px;
+    margin-top: 5rem;
+    background-color: white; 
+    margin-right: 15px; 
+    position: absolute;
+}
+
+.decoBoxRight {
+    height: 15px;
+    width: 15px;
+    background-color: white;
+    position: absolute;
+    z-index: 11;
+    margin-top: 4.5rem;
+    margin-left: 62rem !important;
+    margin-right: 15px !important;
+}
+
+.adminNotes {
+    margin-top: 20px !important;
+}
+
+.titleRight {
+    color: white;
+    font-family: glacialIndifferenceBold;
+    font-size: 50px;
+    padding-right: 30px !important;
+    right: 0;
+}
+
+/* Table */
+.reportsTable {
+    color: white;
+    font-family: glacialIndifference;
+    font-size: 18px;
+}
+
+table.dataTable thead {
+    background-color: white;
+    color: black;
+    font-family: glacialIndifferenceBold;
+    font-size: 18px;
+    text-transform: uppercase;
+}
+
+table.dataTable tbody td {
+    border: solid white .5px;
+}
+
+table.dataTable tbody tr:hover {
+    background-color: gray;
+}
+
+table.dataTable tbody tr {
+    color: white;
+    font-family: glacialIndifference;
+    font-size: 16px;
+}
+
+/* DataTable Elements */
+label {
+    display: inline-block;
+    color: white;
+    font-family: glacialIndifferenceBold;
+    font-size: 18px;
+    text-transform: uppercase;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+div.dt-container .dt-search input {
+    border: 1px solid #aaa;
+    border-radius: 3px;
+    padding: 5px;
+    background-color: transparent;
+    color: inherit;
+    margin-left: 3px;
+    color: white;
+    font-family: glacialIndifference;
+    font-size: 16px;
+}
+
+.dt-info, .dt-input, dt {
+    color: white !important;
+    font-family: glacialIndifference;
+    font-size: 16px;
+}
+
+/* from inspect T^T */
+table.dataTable.stripe > tbody > tr:nth-child(odd) > *, table.dataTable.display > tbody > tr:nth-child(odd) > * {
+    box-shadow: inset 0 0 0 9999px rgba(0, 0, 0, 0.023);
+    box-shadow: inset 0 0 0 9999px rgba(var(--dt-row-stripe), var(--dt-row-stripe-alpha));
+    color: white !important;
+    font-family: glacialIndifference;
+    font-size: 16px;
+}
+
+.dt-empty {
+    color: white !important;
+    font-family: glacialIndifference;
+    font-size: 16px;
+}
+
+.dt-paging {
+    background-color: white !important;
+    font-family: glacialIndifference;
+    font-size: 16px;
+    text-transform: uppercase;
+}
+
+.dt-layout-table {
+    border: solid .1px white;
+}
+
+option {
+    color: black !important;
+}
+
+/* Buttons */
+.buttonColumn {
+    text-align: center !important; /* Horizontally centers content */
+    vertical-align: middle; /* Vertically centers content */
+    align-items: center;
+}
+
+.buttons {
+    text-align: center;
+    font-size: 14px;
+    font-family: glacialIndifferenceBold;
+    background: transparent;
+    color: white;
+    border: 2px solid white;
+    text-decoration: none;
+    cursor: pointer;
+    transition: 0.3s ease;
+    font-weight:bold;
+    width: 100px !important;
+    text-transform: uppercase;
+}
+
+.memberButtons {
+    text-align: center;
+    font-size: 14px;
+    font-family: glacialIndifferenceBold;
+    background: transparent;
+    color: white;
+    border: 2px solid white;
+    text-decoration: none;
+    cursor: pointer;
+    transition: 0.3s ease;
+    font-weight:bold;
+    width: 200px !important;
+    text-transform: uppercase;
+}
+
+
+.buttons:hover {
+    background-color: white;
+    color: black;
+}
+
+/* Penalize Button */
+.penalize {
+    text-align: center;
+    font-size: 14px;
+    font-family: glacialIndifferenceBold;
+    background: transparent;
+    color: white;
+    text-decoration: none;
+    border: 2px solid #ff3300;
+    cursor: pointer;
+    transition: 0.3s ease;
+    font-weight:bold;
+    width: 100px !important;
+    text-transform: uppercase;
+    background-color: #ff3300;
+}
+
+.penalize:hover {
+    transform: scale(1.1); 
+    transition: transform 0.2s ease-in-out; 
+}
+
+/* Modal */
+/* Add Player Modal */
+.customModal {
+    background: rgba(0, 0, 0, 0.9) !important;
+    color: white !important;
+    font-family: glacialIndifference;
+    padding: 20px;
+    box-shadow: 0 0 10px white;
+}
+
+.modal-header h5 {
+    color: white;
+    font-family: glacialIndifferenceBold;
+    font-size: 50px;
+    line-height: 40px;
+    text-transform: capitalize !important;
+}
+
+.modal-footer {
+    display: flex;
+    justify-content: space-between;
+}
+
+.form-label {
+    font-family: glacialIndifferenceBold !important;
+    text-transform: uppercase !important;
+    color: white;
+    font-family: glacialIndifferenceBold;
+    font-size: 16px;
+    margin: 10px 0 0 0;
+}
+
+/* Buttons */
+.modalButtons {
+    font-size: 14px;
+    font-family: glacialIndifferenceBold;
+    background: transparent;
+    color: white;
+    border: 2px solid white;
+    text-decoration: none;
+    cursor: pointer;
+    transition: 0.3s ease;
+    font-weight: bold;
+    padding: 5px 20px;
+}
+
+.modalButtons:hover {
+    background: white;
+    color: black;
+}
+
+.customModal .modal-header,
+.customModal .modal-footer {
+    border: none !important;
+}
+
+/* Style Select Dropdown */
+.squadLevelDropdown {
+    font-family: glacialIndifference;
+    font-size: 12px !important;
+    color: white !important;
+    background-color: transparent !important;
+    border: 2px solid white !important;
+    border-radius: 0 !important;
+    text-transform: uppercase !important;
+    width: 100%;
+    min-width: 150px;
+    padding: 8px;
+    appearance: none;
+}
+
+/* Dropdown Options */
+.squadLevelDropdown:focus,
+.squadLevelDropdown option {
+    color: white !important;
+    background-color: black !important;
+}
+
+/* Drop Icon */
+.dropdown-icon-penalty {
+    position: absolute;
+    right: 2rem;
+    top: 4.9rem;
+    font-size: 12px !important;
+    transform: translateY(-50%);
+    color: white;
+    pointer-events: none;
+}
+
+.dropdown-icon-timeout {
+    position: absolute;
+    right: 2rem;
+    top: 10.9rem;
+    font-size: 12px !important;
+    transform: translateY(-50%);
+    color: white;
+    pointer-events: none;
+}
+
+.alert {
+    font-family: glacialIndifference !important;
+    font-size: 16px !important;
+}
+
+.alert-danger, .alert-success {
+    margin-top: 20px;
+}

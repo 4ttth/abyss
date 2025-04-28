@@ -1,0 +1,393 @@
+@font-face {
+    font-family: planetKosmos;
+    src: url(../CSS/fonts/planet_kosmos/PLANK___.TTF);
+}
+
+@font-face {
+    font-family: glacialIndifference;
+    src: url(../CSS/fonts/glacial-indifference/GlacialIndifference-Regular.otf);
+}
+
+@font-face {
+    font-family: glacialIndifferenceBold;
+    src: url(../CSS/fonts/glacial-indifference/GlacialIndifference-Bold.otf);
+}
+
+/* Entire Page */
+body {
+    overflow-x: hidden; 
+    width: 100vw;
+    overflow-y: auto; /* Allow vertical scrolling */
+    height: 100vh; /* Full viewport height */
+}
+
+.customPageBackground {
+    background-color: black;
+}
+
+strong {
+    font-family: glacialIndifferenceBold;
+}
+
+/* Intro Animation */
+.introScreen {
+    position: fixed;
+    width: 100%;
+    height: 100vh;
+    background-color: black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+
+.loadingAnimation {
+    width: 400px; 
+    height: 400px;
+    background-image: url('../IMG/essentials/loadingAnimation.gif'); 
+    background-size: cover;
+}
+
+.hiddenContent {
+    opacity: 0;
+}
+
+.showContent {
+    opacity: 1;
+    transition: opacity .5s ease-in-out;
+}
+
+/* Navigation Bar - Logo Layer */
+/* Logo & Name */
+
+
+.navbar-brand {
+    display: flex;
+    align-items: center;
+}
+
+.logoLayer {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+.logoPicture {
+    width: 80px;
+    height: auto;
+    margin-right: 16px; 
+}
+
+.logoText {
+    font-size: 50px;
+    padding-top: 20px;
+    color: white; 
+    font-family: planetKosmos;
+    margin-right: 40px;
+    letter-spacing: 2px;
+}
+
+/* Search Bar */
+.searchBar {
+    display: flex;
+    align-items: center;
+    border: 1px solid white; 
+    border-radius: 30px;
+    padding: 5px 15px;
+    background: transparent; 
+    width: 90vw; 
+    height: 40px;
+    position: relative;
+    margin-left: 5px;
+}
+
+/* Input Field */
+.searchInput {
+    border: none;
+    background: transparent;
+    outline: none;
+    width: 100%;
+    color: white;
+    font-size: 16px;
+    padding: 5px;
+    font-family: glacialIndifference;
+    font-size: 18px !important;
+}
+
+/* Search Button */
+.searchButton {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 5px;
+    position: absolute;
+    right: 10px;
+}
+
+/* Search Button Icon */
+.searchButton img {
+    width: 25px;
+    height: 25px;
+}
+
+/* Placeholder Color */
+.searchInput::placeholder {
+    color: rgba(255, 255, 255, 0.7);
+    font-family: glacialIndifference;
+    font-size: 18px !important;
+}
+
+/* Account Logo Placeholder */
+.accountLogo {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-left: 20px !important;
+}
+
+.accountLogo i {
+    font-size: 32px; 
+    color: white;
+}
+
+/* Hover effect */
+.accountLogo:hover {
+    size: 120% !important;
+}
+
+
+/* Navigation Bar - Options Layer */
+.navigationBar {
+    background-color: black;
+    color: white;
+    position: fixed;
+    padding-top:20px;
+    padding-left: 20px !important;
+    font-family: glacialIndifferenceBold;
+    font-size: 18px;
+    letter-spacing: 3px;
+    padding-bottom: 5px;
+    box-shadow: 0px 0px 100px rgba(0, 0, 0, 100%);
+    z-index: 500;
+    height: 180px;
+}
+
+.navigationBar .nav-link {
+    color: white;
+    margin-right: 100px;
+}
+
+.nav-link.active {
+    color: white !important;
+}
+
+.nav-link.active {
+    color: white !important;
+    text-shadow: 
+        0 0 10px rgba(255, 255, 255),  
+        0 0 15px rgba(255, 255, 255),  
+        0 0 20px rgba(255, 255, 255);
+    font-weight: bold;
+}
+
+.nav-link:hover {
+    color: white !important;
+    text-shadow: 
+        0 0 10px rgba(255, 255, 255),  
+        0 0 15px rgba(255, 255, 255),  
+        0 0 20px rgba(255, 255, 255);
+    font-weight: bold;
+}
+
+/* Content */
+.content {
+    margin-top: 200px !important;
+}
+
+.resultHeader {
+    color: white;
+    margin-top: 80px;
+    margin-left: 20px;
+    margin-bottom: 20px;
+}
+
+.resultTitle {
+    color: white;
+    font-family: glacialIndifferenceBold;
+    font-size: 50px;
+    text-transform: uppercase;
+    line-height: 50px;
+}
+
+.resultDescription {
+    color: white;
+    font-family: glacialIndifference;
+    font-size: 14px;
+    text-transform: uppercase;
+}
+
+/* Grid Item */
+.gridItem {
+    background-color: black;
+    border: 2px solid white;
+    padding: 15px;
+    text-align: center;
+    color: white;
+    font-family: glacialIndifference;
+    height: 150px; /* Fixed height for grid items */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Pagination */
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+    gap: 10px;
+}
+
+.pagination button {
+    background-color: #333;
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-family: glacialIndifference;
+}
+
+.pagination button:disabled {
+    background-color: #555;
+    cursor: not-allowed;
+}
+
+/* Search Block */
+.squadAccount {
+    border: 2px solid white;
+    padding: 20px 15px 20px 15px;
+    width: 90%; /* Adjust width as needed */
+    align-self: center; /* Center vertically within the grid cell */
+    justify-self: center; /* Center horizontally within the grid cell */
+}
+
+.squadAcronym {
+    color: white;
+    font-family: glacialIndifferenceBold;
+    font-size: 20px;
+    text-transform: uppercase;
+    line-height: 14px;  
+}
+
+.squadName {
+    color: white;
+    font-family: glacialIndifferenceBold;
+    font-size: 50px;
+    line-height: 45px;
+    margin-bottom: 5px;
+}
+
+.squadAccountID {
+    color: white;
+    font-family: glacialIndifference;
+    font-size: 20px;
+    text-transform: uppercase;
+    line-height: 16px;  
+}
+
+.squadDescription {
+    color: white;
+    font-family: glacialIndifference;
+    font-size: 18px;
+    line-height: 14px;
+    font-style: italic ;
+    margin-bottom: 20px;
+}
+
+.tabsRow {
+    display: flex;
+    gap: 10px;
+}
+
+.tabs {
+    margin-top: 10px !important;
+    margin-bottom: 10px !important;
+    text-align: center;
+    font-size: 14px;
+    font-family: glacialIndifferenceBold;
+    background: white;
+    color: black;
+    text-decoration: none;
+    font-weight:bold;
+    padding: 0px !important;
+    width: 200px !important;
+}
+
+/* View Button */
+.viewDetailsButton {
+    text-align: center;
+    font-size: 14px;
+    font-family: glacialIndifferenceBold;
+    background: transparent;
+    color: white;
+    border: 2px solid white;
+    text-decoration: none;
+    cursor: pointer;
+    transition: 0.3s ease;
+    font-weight:bold;
+    padding: 0px !important;
+    width: 200px !important;
+    padding: 3px 10px 3px 10px !important; 
+    margin-left: 5px;
+}
+
+.viewDetailsButton:hover {
+    background: white;
+    color: black;
+}
+
+
+/* Icons Bar */
+.iconsBar {
+    font-size: 30px;
+    margin-left: auto; 
+    display: flex;
+    align-items: center;
+    gap: 15px; 
+    
+}
+
+.navigationBar .nav-linkIcon {
+    color: white;
+    margin-right: 15px;
+    line-height: 30px !important;
+    display: inline-flex;
+    align-items: start;
+    gap: 5px;
+    text-decoration: none !important;
+}
+
+.ju{
+    gap: 6.5px !important;
+}
+
+.notifCount {
+    background-color: #FF3300;
+    border-radius: 20%;
+    color: white;
+    font-family: glacialIndifference;
+    font-size: 15px;
+    line-height: 10px !important;
+    padding: 5px;
+    text-decoration: none !important;
+}

@@ -2,9 +2,17 @@
 session_start();
 require_once 'includes/dbh.inc.php';
 
-// Initialize user data from session
-$user = $_SESSION['user'] ?? ['username' => 'Guest', 'Squad_ID' => 'N/A'];
+use chillerlan\QRCode\{QRCode, QROptions};
+require_once 'vendor/autoload.php';
 
+
+// Initialize user data from sessions
+$user = $_SESSION['user'] ?? ['username' => 'Guest', 'Squad_ID' => 'N/A'];
+if (!$_SESSION['user']['verified']) {
+    $_SESSION['error'] = "Please verify your email to proceed.";
+    header("Location: verifyEmail.php");
+    exit();
+}
 try {
     if (isset($_SESSION['user']['username'])) {
         // Fetch ALL user data from database using session username
@@ -56,6 +64,25 @@ if (isset($_SESSION['user']['Squad_ID'])) {
 } else {
     $players = [];
 }
+
+// Generate QR Code URL
+$config = include('includes/config.php');
+$hostName = "https://" . $config['HOST_NAME'];
+$squadID = $_SESSION['user']['Squad_ID'] ?? 'N/A';
+$encodedsquadID = base64_encode($squadID);
+$encodedUsername = base64_encode($user['Username'] ?? 'Guest');
+$qrURL = $hostName . "/playerCreation.php?squad_id=" . $encodedsquadID . "&username=" . $encodedUsername;
+$options = new QROptions([
+    'version' => 5,
+    'eccLevel' => QRCode::ECC_H,
+    'scale' => 5,
+    'imageBase64' => true,
+    'imageTransparent' => false,
+    'foregroundColor' => '#000000',
+    'backgroundColor' => '#ffffff'
+]);
+
+$qrcode = (new QRCode)->render($qrURL);
 ?>
 
 <!doctype html>
@@ -76,21 +103,50 @@ if (isset($_SESSION['user']['Squad_ID'])) {
         <div class="loadingAnimation"></div>
     </div>
     <div class="pageContent hiddenContent">
-        <div class="container-fluid">
-            <div class="row w-100">
-                <div class="col content">
-                    <div class="logo">
+        <!-- Navigation Bar -->
+        <div class="container-fluid jos">        
+            <div class="row">
+                <div class="container-fluid navigationBar">
+                    <!-- Logo Layer -->
+                    <div class="logoLayer">
+                        <!-- Logo and Name -->
                         <a class="navbar-brand" href="index.php">
                             <img src="IMG/essentials/whiteVer.PNG" class="logoPicture" alt="ABYSS">
                             <div class="logoText">abyss</div>
                         </a>
-
-                        <div class="backButton">
-                            <a href="index.php">
-                                <i class="bi bi-box-arrow-left backButton"></i>
-                            </a>
-                        </div>
+                        
+                        <form class="searchBar" aria-disabled="true" style="opacity: 0.5; pointer-events: none;">
+                            <input class="searchInput" type="search" name="query" placeholder="Search Squads" aria-label="Search" disabled>
+                            <button class="searchButton" type="submit" disabled>
+                                <img src="IMG/essentials/whiteVer.PNG" alt="Search">
+                            </button>
+                        </form>              
+                    
+                        <!-- Navbar Toggle Button -->
+                        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" 
+                            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                            <span class="navbar-toggler-icon"></span>
+                        </button>
                     </div>
+                    
+                    <ul class="nav">
+                        <li class="nav-item">
+                            <a class="nav-link" aria-current="page" href="index.php">HOME</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="guestDiscoverPage.php">DISCOVER</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="aboutUsPage.php">ABOUT US</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="container-fluid jis">
+            <div class="row w-100">
+                <div class="col content">
                     <?php if (isset($_SESSION['error'])): ?>
                         <div class="alert alert-danger">
                             <?= $_SESSION['error'];
@@ -134,17 +190,22 @@ if (isset($_SESSION['user']['Squad_ID'])) {
                         </div>
                     </div>
 
-                    <!-- TESTESTSETSETSETSETSET -->
+                    <!-- Static QR Code -->
+                    <div class="qr-wrapper">
+                        <div class="qr-code">
+                            <?php printf('<img width="150px" height="150px" src="%s" alt="$s" />', $qrcode, $qrURL);;?>
+                            <div class="qr-text">Scan to Add Player</div>
+                        </div>
+                    </div>
+
                     <!-- Squad Members Profile -->
                     <div class="profiles-wrapper">
                         <div class="profiles">
-
-                            <!-- TODO: COACH SLOT REMOVED, INCLUDE A NEW COLUMN IN PLAYER TABLE FOR A ROLE WHETHER IT IS A COACH OR NOT, AS WELL AS IN THE FORM -->
-                            <!-- Player Details -->
                             <?php $playerIndex = 1; ?>
                             <?php foreach ($players as $player): ?>
                                 <div class="memberProfile">
-                                    <div class="role"><?= htmlspecialchars($player['Role']) ?> &nbsp; // &nbsp; player 00<?= $playerIndex ?></div>
+                                    
+                                    <div class="role"><?= htmlspecialchars($player['Role']) ?> &nbsp; // &nbsp; <?= htmlspecialchars($player['View_ID']) ?></div>
                                     <div class="IGN"><?= htmlspecialchars($player['IGN']) ?></div>
                                     <div class="detailsTitle">NAME</div>
                                     <div class="detailsDescription"><?= htmlspecialchars($player['Full_Name']) ?></div>
@@ -167,14 +228,6 @@ if (isset($_SESSION['user']['Squad_ID'])) {
                                 </div>
                                 <?php $playerIndex += 1; ?>
                             <?php endforeach; ?>
-
-
-                            <!-- Add Player Modal -->
-                            <div class="addButton" data-bs-toggle="modal" data-bs-target="#addPlayerModal">
-                                <i class="bi bi-plus-circle-fill add"></i>
-                                <div class="buttonTitle">ADD PLAYER PROFILE</div>
-                            </div>
-
                         </div>
                     </div>
 
@@ -286,115 +339,6 @@ if (isset($_SESSION['user']['Squad_ID'])) {
                     <!-- END HERE -->
 
                     <!-- TESTESTESETESETSETSETSETS -->
-                    <!-- Add Player Modal -->
-                    <div class="modal fade" id="addPlayerModal" tabindex="-1" aria-labelledby="addPlayerModalLabel" aria-hidden="true">
-                        <div class="modal-dialog">
-                            <div class="modal-content customModal">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="addPlayerModalLabel">ADD PLAYER PROFILE</h5>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                </div>
-                                <div class="modal-body">
-                                    <form action="includes/playercreate.inc.php" method="post">
-                                        <div class="mb-3">
-                                            <label class="form-label">IN-GAME NAME</label>
-                                            <input type="text" name="IGN" class="form-control plchldr" placeholder="Enter IGN" required>
-                                        </div>
-                                        <div class="mb-3">
-                                            <label class="form-label">FULL NAME</label>
-                                            <input type="text" name="Full_Name" class="form-control plchldr" placeholder="Enter Full Name" required>
-                                        </div>
-                                        <div class="mb-3">
-                                            <label class="form-label">GAME ID</label>
-                                            <input type="text" name="Game_ID" class="form-control plchldr" placeholder="Enter Game ID" required>
-                                        </div>
-
-                                        <!-- Two-Column Layout for Rank -->
-                                        <div class="row">
-                                            <!-- Current Rank -->
-                                            <div class="col-md-6">
-                                                <label class="form-label">CURRENT RANK</label>
-                                                <div class="dropdown-wrapper">
-                                                    <select name="Current_Rank" class="squadLevelDropdown">
-                                                        <option selected disabled>Select Rank</option>
-                                                        <option>Warrior</option>
-                                                        <option>Elite</option>
-                                                        <option>Master</option>
-                                                        <option>Grandmaster</option>
-                                                        <option>Epic</option>
-                                                        <option>Legend</option>
-                                                        <option>Mythic</option>
-                                                        <option>Mythical Honor</option>
-                                                        <option>Mythical Glory</option>
-                                                        <option>Mythical Immortal</option>
-                                                    </select>
-                                                    <span class="dropdown-icon">▼</span>
-                                                </div>
-                                                <input name="Current_Star" type="text" class="form-control plchldr mt-2" placeholder="Enter Stars">
-                                            </div>
-
-                                            <!-- Highest Rank -->
-                                            <div class="col-md-6">
-                                                <label class="form-label">HIGHEST RANK</label>
-                                                <div class="dropdown-wrapper">
-                                                    <select name="Highest_Rank" class="squadLevelDropdown">
-                                                        <option selected disabled>Select Rank</option>
-                                                        <option>Warrior</option>
-                                                        <option>Elite</option>
-                                                        <option>Master</option>
-                                                        <option>Grandmaster</option>
-                                                        <option>Epic</option>
-                                                        <option>Legend</option>
-                                                        <option>Mythic</option>
-                                                        <option>Mythical Honor</option>
-                                                        <option>Mythical Glory</option>
-                                                        <option>Mythical Immortal</option>
-                                                    </select>
-                                                    <span class="dropdown-icon">▼</span>
-                                                </div>
-                                                <input name="Highest_Star" type="text" class="form-control plchldr mt-2" placeholder="Enter Stars">
-                                            </div>
-                                        </div>
-
-                                        <!-- Role Dropdown -->
-                                        <div class="mb-3 mt-3">
-                                            <label class="form-label">ROLE</label>
-                                            <div class="dropdown-wrapper">
-                                                <select name="Role" class="squadLevelDropdown">
-                                                    <option selected disabled>Select Role</option>
-                                                    <option>Tank</option>
-                                                    <option>Fighter</option>
-                                                    <option>Assassin</option>
-                                                    <option>Mage</option>
-                                                    <option>Marksman</option>
-                                                    <option>Support</option>
-                                                    <option>Coach</option>
-                                                </select>
-                                                <span class="dropdown-icon">▼</span>
-                                            </div>
-                                        </div>
-
-                                        <div class="hero-pool-container">
-                                            <label class="form-label">HERO POOL</label>
-                                            <div class="hero-selection">
-                                                <div class="hero-circle" data-hero-index="1" data-bs-toggle="modal" data-bs-target="#heroModal"></div>
-                                                <div class="hero-circle" data-hero-index="2" data-hero-index="2" data-bs-toggle="modal" data-bs-target="#heroModal"></div>
-                                                <div class="hero-circle" data-hero-index="3" data-hero-index="3" data-bs-toggle="modal" data-bs-target="#heroModal"></div>
-                                            </div>
-                                            <input type="hidden" name="Hero_1" id="hero1Input">
-                                            <input type="hidden" name="Hero_2" id="hero2Input">
-                                            <input type="hidden" name="Hero_3" id="hero3Input">
-                                        </div>
-
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="submit" name="submit" class="modalButtons">SAVE PLAYER</button>
-                                </div>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-
                     <!-- Hero Selection Modal -->
                     <div class="modal fade" id="heroModal" tabindex="-1" aria-labelledby="heroModalLabel" aria-hidden="true">
                         <div class="modal-dialog modal-dialog-centered">
@@ -569,7 +513,7 @@ if (isset($_SESSION['user']['Squad_ID'])) {
                         <div class="modal-dialog">
                             <div class="modal-content customModal">
                                 <div class="modal-header">
-                                    <h5 class="modal-title" id="squadVerificationModalLabel">SQUAD VERIFICATION</h5>
+                                    <h5 class="modal-title" id="squadVerificationModalLabel">SQUAD LEVEL UPDATE</h5>
                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body">
@@ -587,42 +531,166 @@ if (isset($_SESSION['user']['Squad_ID'])) {
                                             </div>
                                         </div>
 
-                                        <div class="mb-3">
-                                            <label class="form-label">TYPE OF PROOF</label>
-                                            <div class="dropdown-wrapper">
-                                                <select name="Proof_Type" class="squadLevelDropdown" required>
-                                                    <option selected disabled>Select Proof</option>
-                                                    <option value="Certificate of Enrollment">Certificate of Enrollment</option>
-                                                    <option value="Official Team Registration">Official Team Registration</option>
-                                                    <option value="Tournament Participation">Tournament Participation</option>
-                                                </select>
-                                                <span class="dropdown-icon">▼</span>
+                                        <!-- Conditional Fields -->
+                                        <div id="verificationFields">
+                                            <div class="mb-3">
+                                                <label class="form-label">TYPE OF PROOF</label>
+                                                <div class="dropdown-wrapper">
+                                                    <select name="Proof_Type" class="squadLevelDropdown">
+                                                        <option selected disabled>Select Proof</option>
+                                                        <option value="Certificate of Enrollment">Certificate of Enrollment</option>
+                                                        <option value="Official Team Registration">Official Team Registration</option>
+                                                        <option value="Tournament Participation">Tournament Participation</option>
+                                                    </select>
+                                                    <span class="dropdown-icon">▼</span>
+                                                </div>
                                             </div>
-                                        </div>
 
-                                        <div class="mb-3">
-                                            <label class="form-label">ATTACH FILE</label>
-                                            <div class="custom-file-upload">
-                                                <input type="file" name="Proof_File" id="fileInput" hidden required>
-                                                <button type="button" class="modalButtons" id="chooseFileBtn">CHOOSE FILE</button>
-                                                <span id="fileName">No file chosen</span>
+                                            <div class="mb-3">
+                                                <label class="form-label">ATTACH FILE</label>
+                                                <div class="custom-file-upload">
+                                                    <input type="file" name="Proof_File" id="fileInput" hidden>
+                                                    <button type="button" class="modalButtons" id="chooseFileBtn">CHOOSE FILE</button>
+                                                    <span id="fileName">No file chosen</span>
+                                                </div>
                                             </div>
                                         </div>
 
                                         <div class="modal-footer">
-                                            <button type="submit" class="modalButtons">VERIFY</button>
+                                            <button type="submit" class="modalButtons">SUBMIT</button>
                                         </div>
                                     </form>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-            </div>
-        </div>
-    </div>
 
     <!-- Javascript -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const rankStars = {
+                // Warrior
+                'Warrior I': { min: 0, max: 3 },
+                'Warrior II': { min: 0, max: 3 },
+                'Warrior III': { min: 0, max: 3 },
+                // Elite
+                'Elite I': { min: 0, max: 3 },
+                'Elite II': { min: 0, max: 3 },
+                'Elite III': { min: 0, max: 3 },
+                'Elite IV': { min: 0, max: 3 },
+                // Master
+                'Master I': { min: 0, max: 4 },
+                'Master II': { min: 0, max: 4 },
+                'Master III': { min: 0, max: 4 },
+                'Master IV': { min: 0, max: 4 },
+                // Grandmaster
+                'Grandmaster I': { min: 0, max: 5 },
+                'Grandmaster II': { min: 0, max: 5 },
+                'Grandmaster III': { min: 0, max: 5 },
+                'Grandmaster IV': { min: 0, max: 5 },
+                'Grandmaster V': { min: 0, max: 5 },
+                // Epic
+                'Epic I': { min: 0, max: 5 },
+                'Epic II': { min: 0, max: 5 },
+                'Epic III': { min: 0, max: 5 },
+                'Epic IV': { min: 0, max: 5 },
+                'Epic V': { min: 0, max: 5 },
+                // Legend
+                'Legend I': { min: 0, max: 5 },
+                'Legend II': { min: 0, max: 5 },
+                'Legend III': { min: 0, max: 5 },
+                'Legend IV': { min: 0, max: 5 },
+                'Legend V': { min: 0, max: 5 },
+                // Mythic
+                'Mythic': { min: 0, max: 24 },
+                'Mythical Honor': { min: 25, max: 49 },
+                'Mythical Glory': { min: 50, max: 99 },
+                'Mythical Immortal': { min: 100, max: Infinity }
+            };
+
+            function validateStars(input, rank) {
+                const value = parseInt(input.value);
+                const config = rankStars[rank];
+                if (!config) {
+                    input.setCustomValidity('Select a valid rank first.');
+                    return;
+                }
+                if (isNaN(value) || value < config.min || value > config.max) {
+                    input.setCustomValidity(`Stars must be between ${config.min} and ${config.max}.`);
+                } else {
+                    input.setCustomValidity('');
+                }
+                input.reportValidity();
+            }
+
+            // Current Rank Validation
+            const currentRank = document.querySelector('select[name="Current_Rank"]');
+            const currentStar = document.querySelector('input[name="Current_Star"]');
+            currentRank.addEventListener('change', () => validateStars(currentStar, currentRank.value));
+            currentStar.addEventListener('input', () => validateStars(currentStar, currentRank.value));
+
+            // Highest Rank Validation
+            const highestRank = document.querySelector('select[name="Highest_Rank"]');
+            const highestStar = document.querySelector('input[name="Highest_Star"]');
+            highestRank.addEventListener('change', () => validateStars(highestStar, highestRank.value));
+            highestStar.addEventListener('input', () => validateStars(highestStar, highestRank.value));
+        });
+
+        document.querySelector('form').addEventListener('submit', function(e) {
+            const currentRank = document.querySelector('[name="Current_Rank"]').value;
+            const highestRank = document.querySelector('[name="Highest_Rank"]').value;
+            
+            if (currentRank === highestRank) {
+                const currentStar = parseInt(document.querySelector('[name="Current_Star"]').value);
+                const highestStar = parseInt(document.querySelector('[name="Highest_Star"]').value);
+                if (highestStar < currentStar) {
+                    alert("Highest stars cannot be less than current stars for the same rank!");
+                    e.preventDefault();
+                }
+            }
+        });
+
+        // Squad Verification Modal Field Toggling
+        document.addEventListener('DOMContentLoaded', function() {
+        const squadLevelSelect = document.querySelector('#squadVerificationModal select[name="Squad_Level"]');
+        const verificationFields = document.getElementById('verificationFields');
+        const proofTypeSelect = verificationFields.querySelector('select[name="Proof_Type"]');
+        const fileInput = verificationFields.querySelector('input[name="Proof_File"]');
+        const chooseFileBtn = document.getElementById('chooseFileBtn');
+        const fileNameSpan = document.getElementById('fileName');
+
+        function toggleVerificationFields() {
+            const isAmateur = squadLevelSelect.value === 'Amateur';
+            
+            verificationFields.style.display = isAmateur ? 'none' : 'block';
+            proofTypeSelect.required = !isAmateur;
+            fileInput.required = !isAmateur;
+        }
+
+        if (squadLevelSelect) {
+            toggleVerificationFields();
+            squadLevelSelect.addEventListener('change', toggleVerificationFields);
+        }
+
+        // File input handling
+        chooseFileBtn.addEventListener('click', function() {
+            fileInput.click();
+        });
+
+        fileInput.addEventListener('change', function() {
+            fileNameSpan.textContent = this.files[0] ? this.files[0].name : 'No file chosen';
+        });
+    });
+
+    // Use AJAX to refresh player list without reloading
+    setInterval(function() {
+        fetch('includes/fetchPlayers.inc.php?squad_id=<?= urlencode($squadID) ?>')
+            .then(response => response.text())
+            .then(data => {
+                document.querySelector('.profiles').innerHTML = data;
+            });
+    }, 5000); // Refresh every 5 seconds
+    </script>
     <script src="JS/creatingSquadScript.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 </body>

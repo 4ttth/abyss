@@ -2,13 +2,17 @@
 session_start();
 require_once '../includes/dbh.inc.php';
 
-if (!in_array($_SESSION['user_role'], ['Moderator'])) {
+
+if (!in_array($_SESSION['user']['Role'], ['Moderator'])) {
+    header("Location: ../loginPage.php");
     exit("Access Denied!");
 }
+
 
 $sql = "SELECT Report_ID, Reporter_ID, Reported_User_ID, Report_Category, Proof_File, Report_Status, Date_Reported FROM tbl_reports";
 $result = $pdo->query($sql);
 ?>
+
 
 <!doctype html>
 <html lang="en">
@@ -23,11 +27,13 @@ $result = $pdo->query($sql);
     <link rel="icon" type="image/x-icon" href="IMG/essentials/whiteVer.PNG">
 </head>
 
+
 <body>
     <!-- Loading Screen for Landing Page -->
     <div class="introScreen">
         <div class="loadingAnimation"></div>
     </div>
+
 
     <div class="pageContent hiddenContent">
         <!-- Vertical Navigation Bar (modified from original) -->
@@ -41,7 +47,7 @@ $result = $pdo->query($sql);
                     </div>
                 </a>
             </div>
-            
+           
             <!-- Vertical Nav Links -->
             <ul class="nav flex-column">
                 <li class="nav-item firstItem">
@@ -59,20 +65,38 @@ $result = $pdo->query($sql);
                         FEEDBACKS
                     </a>
                 </li>
-                <li class="nav-item lastItem">
+                <li class="nav-item">
                     <a class="nav-link" href="modRequests.php">
                         <span class="nav-text">VERIFICATION REQUESTS</span>
                     </a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="modScrimsLog.php">
+                        <span class="nav-text">SCRIMS LOG</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="modInvitesLog.php">
+                        <span class="nav-text">INVITES LOG</span>
+                    </a>
+                </li>
+                <li class="nav-item lastItem">
+                    <a class="nav-link" href="modSquadAccounts.php">
+                        <span class="nav-text">SQUAD ACCOUNTS</span>
+                    </a>
+                </li>
             </ul>
-            
+           
             <!-- Account Logo (at bottom) -->
             <div class="nav-footer">
-                <button class="accountLogo" data-bs-toggle="modal" data-bs-target="#loginSignupModal">
-                    <i class="bi bi-box-arrow-left"></i>
-                </button>
+                <form action="../includes/logout.inc.php" method="post">
+                    <button class="accountLogo" data-bs-toggle="modal" data-bs-target="#loginSignupModal">
+                            <i class="bi bi-box-arrow-left"></i>
+                    </button>
+                </form>
             </div>
         </div>
+
 
         <!-- Main Content -->
         <div class="container-fluid header">
@@ -86,6 +110,7 @@ $result = $pdo->query($sql);
                 </div>
             </div>
 
+
             <!-- Header Divider -->
             <div class=" decoDivideRight">
                 <div class="decoBoxRight"></div>
@@ -93,6 +118,7 @@ $result = $pdo->query($sql);
                 <div class="decoLineRight"></div>  
             </div>
         </div>
+
 
         <div class="container-fluid row mainBody">
             <table id="reportsTable" class="display reportsTable">
@@ -127,12 +153,13 @@ $result = $pdo->query($sql);
                             <td class="buttonColumn">
                                 <button class="penalize" onclick="penalize(<?= $row['Report_ID'] ?>)">Penalize</button>
                                 <button class="buttons" onclick="deleteReport(<?= $row['Report_ID'] ?>)">Delete</button>
-                            </td>   
+                            </td>  
                         </tr>
                     <?php endwhile; ?>
                 </tbody>
             </table>
         </div>
+
 
         <!-- Penalty Modal -->
         <div class="modal fade" id="penaltyModal" tabindex="-1" aria-labelledby="penaltyModalLabel" aria-hidden="true">
@@ -143,9 +170,9 @@ $result = $pdo->query($sql);
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <form action="includes/apply_penalty.inc.php" method="post">
+                        <form action="includes/applyPenalty.php" method="post" id="penaltyForm">
                             <input type="hidden" id="penaltyReportId" name="report_id">
-                            
+                           
                             <!-- Penalty Type Selection -->
                             <div class="mb-3">
                                 <label class="form-label">PENALTY TYPE</label>
@@ -159,7 +186,7 @@ $result = $pdo->query($sql);
                                     <span class="dropdown-icon-penalty">▼</span>
                                 </div>
                             </div>
-                            
+                           
                             <!-- Duration Field (shown only for timeout) -->
                             <div class="mb-3" id="durationField" style="display: none;">
                                 <label class="form-label">DURATION</label>
@@ -175,7 +202,7 @@ $result = $pdo->query($sql);
                                     <span class="dropdown-icon-timeout ">▼</span>
                                 </div>
                             </div>
-                            
+                           
                             <!-- Reason Field -->
                             <div class="mb-3">
                                 <label class="form-label">REASON</label>
@@ -190,6 +217,65 @@ $result = $pdo->query($sql);
             </div>
         </div>
     </div>
+    
+    
+    <!-- Penalty Modal -->
+    <div class="modal fade" id="penaltyModal" tabindex="-1" aria-labelledby="penaltyModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content customModal">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="penaltyModalLabel">Apply Penalty</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form action="includes/applyPenalty.php" method="post" id="penaltyForm">
+                        <!-- Hidden Field for Report ID -->
+                        <input type="hidden" id="penaltyReportId" name="report_id">
+
+                        <!-- Penalty Type Selection -->
+                        <div class="mb-3">
+                            <label class="form-label">Penalty Type</label>
+                            <div class="dropdown-wrapper">
+                                <select name="penalty_type" class="squadLevelDropdown" id="penaltyType" onchange="toggleDurationField()" required>
+                                    <option selected disabled>Select Penalty</option>
+                                    <option value="timeout">Timeout</option>
+                                    <option value="ban">Permanent Ban</option>
+                                    <option value="warning">Warning</option>
+                                </select>
+                                <span class="dropdown-icon-penalty">▼</span>
+                            </div>
+                        </div>
+
+                        <!-- Duration Field (shown only for timeout) -->
+                        <div class="mb-3" id="durationField" style="display: none;">
+                            <label class="form-label">Duration</label>
+                            <div class="dropdown-wrapper">
+                                <select name="duration" class="squadLevelDropdown">
+                                    <option value="1">1 Day</option>
+                                    <option value="3">3 Days</option>
+                                    <option value="7">1 Week</option>
+                                    <option value="30">1 Month</option>
+                                    <option value="90">3 Months</option>
+                                    <option value="180">6 Months</option>
+                                </select>
+                                <span class="dropdown-icon-timeout">▼</span>
+                            </div>
+                        </div>
+
+                        <!-- Reason Field -->
+                        <div class="mb-3">
+                            <label class="form-label">Reason</label>
+                            <textarea name="reason" class="form-control plchldr" rows="3" placeholder="Enter penalty reason" required></textarea>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" form="penaltyForm" class="modalButtons">Apply Penalty</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 
     <!-- Javascript -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>

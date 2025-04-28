@@ -1,28 +1,19 @@
 <?php
 session_start();
-$_SESSION['user'] = [
-    'username' => $username,
-    'account_Number' => $accountNumber
-];
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
-
     $email = $_POST["email"];
     $username = $_POST["username"];
     $pwd = $_POST["password"];
     $confirmPassword = $_POST["confirmPassword"] ?? '';
-
     try {
         require_once 'dbh.inc.php';
         require_once 'signup_contr.inc.php';
         require_once 'signup_model.inc.php';
+        require_once 'sendEmail.inc.php';
 
-        // ERROR HANDLERS Development 1 Commit Tryess
         $errors = [];
-
-        if (is_input_empty($username, $pwd, $email)) {
-            $errors["empty_input"] = "Fill in all fields!";
-        }
+        // Validate empty fields
         if (is_email_invalid($email)) {
             $errors["invalid_email"] = "Invalid email used!";
         }
@@ -39,9 +30,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             $errors["confirm_password"] = "Passwords do not match!";
         }
 
-        require_once 'config_session.inc.php';
-
-        // IF ERROR, BABALIK SA INDEX (Need ng Prompt)
+        // IF ERROR, REDIRECT BACK TO SIGNUP PAGE
         if ($errors) {
             $_SESSION["errors_signup"] = $errors;
             header("Location: ../signupPage.php");
@@ -49,17 +38,38 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         }
 
         // Create the user and capture the generated account number.
-        $accountNumber = create_user($pdo, $email, $pwd, $username);
+        $accountNumber = set_user($pdo, $email, $pwd, $username);
 
-        // Store username and account number in the session.
-        $_SESSION['user'] = [
-            'username' => $username,
-            'account_Number' => $accountNumber
-        ];
+        // Generate a unique token
+        do {
+            $token = md5(uniqid(rand(), true));
+            $stmt = $pdo->prepare("SELECT COUNT(*) FROM tbl_useraccount WHERE token = ?");
+            $stmt->execute([$token]);
+            $tokenExists = $stmt->fetchColumn() > 0;
+        } while ($tokenExists);
 
-        header("Location: ../squadCreation.php?signup=success&username=" . urlencode($username));
+        // Store the token and set verified to false
+        $stmt = $pdo->prepare("UPDATE tbl_useraccount SET token = ?, verified = 0 WHERE Email_Address = ?");
+        $stmt->execute([$token, $email]);
+        
+        // Send verification email
+        $config = include('config.php');
+        $encodedemail = base64_encode($email);
+        $encodedusername = base64_encode($username);
+        $encodedaccountNumber = base64_encode(strval($accountNumber));
+        $verificationLink = "https://" . $config['HOST_NAME'] . "/verifyEmail.php?token=$token" . "&rava=$encodedemail" . "&pau=$encodedusername" . "&sel=$encodedaccountNumber";
+        $subject = "Verify Your Email Address";
+        $body = "
+            <h1>Email Verification</h1>
+            <p>Thank you for signing up! Please verify your email address by clicking the link below:</p>
+            <a href='$verificationLink'>Click me!</a>
+            <p>If the link doesn't work, you can copy the token below:</p>
+            <p><strong>Token:</strong> $token</p>
+        ";
+        sendEmailToSquad($pdo, $accountNumber, $subject, $body);
 
-        $pdo = null;
+        $_SESSION['success'] = "Signup successful! Please verify your email.";
+        header("Location: ../index.php");
         die();
     } catch (PDOException $e) {
         die("Query failed: " . $e->getMessage());

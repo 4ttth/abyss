@@ -2,7 +2,8 @@
 session_start();
 require_once '../includes/dbh.inc.php';
 
-if (!in_array($_SESSION['user_role'], ['Moderator'])) {
+if (!in_array($_SESSION['user']['Role'], ['Moderator'])) {
+    header("Location: ../loginPage.php");
     exit("Access Denied!");
 }
 
@@ -41,7 +42,7 @@ $result = $pdo->query($sql);
                     </div>
                 </a>
             </div>
-            
+           
             <!-- Vertical Nav Links -->
             <ul class="nav flex-column">
                 <li class="nav-item firstItem">
@@ -59,18 +60,35 @@ $result = $pdo->query($sql);
                         FEEDBACKS
                     </a>
                 </li>
-                <li class="nav-item lastItem">
+                <li class="nav-item">
                     <a class="nav-link" href="modRequests.php">
                         <span class="nav-text">VERIFICATION REQUESTS</span>
                     </a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="modScrimsLog.php">
+                        <span class="nav-text">SCRIMS LOG</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="modInvitesLog.php">
+                        <span class="nav-text">INVITES LOG</span>
+                    </a>
+                </li>
+                <li class="nav-item lastItem">
+                    <a class="nav-link" href="modSquadAccounts.php">
+                        <span class="nav-text">SQUAD ACCOUNTS</span>
+                    </a>
+                </li>
             </ul>
-            
+           
             <!-- Account Logo (at bottom) -->
             <div class="nav-footer">
-                <button class="accountLogo" data-bs-toggle="modal" data-bs-target="#loginSignupModal">
-                    <i class="bi bi-box-arrow-left"></i>
-                </button>
+                <form action="../includes/logout.inc.php" method="post">
+                    <button class="accountLogo" data-bs-toggle="modal" data-bs-target="#loginSignupModal">
+                            <i class="bi bi-box-arrow-left"></i>
+                    </button>
+                </form>
             </div>
         </div>
 
