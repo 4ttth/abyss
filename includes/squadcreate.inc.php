@@ -19,18 +19,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     try {
         $pdo->beginTransaction();
 
-        // Retrieve Squad_ID from tbl_useraccount if not already in the session
-        if (!isset($_SESSION['Squad_ID']) || empty($_SESSION['Squad_ID'])) {
-            $stmt = $pdo->prepare("SELECT Squad_ID FROM tbl_useraccount WHERE User_ID = :userID");
-            $stmt->execute([':userID' => $userID]);
-            $result = $stmt->fetch(PDO::FETCH_ASSOC);
-
-            if (!$result || empty($result['Squad_ID'])) {
-                throw new Exception("Squad_ID not found for the user.");
-            }
-
-            // Store Squad_ID in the session
-            $_SESSION['Squad_ID'] = $result['Squad_ID'];
+        if (!isset($_SESSION['Squad_ID'])) {
+            throw new Exception("Squad_ID not found in session.");
         }
 
         $squadID = $_SESSION['Squad_ID'];
