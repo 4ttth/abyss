@@ -46,9 +46,16 @@ $stmtPosts = $pdo->prepare("SELECT p.*, s.Squad_ID, s.Squad_Name, s.Squad_Acrony
                             <div class="logoText">abyss</div>
                         </a>
                         
-                        <form class="searchBar" action="guestSearchResultsPage.php" method="GET">
+                        <!-- <form class="searchBar" action="guestSearchResultsPage.php" method="GET">
                             <input class="searchInput" type="search" name="query" placeholder="Search Squads" aria-label="Search">
                             <button class="searchButton" type="submit">
+                                <img src="IMG/essentials/whiteVer.PNG" alt="Search">
+                            </button>
+                        </form> -->
+
+                        <form class="searchBar" action="guestSearchResultsPage.php" method="GET" onsubmit="return false;">
+                            <input class="searchInput" type="search" name="query" placeholder="Search Squads" aria-label="Search" disabled>
+                            <button class="searchButton" type="submit" disabled>
                                 <img src="IMG/essentials/whiteVer.PNG" alt="Search">
                             </button>
                         </form>
