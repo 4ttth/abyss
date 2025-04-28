@@ -118,14 +118,23 @@ $stmtPosts = $pdo->prepare("SELECT p.*, s.Squad_ID, s.Squad_Name, s.Squad_Acrony
                     </button>
                 </div>
             </div>
-
+            
+            <!-- Video AD Content -->
             <div class="row thisMain">
+                <?php
+                // Fetch the active video ad
+                $activeVideoAd = $pdo->query("SELECT * FROM tbl_videoads WHERE Show_Status = 'Shown' LIMIT 1")->fetch();
+                ?>
                 <div class="col-2 left">
                     <div class="videoAD">
-                        <video autoplay muted loop playsinline>
-                            <source src="IMG/backgrounds/DiscoverAd/discoverPromitionalVideo.mp4" type="video/mp4">
-                            Your browser does not support HTML5 video.
-                        </video>
+                        <?php if ($activeVideoAd): ?>
+                            <video autoplay muted loop playsinline>
+                                <source src="<?= htmlspecialchars($activeVideoAd['VideoAd_Path']) ?>" type="video/mp4">
+                                Your browser does not support HTML5 video.
+                            </video>
+                        <?php else: ?>
+                            <p>No active video ad available.</p>
+                        <?php endif; ?>
                     </div>
                 </div> <!-- Empty left column for balance -->
 
