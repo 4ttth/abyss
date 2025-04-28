@@ -224,7 +224,8 @@ if (isset($_SESSION['user']['Squad_ID'])) {
                     </button>
                 </div>
             </div>
-
+            
+            <!-- Video Content AD -->
             <div class="row thisMain">
                 <div class="col-2 left">
                     <div class="videoAD">

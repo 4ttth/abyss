@@ -91,15 +91,22 @@ $stmtPosts = $pdo->prepare("SELECT p.*, s.Squad_ID, s.Squad_Name, s.Squad_Acrony
                         <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
                     </div>
                     <div class="carousel-inner">
-                        <div class="carousel-item active">
-                        <img src="IMG/backgrounds/DiscoverContent/1.jpg" class="d-block w-100" alt="...">
-                        </div>
-                        <div class="carousel-item">
-                        <img src="IMG/backgrounds/DiscoverContent/2.jpg" class="d-block w-100" alt="...">
-                        </div>
-                        <div class="carousel-item">
-                        <img src="IMG/backgrounds/DiscoverContent/3.jpg" class="d-block w-100" alt="...">
-                        </div>
+                        <?php
+                        $carousel = $pdo->query("SELECT * FROM tbl_carousels WHERE Show_Status = 'Shown' LIMIT 1")->fetch();
+                        ?>
+                        <?php if ($carousel): ?>
+                            <div class="carousel-item active">
+                                <img src="<?= htmlspecialchars($carousel['Image1']) ?>" class="d-block w-100" alt="Carousel Image 1">
+                            </div>
+                            <div class="carousel-item">
+                                <img src="<?= htmlspecialchars($carousel['Image2']) ?>" class="d-block w-100" alt="Carousel Image 2">
+                            </div>
+                            <div class="carousel-item">
+                                <img src="<?= htmlspecialchars($carousel['Image3']) ?>" class="d-block w-100" alt="Carousel Image 3">
+                            </div>
+                        <?php else: ?>
+                            <p>No active carousel yet.</p>
+                        <?php endif; ?>
                     </div>
                     <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
                         <span class="carousel-control-prev-icon" aria-hidden="true"></span>
