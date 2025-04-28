@@ -295,6 +295,29 @@ $unreadMessageCount = countUnreadMessages($pdo, $_SESSION['user']['Squad_ID']);
 
 
 // FIFTHHARMONY
+
+// Fetch leaderboard data
+$leaderboard = [];
+$squadRank = null;
+
+try {
+    $stmtLeaderboard = $pdo->query("SELECT Squad_ID, Squad_Name, ABYSS_Score 
+                                    FROM tbl_squadprofile 
+                                    ORDER BY ABYSS_Score DESC 
+                                    LIMIT 10"); // Fetch top 10 squads
+    $leaderboard = $stmtLeaderboard->fetchAll(PDO::FETCH_ASSOC);
+
+    // Determine the rank of the current squad
+    foreach ($leaderboard as $index => $squad) {
+        if ($squad['Squad_ID'] === $squadDetails['Squad_ID']) {
+            $squadRank = $index + 1; // Rank is index + 1 (1-based)
+            break;
+        }
+    }
+} catch (PDOException $e) {
+    // Handle error silently
+    die("Error fetching leaderboard: " . $e->getMessage());
+}
 ?>
 
 
@@ -378,8 +401,12 @@ $unreadMessageCount = countUnreadMessages($pdo, $_SESSION['user']['Squad_ID']);
                         ID: <?php echo htmlspecialchars($squadDetails['Squad_ID']) ?>
                     </div>
                     <div class="tabsRow">
-                        <div class="tabs">TOP 3 GLOBAL SQUAD</div>
-                        <div class="tabs"><?php echo htmlspecialchars($squadDetails['Squad_Level']) ?></div>
+                        <?php if ($squadRank !== null && $squadRank <= 3): ?>
+                            <div class="tabs">Top <?= $squadRank ?> Global Squad</div>
+                        <?php else: ?>
+                            <!-- <div class="tabs">Not in Top 3</div> -->
+                        <?php endif; ?>
+                        <div class="tabs"><?= htmlspecialchars($squadDetails['Squad_Level']) ?></div>
                     </div>
                     <div class="squadDescription">
                         <?php echo htmlspecialchars($squadDetails['Squad_Description']) ?> <!-- You can make this dynamic if you have a Squad_Description field -->

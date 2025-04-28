@@ -152,6 +152,29 @@ try {
     // Handle database errors
     die("Database error: " . htmlspecialchars($e->getMessage()));
 }
+
+// Fetch leaderboard data
+$leaderboard = [];
+$squadRank = null;
+
+try {
+    $stmtLeaderboard = $pdo->query("SELECT Squad_ID, Squad_Name, ABYSS_Score 
+                                    FROM tbl_squadprofile 
+                                    ORDER BY ABYSS_Score DESC 
+                                    LIMIT 10"); // Fetch top 10 squads
+    $leaderboard = $stmtLeaderboard->fetchAll(PDO::FETCH_ASSOC);
+
+    // Determine the rank of the searched squad
+    foreach ($leaderboard as $index => $squad) {
+        if ($squad['Squad_ID'] === $squadID) {
+            $squadRank = $index + 1; // Rank is index + 1 (1-based)
+            break;
+        }
+    }
+} catch (PDOException $e) {
+    // Handle error silently
+    die("Error fetching leaderboard: " . $e->getMessage());
+}
 ?>
 
 <!DOCTYPE html>
@@ -237,6 +260,11 @@ try {
                         ID: <?= htmlspecialchars($squadDetails['Squad_ID']) ?>
                     </div>
                     <div class="tabsRow">
+                        <?php if ($squadRank !== null && $squadRank <= 3): ?>
+                            <div class="tabs">Top <?= $squadRank ?> Global Squad</div>
+                        <?php else: ?>
+                            <!-- <div class="tabs">Not in Top 3</div> -->
+                        <?php endif; ?>
                         <div class="tabs"><?= htmlspecialchars($squadDetails['Squad_Level']) ?></div>
                     </div>
                     <div class="squadDescription">
