@@ -22,15 +22,14 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         // Generate a new Squad_ID if it doesn't exist in the session
         if (!isset($_SESSION['Squad_ID']) || empty($_SESSION['Squad_ID'])) {
             // Insert squad profile without Squad_ID (let the database generate it)
-            $sql = "INSERT INTO tbl_squadprofile (Squad_Name, Squad_Acronym, Squad_Description, Squad_Level, User_ID)
-                    VALUES (:squadName, :squadAcr, :squadDesc, :squadLevel, :userID)";
+            $sql = "INSERT INTO tbl_squadprofile (Squad_Name, Squad_Acronym, Squad_Description, Squad_Level)
+                    VALUES (:squadName, :squadAcr, :squadDesc, :squadLevel)";
             $stmt = $pdo->prepare($sql);
             $stmt->execute([
                 ':squadName' => $squadName,
                 ':squadAcr' => $squadAcr,
                 ':squadDesc' => $squadDesc,
                 ':squadLevel' => $squadLevel,
-                ':userID' => $userID
             ]);
 
             // Get the newly created Squad_ID
