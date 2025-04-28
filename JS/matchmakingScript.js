@@ -1,8 +1,9 @@
+// Loading Screen
 document.addEventListener("DOMContentLoaded", function () {
   setTimeout(() => {
-      document.querySelector(".introScreen").style.display = "none";
+      document.querySelector(".introScreen").style.display = "none"; 
       document.querySelector(".pageContent").classList.add("showContent");
-  }, 500); // Matches animation duration
+  }, 3000); // Matches animation duration
 });
 
 const showLoading = () => {

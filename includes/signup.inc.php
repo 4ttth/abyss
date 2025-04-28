@@ -33,6 +33,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         // IF ERROR, REDIRECT BACK TO SIGNUP PAGE
         if ($errors) {
             $_SESSION["errors_signup"] = $errors;
+            $_SESSION["signup_email"] = $email; // Store the email in the session
+            $_SESSION["signup_username"] = $username; // Store the username in the session
             header("Location: ../signupPage.php");
             die();
         }
@@ -67,6 +69,11 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             <p><strong>Token:</strong> $token</p>
         ";
         sendEmailToSquad($pdo, $accountNumber, $subject, $body);
+
+        // Clear session variables after successful signup
+        unset($_SESSION["signup_email"]);
+        unset($_SESSION["signup_username"]);
+        unset($_SESSION["errors_signup"]);
 
         $_SESSION['success'] = "Signup successful! Please verify your email.";
         header("Location: ../emailVerification.php");
