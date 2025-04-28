@@ -689,16 +689,43 @@ $qrcode = (new QRCode)->render($qrURL);
     document.addEventListener('DOMContentLoaded', function () {
         // Use AJAX to refresh player list without reloading
         setInterval(function () {
-            fetch('includes/fetchPlayers.inc.php?squad_id=<?= urlencode($squadID) ?>')
-                .then(response => response.text())
+            fetch('includes/get_members.php?squad_id=<?= urlencode($squadID) ?>')
+                .then(response => response.json())
                 .then(data => {
-                    // Debug the response to ensure it includes all fields
-                    console.log('AJAX Response:', data);
+                    if (data.success) {
+                        const profilesContainer = document.querySelector('.profiles');
+                        if (profilesContainer) {
+                            // Clear the container
+                            profilesContainer.innerHTML = '';
 
-                    // Update the profiles container
-                    const profilesContainer = document.querySelector('.profiles');
-                    if (profilesContainer) {
-                        profilesContainer.innerHTML = data;
+                            // Populate the container with player profiles
+                            data.players.forEach(player => {
+                                const playerHTML = `
+                                    <div class="memberProfile">
+                                        <div class="role">${player.Role} &nbsp; // &nbsp; Player</div>
+                                        <div class="IGN">${player.IGN}</div>
+                                        <div class="detailsTitle">NAME</div>
+                                        <div class="detailsDescription">${player.First_Name} ${player.Last_Name}</div>
+                                        <div class="detailsTitle">GAME ID</div>
+                                        <div class="detailsDescription">${player.Game_ID}</div>
+                                        <div class="detailsTitle">CURRENT RANK</div>
+                                        <div class="detailsDescription">${player.Current_Rank} &nbsp; ${player.Current_Star}<i class="bi bi-star-fill star"></i></div>
+                                        <div class="detailsTitle">HIGHEST RANK</div>
+                                        <div class="detailsDescription">${player.Highest_Rank} &nbsp; ${player.Highest_Star}<i class="bi bi-star-fill star"></i></div>
+                                        <div class="detailsTitle">HERO POOL</div>
+                                        <div class="heroCircles">
+                                            ${['Hero_1', 'Hero_2', 'Hero_3'].map(heroField => {
+                                                const heroName = player[heroField] || '';
+                                                return heroName ? `<img src="${heroPaths[heroName] || ''}" class="hero-icon" alt="${heroName}" title="${heroName}">` : '';
+                                            }).join('')}
+                                        </div>
+                                    </div>
+                                `;
+                                profilesContainer.innerHTML += playerHTML;
+                            });
+                        }
+                    } else {
+                        console.error('Error fetching players:', data.error);
                     }
                 })
                 .catch(error => {
