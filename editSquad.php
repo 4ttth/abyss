@@ -65,14 +65,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Update players
         foreach ($_POST['players'] as $playerId => $playerData) {
             $stmtPlayer = $pdo->prepare("UPDATE tbl_playerprofile 
-                                       SET IGN = ?, Full_Name = ?, Game_ID = ?,
+                                       SET IGN = ?, First_Name = ?, Last_Name = ?, Game_ID = ?,
                                            Current_Rank = ?, Current_Star = ?,
                                            Highest_Rank = ?, Highest_Star = ?, Role = ?,
                                            Hero_1 = ?, Hero_2 = ?, Hero_3 = ?
                                        WHERE Player_ID = ?");
             $stmtPlayer->execute([
                 $playerData['IGN'],
-                $playerData['Full_Name'],
+                $playerData['First_Name'],
+                $playerData['First_Name'],
                 $playerData['Game_ID'],
                 $playerData['Current_Rank'],
                 $playerData['Current_Star'],
@@ -217,9 +218,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                                     <div class="detailsTitle">NAME</div>
                                     <div class="detailsDescription">
-                                        <input type="text" name="players[<?= $player['Player_ID'] ?>][Full_Name]" 
-                                            value="<?= htmlspecialchars($player['Full_Name']) ?>" 
-                                            class="form-control" required>
+                                        <!-- First Name Input -->
+                                        <input 
+                                            type="text" 
+                                            name="players[<?= $player['Player_ID'] ?>][First_Name]" 
+                                            value="<?= htmlspecialchars($player['First_Name'] ?? '') ?>" 
+                                            class="form-control" 
+                                            placeholder="First Name" 
+                                            required
+                                        >
+                                        
+                                        <!-- Last Name Input -->
+                                        <input 
+                                            type="text" 
+                                            name="players[<?= $player['Player_ID'] ?>][Last_Name]" 
+                                            value="<?= htmlspecialchars($player['Last_Name'] ?? '') ?>" 
+                                            class="form-control" 
+                                            placeholder="Last Name" 
+                                            required
+                                        >
                                     </div>
 
                                     <div class="detailsTitle">GAME ID</div>
@@ -284,7 +301,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                         </div>
                                         <div class="mb-3">
                                             <label class="form-label">FULL NAME</label>
-                                            <input type="text" name="Full_Name" class="form-control plchldr" placeholder="Enter Full Name" required>
+                                            <!-- First Name Input -->
+                                            <input 
+                                                type="text" 
+                                                name="First_Name" 
+                                                class="form-control plchldr" 
+                                                placeholder="Enter First Name" 
+                                                required
+                                            >
+
+                                            <!-- Last Name Input -->
+                                            <input 
+                                                type="text" 
+                                                name="Last_Name" 
+                                                class="form-control plchldr" 
+                                                placeholder="Enter Last Name" 
+                                                required
+                                            >
                                         </div>
                                         <div class="mb-3">
                                             <label class="form-label">GAME ID</label>
