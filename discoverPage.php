@@ -197,15 +197,46 @@ if (isset($_SESSION['user']['Squad_ID'])) {
                         <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
                     </div>
                     <div class="carousel-inner">
-                        <div class="carousel-item active">
-                        <img src="IMG/backgrounds/DiscoverContent/1.jpg" class="d-block w-100" alt="...">
-                        </div>
-                        <div class="carousel-item">
-                        <img src="IMG/backgrounds/DiscoverContent/2.jpg" class="d-block w-100" alt="...">
-                        </div>
-                        <div class="carousel-item">
-                        <img src="IMG/backgrounds/DiscoverContent/3.jpg"" class="d-block w-100" alt="...">
-                        </div>
+                        <!-- ECHO ECHO -->
+                        <?php
+                        $carousel = $pdo->query("SELECT * FROM tbl_instructions WHERE Show_Status = 'Shown' LIMIT 1")->fetch();
+                        ?>
+                        <?php if ($instruction): ?>
+                            <div class="col-3 steps">
+                                <div class="row instructionsOne">
+                                    <strong><?php echo htmlspecialchars($instruction['Step1_Title']); ?></strong>
+                                    <br><?php echo htmlspecialchars($instruction['Step1_Content']); ?></div>
+                                <div class="row demoOne">
+                                    
+                                </div>
+                            </div>
+                            <div class="col-3 steps">
+                            <div class="row demoTwo">
+
+                            </div>
+                                <div class="row instructionsTwo">
+                                    <strong><?php echo htmlspecialchars($instruction['Step2_Title']); ?></strong>
+                                    <br><?php echo htmlspecialchars($instruction['Step2_Content']); ?></div>
+                            </div>
+                            <div class="col-3 steps">
+                                <div class="row instructionsThree">
+                                    <strong><?php echo htmlspecialchars($instruction['Step3_Title']); ?></strong>
+                                    <br><?php echo htmlspecialchars($instruction['Step3_Content']); ?></div>
+                                <div class="row demoThree">
+
+                                </div>
+                            </div>
+                            <div class="col-3 steps">
+                            <div class="row demoFour">
+
+                            </div>
+                                <div class="row instructionsFour">
+                                    <strong><?php echo htmlspecialchars($instruction['Step4_Title']); ?></strong>
+                                    <br><?php echo htmlspecialchars($instruction['Step4_Content']); ?></div>
+                            </div>
+                        <?php else: ?>
+                            <p>No active instruction yet.</p>
+                        <?php endif; ?>
                     </div>
                     <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
                         <span class="carousel-control-prev-icon" aria-hidden="true"></span>
