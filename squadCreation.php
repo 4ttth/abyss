@@ -211,8 +211,8 @@ $qrcode = (new QRCode)->render($qrURL);
                                     $firstName = $player['First_Name'] ?? 'Unknown';
                                     $lastName = $player['Last_Name'] ?? '';
                                     $fullName = trim("$firstName $lastName");
-                                    echo htmlspecialchars($fullName ?: 'Name not available');
                                 ?>
+                                <div class="detailsDescription"><?= htmlspecialchars($fullName) ?></div>
                                 <div class="detailsTitle">GAME ID</div>
                                 <div class="detailsDescription"><?= htmlspecialchars($player['Game_ID']) ?></div>
                                 <div class="detailsTitle">CURRENT RANK</div>
