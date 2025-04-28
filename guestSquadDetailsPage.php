@@ -283,8 +283,20 @@ try {
                 <div class="squadPlayers">
                     <?php foreach ($players as $player): ?>
                         <div class="playerProfile">
-                            <div class="IGN"><?= htmlspecialchars($player['IGN']) ?></div>
-                            <div class="role"><?= htmlspecialchars($player['Role']) ?></div>
+                            <div class="heroCircles">
+                                <?php foreach (['Hero_1', 'Hero_2', 'Hero_3'] as $heroField): ?>
+                                    <?php
+                                    $heroName = $player[$heroField] ?? '';
+                                    $heroImage = $heroName ? ($heroPaths[$heroName] ?? '') : '';
+                                    ?>
+                                    <img src="<?= $heroImage ?>" class="hero-icon" alt="<?= $heroName ?>" title="<?= $heroName ?>">
+                                <?php endforeach; ?>
+                            </div>
+
+                            <div class="IGNs">
+                                <div class="IGN"><?= htmlspecialchars($player['IGN']) ?></div>
+                                <div class="role"><?= htmlspecialchars($player['Role']) ?></div>
+                            </div>
                         </div>
                     <?php endforeach; ?>
                 </div>
