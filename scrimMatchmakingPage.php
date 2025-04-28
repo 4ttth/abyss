@@ -97,9 +97,8 @@ $unreadMessageCount = countUnreadMessages($pdo, $_SESSION['user']['Squad_ID']);
 </head>
 
 <body class="customPageBackground">
-    <!-- Loading Screen for Landing Page -->
     <div class="introScreen">
-        <div class="glowingFoxIntro"></div>
+        <div class="loadingAnimation"></div>
     </div>
 
 
@@ -332,7 +331,7 @@ $unreadMessageCount = countUnreadMessages($pdo, $_SESSION['user']['Squad_ID']);
         document.addEventListener('DOMContentLoaded', function () {
             const postsPerPage = 12; // 12 results per page so that it looks visually pleasing
             let currentPage = 1;
-            const posts = document.querySelectorAll('.results'); // Results
+            const posts = document.querySelectorAll('.results'); // Resu
             const totalPages = Math.ceil(posts.length / postsPerPage);
             const prevButton = document.getElementById('prevPage');
             const nextButton = document.getElementById('nextPage');
