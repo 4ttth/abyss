@@ -336,7 +336,8 @@ $unreadMessageCount = countUnreadMessages($pdo, $_SESSION['user']['Squad_ID']);
             let currentPage = 1;
 
             // Select individual search result items
-            const posts = document.querySelectorAll('.searchResultsGrid > div'); // Adjusted selector
+            const postsContainer = document.querySelector('#squadList'); // Correct container
+            const posts = postsContainer ? postsContainer.querySelectorAll('div') : []; // Select child divs
             const totalPages = Math.ceil(posts.length / postsPerPage);
             const prevButton = document.getElementById('prevPage');
             const nextButton = document.getElementById('nextPage');
@@ -346,13 +347,16 @@ $unreadMessageCount = countUnreadMessages($pdo, $_SESSION['user']['Squad_ID']);
             function showPage(page) {
                 if (posts.length === 0) {
                     console.warn('No search results found.');
+                    pageInfo.textContent = 'No results';
+                    prevButton.disabled = true;
+                    nextButton.disabled = true;
                     return;
                 }
 
                 posts.forEach((post, index) => {
                     post.style.display = (index >= (page - 1) * postsPerPage && index < page * postsPerPage) ? 'block' : 'none';
                 });
-                pageInfo.textContent = `Page ${page}`;
+                pageInfo.textContent = `Page ${page} of ${totalPages}`;
                 prevButton.disabled = page === 1;
                 nextButton.disabled = page === totalPages;
             }
