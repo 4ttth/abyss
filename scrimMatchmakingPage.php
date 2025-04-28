@@ -331,7 +331,7 @@ $unreadMessageCount = countUnreadMessages($pdo, $_SESSION['user']['Squad_ID']);
         document.addEventListener('DOMContentLoaded', function () {
             const postsPerPage = 12; // 12 results per page so that it looks visually pleasing
             let currentPage = 1;
-            const posts = document.querySelectorAll('.post-item');
+            const posts = document.querySelectorAll('.results'); // Results
             const totalPages = Math.ceil(posts.length / postsPerPage);
             const prevButton = document.getElementById('prevPage');
             const nextButton = document.getElementById('nextPage');

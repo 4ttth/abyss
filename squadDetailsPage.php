@@ -380,7 +380,7 @@ $unreadMessageCount = countUnreadMessages($pdo, $_SESSION['user']['Squad_ID']);
 
             <!-- Main Feed (posts only, no post form) -->
             <div class="col-6">
-                <div class="feed">
+                <div class="feed post">
                     <?php if (!empty($posts)): ?>
                         <?php foreach ($posts as $post): ?>
                             <!-- Same post display as before -->
@@ -659,7 +659,7 @@ $unreadMessageCount = countUnreadMessages($pdo, $_SESSION['user']['Squad_ID']);
     document.addEventListener('DOMContentLoaded', function () {
         const postsPerPage = 10;
         let currentPage = 1;
-        const posts = document.querySelectorAll('.post-item');
+        const posts = document.querySelectorAll('.post');
         const totalPages = Math.ceil(posts.length / postsPerPage);
         const prevButton = document.getElementById('prevPage');
         const nextButton = document.getElementById('nextPage');

@@ -260,7 +260,7 @@ try {
 
             <!-- Main Feed (posts only, no post form) -->
             <div class="col-6">
-                <div class="feed">
+                <div class="feed post">
                     <?php if (!empty($posts)): ?>
                         <?php foreach ($posts as $post): ?>
                             <!-- Same post display as before -->
