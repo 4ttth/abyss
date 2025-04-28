@@ -19,25 +19,30 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     try {
         $pdo->beginTransaction();
 
-        if (!isset($_SESSION['Squad_ID'])) {
-            throw new Exception("Squad_ID not found in session.");
+        // Generate a new Squad_ID if it doesn't exist in the session
+        if (!isset($_SESSION['Squad_ID']) || empty($_SESSION['Squad_ID'])) {
+            // Insert squad profile without Squad_ID (let the database generate it)
+            $sql = "INSERT INTO tbl_squadprofile (Squad_Name, Squad_Acronym, Squad_Description, Squad_Level, User_ID)
+                    VALUES (:squadName, :squadAcr, :squadDesc, :squadLevel, :userID)";
+            $stmt = $pdo->prepare($sql);
+            $stmt->execute([
+                ':squadName' => $squadName,
+                ':squadAcr' => $squadAcr,
+                ':squadDesc' => $squadDesc,
+                ':squadLevel' => $squadLevel,
+                ':userID' => $userID
+            ]);
+
+            // Get the newly created Squad_ID
+            $squadID = $pdo->lastInsertId();
+
+            // Update the session with the new Squad_ID
+            $_SESSION['Squad_ID'] = $squadID;
+        } else {
+            $squadID = $_SESSION['Squad_ID'];
         }
 
-        $squadID = $_SESSION['Squad_ID'];
-
-        // Insert squad profile
-        $sql = "INSERT INTO tbl_squadprofile (Squad_ID, Squad_Name, Squad_Acronym, Squad_Description, Squad_Level)
-                VALUES (:squadID, :squadName, :squadAcr, :squadDesc, :squadLevel)";
-        $stmt = $pdo->prepare($sql);
-        $stmt->execute([
-            ':squadID' => $squadID,
-            ':squadName' => $squadName,
-            ':squadAcr' => $squadAcr,
-            ':squadDesc' => $squadDesc,
-            ':squadLevel' => $squadLevel
-        ]);
-
-        // Calculations for PLayer Count and Total Stars Testing Pull Requests
+        // Calculations for Player Count and Total Stars
         $query = "SELECT COUNT(*) AS Player_Count, SUM(Highest_Score) AS Total_Stars FROM tbl_playerprofile WHERE Squad_ID = :squadID";
         $stmt = $pdo->prepare($query);
         $stmt->execute([':squadID' => $squadID]);
