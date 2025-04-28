@@ -13,6 +13,16 @@ $user = isset($_SESSION['user']) ? $_SESSION['user'] : [
     'Role' => 'Guest'
 ];
 
+// Hero check
+$heroPaths = [];
+try {
+    $heroQuery = "SELECT Hero_Name, Path FROM tbl_heroimages";
+    $heroStmt = $pdo->query($heroQuery);
+    $heroPaths = $heroStmt->fetchAll(PDO::FETCH_KEY_PAIR); // Creates [Hero_Name => Path]
+} catch (PDOException $e) {
+    // Handle error if needed
+    die("Error fetching hero data: " . $e->getMessage());
+}
 
 // Initialize squad details with default values
 $squadDetails = [

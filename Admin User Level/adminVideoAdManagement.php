@@ -2,9 +2,9 @@
 include("../includes/dbh.inc.php"); // Your database connection
 session_start();
 
-if (isset($_POST['add_carousel'])) {
+if (isset($_POST['add_video'])) {
     // Define the upload directory
-    $uploadDir = '../uploads/carousels/';
+    $uploadDir = '../uploads/videoads/';
 
     // Ensure the directory exists
     if (!is_dir($uploadDir)) {
@@ -12,70 +12,51 @@ if (isset($_POST['add_carousel'])) {
     }
 
     // Allowed file types
-    $allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
+    $allowedTypes = ['video/mp4', 'video/webm', 'video/ogg'];
 
-    // Handle each file upload
-    $image1 = $_FILES['image1']['name'] ? $uploadDir . basename($_FILES['image1']['name']) : null;
-    $image2 = $_FILES['image2']['name'] ? $uploadDir . basename($_FILES['image2']['name']) : null;
-    $image3 = $_FILES['image3']['name'] ? $uploadDir . basename($_FILES['image3']['name']) : null;
+    // Handle the video file upload
+    $videoAd = $_FILES['videoAd']['name'] ? $uploadDir . basename($_FILES['videoAd']['name']) : null;
 
-    // Validate and move uploaded files
-    if ($image1 && !in_array($_FILES['image1']['type'], $allowedTypes)) {
-        die('Invalid file type for Image 1');
+    // Validate and move uploaded file
+    if ($videoAd && !in_array($_FILES['videoAd']['type'], $allowedTypes)) {
+        die('Invalid file type for Video Advertisement');
     }
-    if ($image1 && !move_uploaded_file($_FILES['image1']['tmp_name'], $image1)) {
-        die('Error uploading Image 1');
+    if ($videoAd && !move_uploaded_file($_FILES['videoAd']['tmp_name'], $videoAd)) {
+        die('Error uploading Video Advertisement');
     }
 
-    if ($image2 && !in_array($_FILES['image2']['type'], $allowedTypes)) {
-        die('Invalid file type for Image 2');
-    }
-    if ($image2 && !move_uploaded_file($_FILES['image2']['tmp_name'], $image2)) {
-        die('Error uploading Image 2');
-    }
-
-    if ($image3 && !in_array($_FILES['image3']['type'], $allowedTypes)) {
-        die('Invalid file type for Image 3');
-    }
-    if ($image3 && !move_uploaded_file($_FILES['image3']['tmp_name'], $image3)) {
-        die('Error uploading Image 3');
-    }
-
-    // Insert file paths into the database
+    // Insert file path into the database
     $stmt = $pdo->prepare("
-        INSERT INTO tbl_carousels 
-        (Image1, Image2, Image3, Show_Status) 
-        VALUES (?, ?, ?, 'Hidden')
+        INSERT INTO tbl_videoads 
+        (VideoAd_Path, Show_Status) 
+        VALUES (?, 'Hidden')
     ");
     $stmt->execute([
-        $image1,
-        $image2,
-        $image3
+        $videoAd
     ]);
 
     // Redirect back to the page
-    header("Location: adminCarouselManagement.php");
+    header("Location: adminVideoAdManagement.php");
     exit();
 }
 
-// Handle Show Instruction
+// Handle Show Video
 if (isset($_POST['show_video'])) {
-    $carousel_id = $_POST['carousel_id'];
+    $videoad_id = $_POST['videoad_id'];
 
     // Hide all first
-    $pdo->query("UPDATE tbl_carousels SET Show_Status = 'Hidden'");
+    $pdo->query("UPDATE tbl_videoads SET Show_Status = 'Hidden'");
 
     // Then show only the selected
-    $stmt = $pdo->prepare("UPDATE tbl_carousels SET Show_Status = 'Shown' WHERE Carousel_ID = ?");
-    $stmt->execute([$carousel_id]);
+    $stmt = $pdo->prepare("UPDATE tbl_videoads SET Show_Status = 'Shown' WHERE VideoAd_ID = ?");
+    $stmt->execute([$videoad_id]);
 
-    header("Location: adminCarouselManagement.php");
+    header("Location: adminVideoAdManagement.php");
     exit();
 }
 
-
-// Fetch Instructions
-$carousels = $pdo->query("SELECT * FROM tbl_carousels ORDER BY Carousel_ID ASC")->fetchAll();
+// Fetch Video Ads
+$videoads = $pdo->query("SELECT * FROM tbl_videoads ORDER BY VideoAd_ID ASC")->fetchAll();
 ?>
 
 <!DOCTYPE html>
@@ -193,71 +174,65 @@ $carousels = $pdo->query("SELECT * FROM tbl_carousels ORDER BY Carousel_ID ASC")
 
     <!-- Main Content -->
     <div class="container-fluid header">
-        <!-- Header -->
-        <div class="row textBlockLeft">
+            <div class="row textBlockLeft">
                 <div class="titleLeft">
-                    INSTRUCTION MANAGEMENT
+                    VIDEO ADVERTISEMENT MANAGEMENT
                 </div>
                 <div class="descriptionLeft">
                     LOG AS OF <strong>MARCH 24, 2025</strong>
                 </div>
             </div>
 
-            <!-- Header Divider -->
-            <div class=" decoDivideRight">
-                <div class="decoBoxRight"></div>
-                <div class="codeDecoRight">0905270     //</div>
-                <div class="decoLineRight"></div>  
+            <div class="container-fluid row mainBody">
+                <!-- Add Video Ad Button -->
+                <button class="addContentButton" id="openModalBtn" data-bs-toggle="modal" data-bs-target="#addContentModal">
+                    <i class="bi bi-node-plus-fill"></i><i class="bi bi-node-plus-fill"></i>Add Video Ad
+                </button>
+            </div>
+
+            <div class="container-fluid row mainBody">
+                <table class="display reportsTable" id="reportsTable">
+                    <thead>
+                        <tr>
+                            <th>Advertisement_ID</th>
+                            <th>Video Advertisement</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php foreach ($videoads as $videoad): ?>
+                        <tr>
+                            <td><?php echo htmlspecialchars($videoad['VideoAd_ID']); ?></td>
+                            <td>
+                                <?php if (!empty($videoad['VideoAd_Path'])): ?>
+                                    <video width="200" controls>
+                                        <source src="<?php echo htmlspecialchars($videoad['VideoAd_Path']); ?>" type="video/mp4">
+                                        Your browser does not support the video tag.
+                                    </video>
+                                <?php else: ?>
+                                    No Video
+                                <?php endif; ?>
+                            </td>
+                            <td class="buttonColumn">
+                                <form method="POST">
+                                    <input type="hidden" name="videoad_id" value="<?php echo $videoad['VideoAd_ID']; ?>">
+                                    <?php if ($videoad['Show_Status'] == 'Shown'): ?>
+                                        <button type="button" disabled class="buttons active-button" style="opacity: 0.5;">
+                                            <i class="bi bi-eye-fill"></i> Active
+                                        </button>
+                                    <?php else: ?>
+                                        <button type="submit" name="show_video" class="buttons show-button">Show</button>
+                                    <?php endif; ?>
+                                </form>
+                            </td>
+                        </tr>
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>
             </div>
         </div>
 
-        <div class="container-fluid row mainBody">
-            <!-- Add Carousel Button -->
-                <button class="addContentButton" id="openModalBtn" data-bs-toggle="modal" data-bs-target="#addContentModal">
-                    <i class="bi bi-node-plus-fill"></i><i class="bi bi-node-plus-fill"></i>Add Instruction
-                </button>
-        </div>
-
-        <div class="container-fluid row mainBody">
-            <table class="display reportsTable" id="reportsTable">
-            <thead>
-                    <tr>
-                        <th>Advertisement_ID</th>
-                        <th>Video Advertisement</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php foreach ($carousels as $carousel): ?>
-                    <tr>
-                        <td><?php echo htmlspecialchars($carousel['Carousel_ID']); ?></td>
-                        <td>
-                            <?php if (!empty($carousel['Image1'])): ?>
-                                <img src="<?php echo htmlspecialchars($carousel['Image1']); ?>" alt="Image 1" style="width: 100px; height: auto;">
-                            <?php else: ?>
-                                No Image
-                            <?php endif; ?>
-                        </td>
-                        <td class="buttonColumn">
-                            <form method="POST">
-                                <input type="hidden" name="carousel_id" value="<?php echo $carousel['Carousel_ID']; ?>">
-                                <?php if ($carousel['Show_Status'] == 'Shown'): ?>
-                                    <button type="button" disabled class="buttons active-button" style="opacity: 0.5;">
-                                        <i class="bi bi-eye-fill"></i> Active
-                                    </button>
-                                <?php else: ?>
-                                    <button type="submit" name="show_video" class="buttons show-button">Show</button>
-                                <?php endif; ?>
-                            </form>
-                        </td>
-                    </tr>
-                    <?php endforeach; ?>
-                </tbody>
-            </table>
-        </div>
-    </div>
-
-<!-- Add Carousel Modal -->
+<!-- Add Video Ad Modal -->
 <div class="modal fade" id="addContentModal" tabindex="-1" aria-labelledby="addContentModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content customModal">
