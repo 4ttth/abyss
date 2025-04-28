@@ -262,8 +262,6 @@ try {
                     <div class="tabsRow">
                         <?php if ($squadRank !== null && $squadRank <= 3): ?>
                             <div class="tabs">Top <?= $squadRank ?> Global Squad</div>
-                        <?php else: ?>
-                            <!-- <div class="tabs">Not in Top 3</div> -->
                         <?php endif; ?>
                         <div class="tabs"><?= htmlspecialchars($squadDetails['Squad_Level']) ?></div>
                     </div>
