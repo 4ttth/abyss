@@ -207,13 +207,12 @@ $qrcode = (new QRCode)->render($qrURL);
                                 <div class="role"><?= htmlspecialchars($player['Role']) ?> &nbsp; // &nbsp; <?= htmlspecialchars($player['View_ID']) ?></div>
                                 <div class="IGN"><?= htmlspecialchars($player['IGN']) ?></div>
                                 <div class="detailsTitle">NAME</div>
-                                <?php
-                                // Debugging: Display raw player data
-                                echo '<pre>';
-                                print_r($player);
-                                echo '</pre>';
+                                <?php 
+                                    $firstName = $player['First_Name'] ?? 'Unknown';
+                                    $lastName = $player['Last_Name'] ?? '';
+                                    $fullName = trim("$firstName $lastName");
+                                    echo htmlspecialchars($fullName ?: 'Name not available');
                                 ?>
-                                <?= htmlspecialchars(trim(($player['First_Name'] ?? 'Unknown') . ' ' . ($player['Last_Name'] ?? ''))) ?>
                                 <div class="detailsTitle">GAME ID</div>
                                 <div class="detailsDescription"><?= htmlspecialchars($player['Game_ID']) ?></div>
                                 <div class="detailsTitle">CURRENT RANK</div>
