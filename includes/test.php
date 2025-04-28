@@ -14,6 +14,6 @@ echo "Raw Shell Outpu: " . $output . "<br><br>";
 echo shell_exec("/usr/bin/python3 --version 2>&1") . "<br><br>";
 echo shell_exec("/usr/bin/python3 -m pip list 2>&1") . "<br><br>";
 ?>
-
+CSIA{Y0u_f0und_m3}
 </body>
 </html>
