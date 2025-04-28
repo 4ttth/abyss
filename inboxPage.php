@@ -12,17 +12,18 @@ $currentSquadId = $_SESSION['user']['Squad_ID'];
 
 // Function to get all conversations for the current squad
 function getConversations($pdo, $squadId) {
-    $stmt = $pdo->prepare("SELECT c.*, 
-                          s1.Squad_Name as Squad1_Name, s1.Squad_ID as Squad1_ID,
-                          s2.Squad_Name as Squad2_Name, s2.Squad_ID as Squad2_ID,
-                          m.Content as Last_Message,
-                          m.Created_At as Last_Message_Time
-                          FROM tbl_conversations c
-                          JOIN tbl_squadprofile s1 ON c.Squad1_ID = s1.Squad_ID
-                          JOIN tbl_squadprofile s2 ON c.Squad2_ID = s2.Squad_ID
-                          LEFT JOIN tbl_messages m ON c.Last_Message_ID = m.Message_ID
-                          WHERE c.Squad1_ID = ? OR c.Squad2_ID = ?
-                          ORDER BY c.Updated_At DESC");
+    $stmt = $pdo->prepare("SELECT 
+        c.*, 
+        s1.Squad_ID as Squad1_ID, s1.Squad_Name as Squad1_Name,
+        s2.Squad_ID as Squad2_ID, s2.Squad_Name as Squad2_Name,
+        m.Content as Last_Message,
+        m.Created_At as Last_Message_Time
+    FROM tbl_conversations c
+    JOIN tbl_squadprofile s1 ON c.Squad1_ID = s1.Squad_ID
+    JOIN tbl_squadprofile s2 ON c.Squad2_ID = s2.Squad_ID
+    LEFT JOIN tbl_messages m ON c.Last_Message_ID = m.Message_ID
+    WHERE c.Squad1_ID = ? OR c.Squad2_ID = ?
+    ORDER BY c.Updated_At DESC");
     $stmt->execute([$squadId, $squadId]);
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
@@ -56,41 +57,30 @@ function getMessages($pdo, $conversationId, $squadId) {
 
 // Function to get the other squad in a conversation
 function getOtherSquad($conversation, $currentSquadId) {
-    // Debug: Check what's actually in the conversation array
-    error_log("Conversation data: " . print_r($conversation, true));
-    error_log("Current Squad ID: " . $currentSquadId);
-
-    // Check if we have valid conversation data with required fields
-    if (!isset($conversation['Squad1_ID']) || !isset($conversation['Squad2_ID'])) {
-        error_log("Missing required squad IDs in conversation data");
-        return ['Squad_ID' => 0, 'Squad_Name' => 'Unknown Squad'];
+    if (!$conversation || !isset($conversation['Squad1_ID'])) {
+        return ['Squad_ID' => 0, 'Squad_Name' => 'Squad Messages'];
     }
 
-    // Determine which squad is the other one
+    if (!isset($conversation['Squad1_Name']) || !isset($conversation['Squad2_Name'])) {
+        return ['Squad_ID' => 0, 'Squad_Name' => 'Squad Messages'];
+    }
+
     if ($conversation['Squad1_ID'] == $currentSquadId) {
-        $otherSquad = [
-            'Squad_ID' => $conversation['Squad2_ID'] ?? 0,
-            'Squad_Name' => $conversation['Squad2_Name'] ?? 'Unknown Squad'
+        return [
+            'Squad_ID' => $conversation['Squad2_ID'],
+            'Squad_Name' => $conversation['Squad2_Name']
         ];
     } else {
-        $otherSquad = [
-            'Squad_ID' => $conversation['Squad1_ID'] ?? 0,
-            'Squad_Name' => $conversation['Squad1_Name'] ?? 'Unknown Squad'
+        return [
+            'Squad_ID' => $conversation['Squad1_ID'],
+            'Squad_Name' => $conversation['Squad1_Name']
         ];
     }
-
-    error_log("Other squad determined: " . print_r($otherSquad, true));
-    return $otherSquad;
 }
 
-// Get all conversations for the current squad
-$conversations = getConversations($pdo, $currentSquadId);
-
-// Check if a specific conversation is selected
-$selectedConversation = null;
-$messages = [];
-if (isset($_GET['conversation_id']) && is_numeric($_GET['conversation_id'])) {
-    $conversationId = $_GET['conversation_id'];
+// Handle AJAX request for getting messages
+if (isset($_GET['ajax']) && $_GET['ajax'] == 'get_messages' && isset($_GET['conversation_id'])) {
+    $conversationId = (int)$_GET['conversation_id'];
     
     // Verify the current squad is part of this conversation
     $stmt = $pdo->prepare("SELECT * FROM tbl_conversations 
@@ -101,14 +91,31 @@ if (isset($_GET['conversation_id']) && is_numeric($_GET['conversation_id'])) {
     
     if ($selectedConversation) {
         $messages = getMessages($pdo, $conversationId, $currentSquadId);
+        
+        // Return JSON response
+        header('Content-Type: application/json');
+        echo json_encode([
+            'status' => 'success',
+            'messages' => $messages,
+            'otherSquadName' => getOtherSquad($selectedConversation, $currentSquadId)['Squad_Name']
+        ]);
+        exit();
     }
 }
 
-// Handle sending a new message
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['message']) && $selectedConversation) {
+// Handle AJAX request for sending a message
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['ajax']) && $_POST['ajax'] == 'send_message') {
+    $conversationId = (int)$_POST['conversation_id'];
     $messageContent = trim($_POST['message']);
     
-    if (!empty($messageContent)) {
+    // Verify the current squad is part of this conversation
+    $stmt = $pdo->prepare("SELECT * FROM tbl_conversations 
+                          WHERE Conversation_ID = ? 
+                          AND (Squad1_ID = ? OR Squad2_ID = ?)");
+    $stmt->execute([$conversationId, $currentSquadId, $currentSquadId]);
+    $selectedConversation = $stmt->fetch(PDO::FETCH_ASSOC);
+    
+    if ($selectedConversation && !empty($messageContent)) {
         // Determine recipient
         $recipientId = $selectedConversation['Squad1_ID'] == $currentSquadId ? 
             $selectedConversation['Squad2_ID'] : $selectedConversation['Squad1_ID'];
@@ -130,13 +137,39 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['message']) && $select
                               WHERE Conversation_ID = ?");
         $stmt->execute([$messageId, $currentSquadId, $currentSquadId, $selectedConversation['Conversation_ID']]);
         
-        // Refresh the page to show the new message
-        header("Location: inboxPage.php?conversation_id=" . $selectedConversation['Conversation_ID']);
+        // Get the new message to return
+        $stmt = $pdo->prepare("SELECT m.*, s.Squad_Name as Sender_Name
+                              FROM tbl_messages m
+                              JOIN tbl_squadprofile s ON m.Sender_Squad_ID = s.Squad_ID
+                              WHERE m.Message_ID = ?");
+        $stmt->execute([$messageId]);
+        $newMessage = $stmt->fetch(PDO::FETCH_ASSOC);
+        
+        // Return JSON response
+        header('Content-Type: application/json');
+        echo json_encode([
+            'status' => 'success',
+            'message' => $newMessage
+        ]);
         exit();
     }
 }
 
-// Replace the existing invite query with:
+// Get all conversations for the current squad
+$conversations = getConversations($pdo, $currentSquadId);
+
+// Get initial conversation if specified
+$initialConversation = null;
+if (isset($_GET['conversation_id']) && is_numeric($_GET['conversation_id'])) {
+    $conversationId = $_GET['conversation_id'];
+    $stmt = $pdo->prepare("SELECT * FROM tbl_conversations 
+                          WHERE Conversation_ID = ? 
+                          AND (Squad1_ID = ? OR Squad2_ID = ?)");
+    $stmt->execute([$conversationId, $currentSquadId, $currentSquadId]);
+    $initialConversation = $stmt->fetch(PDO::FETCH_ASSOC);
+}
+
+// Get notification counts
 $stmt = $pdo->prepare("SELECT i.*, s.Squad_Name 
                       FROM tbl_inviteslog i
                       JOIN tbl_squadprofile s ON i.Challenger_Squad_ID = s.Squad_ID
@@ -144,33 +177,7 @@ $stmt = $pdo->prepare("SELECT i.*, s.Squad_Name
                       ORDER BY i.Created_At DESC");
 $stmt->execute([$_SESSION['user']['Squad_ID']]);
 $invites = $stmt->fetchAll(PDO::FETCH_ASSOC);
-// $newInvitesCount = count(array_filter($invites, fn($invite) => $invite['Response'] === 'Pending'));
 
-// // ADD THE NEW CODE RIGHT HERE:
-$verificationNotifs = getVerificationNotifications($pdo, $_SESSION['user']['Squad_ID']);
-$newInvitesCount = count(array_filter($invites, fn($invite) => $invite['Response'] === 'Pending'));
-$verificationCount = count($verificationNotifs);
-$totalNotifications = $newInvitesCount + $verificationCount;
-
-// Replace your existing notification count code with:
-    $verificationCount = count(array_filter($verificationNotifs, function($scrim) use ($pdo) {
-        $stmt = $pdo->prepare("SELECT * FROM tbl_matchverifications 
-                              WHERE Match_ID = ? AND Squad_ID = ?");
-        $stmt->execute([$scrim['Match_ID'], $_SESSION['user']['Squad_ID']]);
-        return !$stmt->fetch();
-    }));
-    
-    $totalNotifications = $newInvitesCount + $verificationCount;
-
-// Add this near where you fetch the invites
-$pendingInvitesCount = 0;
-if (!empty($invites)) {
-    $pendingInvitesCount = count(array_filter($invites, function($invite) {
-        return $invite['Status'] === 'Pending';
-    }));
-}
-
-// Add this near your other notification queries
 function getVerificationNotifications($pdo, $squadID) {
     $currentTime = date('Y-m-d H:i:s');
     $stmt = $pdo->prepare("SELECT s.*, 
@@ -188,13 +195,16 @@ function getVerificationNotifications($pdo, $squadID) {
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
 
-// Get notification counts (from your existing code)
 $verificationNotifs = getVerificationNotifications($pdo, $currentSquadId);
 $newInvitesCount = count(array_filter($invites, fn($invite) => $invite['Response'] === 'Pending'));
-$verificationCount = count($verificationNotifs);
+$verificationCount = count(array_filter($verificationNotifs, function($scrim) use ($pdo) {
+    $stmt = $pdo->prepare("SELECT * FROM tbl_matchverifications 
+                          WHERE Match_ID = ? AND Squad_ID = ?");
+    $stmt->execute([$scrim['Match_ID'], $_SESSION['user']['Squad_ID']]);
+    return !$stmt->fetch();
+}));
 $totalNotifications = $newInvitesCount + $verificationCount;
 
-// sledgehammer
 // Function to count unread messages
 function countUnreadMessages($pdo, $squadId) {
     $stmt = $pdo->prepare("SELECT SUM(
@@ -210,13 +220,9 @@ function countUnreadMessages($pdo, $squadId) {
     return $result['total_unread'] ?? 0;
 }
 
-// Get unread message count
 $unreadMessageCount = countUnreadMessages($pdo, $_SESSION['user']['Squad_ID']);
-
-// FIFTHHARMONY
 ?>
-
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8">
@@ -224,14 +230,11 @@ $unreadMessageCount = countUnreadMessages($pdo, $_SESSION['user']['Squad_ID']);
     <title>ABYSS — Inbox</title>
     <link rel="stylesheet" type="text/css" href="CSS/inboxStyle.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="icon" type="image/x-icon" href="IMG/essentials/whiteVer.PNG">
 </head>
-
 <body class="customPageBackground">
-    <div class="introScreen">
-        <div class="loadingAnimation"></div>
-    </div>
+    <div class="introScreen"></div>
 
     <div class="pageContent hiddenContent">
         <!-- Navigation Bar -->
@@ -293,7 +296,6 @@ $unreadMessageCount = countUnreadMessages($pdo, $_SESSION['user']['Squad_ID']);
                                     <?php endif; ?>
                                 </a>
                             </li>
-                            <!-- sledgehammer -->
                             <!-- Inbox -->
                             <li class="nav-item">
                                 <a class="nav-linkIcon ju" href="inboxPage.php">
@@ -309,35 +311,32 @@ $unreadMessageCount = countUnreadMessages($pdo, $_SESSION['user']['Squad_ID']);
             </div>
         </div>
 
-        <!-- Main Body with success content -->
+        <!-- Main Body -->
         <div class="container-fluid mainBody">
             <div class="box">
-                <!-- Replace the Inbox Box section with this: -->
                 <div class="row inbox">
                     <!-- Conversations -->
-                    <div class="col-3 conversations">
+                    <div class="col-3 conversations" id="conversationsList">
                         <?php foreach ($conversations as $conversation): 
                             $otherSquad = getOtherSquad($conversation, $currentSquadId);
                             $unreadCount = $conversation['Squad1_ID'] == $currentSquadId ? 
                                 $conversation['Squad1_Unread'] : $conversation['Squad2_Unread'];
+                            $activeClass = ($initialConversation && $initialConversation['Conversation_ID'] == $conversation['Conversation_ID']) ? 'active-conversation' : '';
                             ?>
-
-                            <!-- Conversation Card (yung nasa left) -->
-                            <a href="inboxPage.php?conversation_id=<?= $conversation['Conversation_ID'] ?>" 
-                            class="conversationCard <?= ($selectedConversation && $selectedConversation['Conversation_ID'] == $conversation['Conversation_ID']) ? 'active' : '' ?> 
-                            <?= $unreadCount > 0 ? 'newMessage' : '' ?>">
+                            <div class="conversationCard <?= $activeClass ?> <?= $unreadCount > 0 ? 'newMessage' : '' ?>" 
+                                 data-conversation-id="<?= $conversation['Conversation_ID'] ?>">
                                 <div class="notifName">
                                     <?= htmlspecialchars($otherSquad['Squad_Name']) ?>
                                 </div>
                                 <div class="lastMessage">    
                                     <?= !empty($conversation['Last_Message']) ? 
-                                        htmlspecialchars(substr($conversation['Last_Message'], 0, 30) . (strlen($conversation['Last_Message']) > 30 ? '...' : '')) : 
+                                        htmlspecialchars(substr($conversation['Last_Message'], 0, 30)) . (strlen($conversation['Last_Message']) > 30 ? '...' : '') : 
                                         'No messages yet' ?>
                                 </div>
                                 <?php if ($unreadCount > 0): ?>
                                     <span class="unreadCount"><?= $unreadCount ?></span>
                                 <?php endif; ?>
-                            </a>
+                            </div>
                         <?php endforeach; ?>
                         
                         <?php if (empty($conversations)): ?>
@@ -349,57 +348,75 @@ $unreadMessageCount = countUnreadMessages($pdo, $_SESSION['user']['Squad_ID']);
                     
                     <!-- Messages -->
                     <div class="col-9 messages">
-                        <?php if ($selectedConversation): 
-                            $otherSquad = getOtherSquad($selectedConversation, $currentSquadId);
-                        ?>
-                            <!-- Squad Name Header -->
-                            <!-- <div class="squad-header messageHeader">
-                                <div class="notifName"><?= htmlspecialchars($otherSquad['Squad_Name']) ?></h3>
-                            </div> -->
-                            
-                            <!-- Messages Container -->
-                            <div class="messagesPart" id="messagesContainer">
-                                <!-- In your messages loop -->
-                                <?php foreach ($messages as $message): ?>
-                                    <div class="message <?= $message['Sender_Squad_ID'] == $currentSquadId ? 'outgoing' : 'incoming' ?>" 
-                                        data-message-id="<?= $message['Message_ID'] ?>">
-                                        <?php if ($message['Sender_Squad_ID'] != $currentSquadId): ?>
-                                            <a href="squadDetailsPage.php?id=<?= $message['Sender_Squad_ID'] ?>" class="squadNameSender">
-                                                <?= htmlspecialchars($message['Sender_Name']) ?>
-                                            </a>
-                                        <?php endif; ?>
-                                        <div class="bubble"><?= nl2br(htmlspecialchars($message['Content'])) ?></div>
-                                        <div class="message-time"><?= date('h:i A', strtotime($message['Created_At'])) ?></div>
-                                    </div>
-                                <?php endforeach; ?>
+                        <div id="messagesArea">
+                            <?php if ($initialConversation): 
+                                $messages = getMessages($pdo, $initialConversation['Conversation_ID'], $currentSquadId);
+                                $otherSquadName = "";
+                                foreach ($messages as $message) {
+                                    if ($message['Sender_Squad_ID'] != $currentSquadId) {
+                                        $otherSquadName = $message['Sender_Name'];
+                                        break;
+                                    }
+                                }
                                 
-                                <?php if (empty($messages)): ?>
-                                    <div class="no-messages">
-                                        Start the conversation!
-                                    </div>
-                                <?php endif; ?>
+                                if (empty($otherSquadName)) {
+                                    $otherSquadName = ($initialConversation['Squad1_ID'] == $currentSquadId)
+                                        ? $initialConversation['Squad2_Name']
+                                        : $initialConversation['Squad1_Name'];
+                                }
+                            ?>
+                            
+                            <div class="conversation-header">
+                                <strong>
+                                    <?php 
+                                    // Get the other squad's name from the conversation data
+                                    $otherSquad = getOtherSquad($initialConversation, $currentSquadId);
+                                    echo htmlspecialchars($otherSquad['Squad_Name']); 
+                                    ?>
+                                </strong>
                             </div>
+                                    
+                                <!-- Messages Container -->
+                                <div class="messagesPart" id="messagesContainer">
+                                    <?php foreach ($messages as $message): ?>
+                                        <div class="message <?= $message['Sender_Squad_ID'] == $currentSquadId ? 'outgoing' : 'incoming' ?>" 
+                                            data-message-id="<?= $message['Message_ID'] ?>">
+                                            <?php if ($message['Sender_Squad_ID'] != $currentSquadId): ?>
+                                                <a href="squadDetailsPage.php?id=<?= $message['Sender_Squad_ID'] ?>" class="squadNameSender">
+                                                    <?= htmlspecialchars($message['Sender_Name']) ?>
+                                                </a>
+                                            <?php endif; ?>
+                                            <div class="bubble"><?= nl2br(htmlspecialchars($message['Content'])) ?></div>
+                                            <div class="message-time"><?= date('h:i A', strtotime($message['Created_At'])) ?></div>
+                                        </div>
+                                    <?php endforeach; ?>
+                                    
+                                    <?php if (empty($messages)): ?>
+                                        <div class="no-messages">
+                                            Start the conversation!
+                                        </div>
+                                    <?php endif; ?>
+                                </div>
 
-                            <!-- Text Input Area -->
-                            <div class="textArea">
-                                <form method="POST" id="messageForm">
+                                <!-- Text Input Area -->
+                                <div class="textArea">
+                                <form id="messageForm" data-conversation-id="<?= $initialConversation['Conversation_ID'] ?>">
                                     <div class="input-group">
                                         <textarea class="form-control" name="message" placeholder="Type your message here..." rows="1" required></textarea>
                                         <button type="submit" class="btn send-btn"><i class="bi bi-send-fill"></i></button>
                                     </div>
-                                </form>
-                            </div>
-                        <?php else: ?>
-                            <div class="no-conversation-selected">
-                                <p>Select a conversation to start messaging</p>
-                            </div>
-                        <?php endif; ?>
+                                <?php else: ?>
+                                <div class="no-conversation-selected">
+                                    <p>Select a conversation to start messaging</p>
+                                </div>
+                            <?php endif; ?>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- Advertisment -->
+        <!-- Advertisement -->
         <div class="container">
             <div class="row d-flex advertisement">
                 <a href="https://play.google.com/store/apps/details?id=com.hhgame.mlbbvn&hl=en-US&pli=1">
@@ -430,7 +447,6 @@ $unreadMessageCount = countUnreadMessages($pdo, $_SESSION['user']['Squad_ID']);
                             Welcome to abyss, a student-developed initiative from Lyceum of Subic Bay, created to revolutionize Mobile Legends scrimmage matchmaking. As passionate IT students and gamers, we recognized the challenges squads face in finding, organizing, and managing scrims efficiently. Our goal is to provide a faster, more centralized platform where teams can seamlessly connect, compete, and improve their gameplay.
                         </div>
 
-
                         <div class="aboutUsBot">
                             With a user-friendly system, we aim to eliminate the hassle of manual scheduling and random opponent searches. Whether you're a casual team looking for practice or a competitive squad aiming for the top, abyss makes scrimmage organized, fair, and accessible. Join us in reshaping the competitive scene — where squads battle, strategies evolve, and legends are made!
                             <br><br>
@@ -438,13 +454,11 @@ $unreadMessageCount = countUnreadMessages($pdo, $_SESSION['user']['Squad_ID']);
                         </div>
                     </div>  
 
-
                     <div class="socialMediaIcons">
                         <i class="bi bi-facebook"></i>
                         <i class="bi bi-twitter-x"></i>
                         <i class="bi bi-instagram"></i>
                     </div>
-
 
                     <div class="footIcon">
                         <a class="navbar-brand" href="index.php">
@@ -477,7 +491,6 @@ $unreadMessageCount = countUnreadMessages($pdo, $_SESSION['user']['Squad_ID']);
                                     <div class="scrim-card-contentOnNotif">
                                         <div class="scrimButtons">
                                             <?php if ($invite['Response'] === 'Pending'): ?>
-                                                <!-- Interactive buttons for pending invites -->
                                                 <button class="acceptOnNotif" onclick="respondToInvite(<?= $invite['Schedule_ID'] ?>, 'Accepted')">
                                                     ACCEPT
                                                 </button>
@@ -485,33 +498,27 @@ $unreadMessageCount = countUnreadMessages($pdo, $_SESSION['user']['Squad_ID']);
                                                     DECLINE
                                                 </button>
                                             <?php else: ?>
-                                                <!-- Non-clickable status for responded invites -->
                                                 <button class="<?= $invite['Response'] === 'Accepted' ? 'acceptedOnNotif' : 'declinedOnNotif' ?>" disabled>
                                                     <?= strtoupper($invite['Response']) ?>
                                                 </button>
                                             <?php endif; ?>
                                         </div>
-                                        <!-- Opponent Squad Name -->
                                         <div class="opponentOnNotif">
                                             <div class="squadNameOnNotif">
                                                 <span class="vs">VS</span> <strong><?= htmlspecialchars($invite['Squad_Name']) ?></strong>
                                             </div>
                                         </div>
 
-                                        <!-- Scrim Notes (if available) -->
                                         <?php if (!empty($invite['No_Of_Games'])): ?>
                                             <div class="noGamesOnNotif">
                                                 BEST OF <?= htmlspecialchars($invite['No_Of_Games']) ?>
                                             </div>
                                         <?php endif; ?>
 
-                                        <!-- Date and Time -->
                                         <div class="timeAndDateOnNotif">
-                                            <!-- Time -->
                                             <div class="TimeOnNotif">
                                                 <?= date('g:i A', strtotime($invite['Scrim_Time'])) ?>
                                             </div>
-                                            <!-- Date -->
                                             <div class="DateOnNotif">
                                                 <?= date('Y-m-d', strtotime($invite['Scrim_Date'])) ?>
                                             </div>
@@ -522,9 +529,7 @@ $unreadMessageCount = countUnreadMessages($pdo, $_SESSION['user']['Squad_ID']);
                         <?php endforeach; ?>
                     <?php endif; ?>   
 
-                    <!-- Verification Automated Message -->
                     <?php foreach ($verificationNotifs as $scrim): 
-                        // Check if verification was already submitted
                         $stmt = $pdo->prepare("SELECT * FROM tbl_matchverifications 
                                             WHERE Match_ID = ? AND Squad_ID = ?");
                         $stmt->execute([$scrim['Match_ID'], $_SESSION['user']['Squad_ID']]);
@@ -538,7 +543,6 @@ $unreadMessageCount = countUnreadMessages($pdo, $_SESSION['user']['Squad_ID']);
                             <strong>Scrim match finished!</strong> Time to verify and earn Abyss Points!
                             <div class="scrim-cardOnNotif">
                                 <div class="scrim-card-contentOnNotif">
-                                    <!-- Single Verify Button -->
                                     <div class="scrimButtons">
                                         <?php if ($verificationSubmitted): ?>
                                             <button class="pendingOnNotif" disabled>
@@ -553,7 +557,6 @@ $unreadMessageCount = countUnreadMessages($pdo, $_SESSION['user']['Squad_ID']);
                                         <?php endif; ?>
                                     </div>
                                     
-                                    <!-- Opponent Info -->
                                     <div class="opponentOnNotif">
                                         <div class="squadNameOnNotif">
                                             <span class="vs">VS</span> <strong>
@@ -564,7 +567,6 @@ $unreadMessageCount = countUnreadMessages($pdo, $_SESSION['user']['Squad_ID']);
                                         </div>
                                     </div>
                                     
-                                    <!-- Scheduled Time -->
                                     <div class="timeAndDateOnNotif">
                                         <div class="TimeOnNotif">
                                             <?= date('g:i A', strtotime($scrim['Scheduled_Time'])) ?>
@@ -590,8 +592,142 @@ $unreadMessageCount = countUnreadMessages($pdo, $_SESSION['user']['Squad_ID']);
         </div>
     </div>
 
-    <!-- Javascript -->
-    <script src="JS/inboxScript.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+    $(document).ready(function() {
+        // Handle conversation card clicks
+        $(document).on('click', '.conversationCard', function(e) {
+            e.preventDefault();
+            const conversationId = $(this).data('conversation-id');
+            
+            // Highlight selected conversation
+            $('.conversationCard').removeClass('active-conversation');
+            $(this).addClass('active-conversation');
+            
+            // Clear any unread count for this conversation
+            $(this).find('.unreadCount').remove();
+            $(this).removeClass('newMessage');
+            
+            // Load messages via AJAX
+            $.get('inboxPage.php?ajax=get_messages&conversation_id=' + conversationId, function(data) {
+                if (data.status === 'success') {
+                    // Update messages area
+                    let messagesHtml = `
+                        <div class="conversation-header">
+                            <strong>${data.otherSquadName}</strong>
+                        </div>
+                        <div class="messagesPart" id="messagesContainer">`;
+                    
+                    if (data.messages.length > 0) {
+                        data.messages.forEach(message => {
+                            const messageClass = message.Sender_Squad_ID == <?= $currentSquadId ?> ? 'outgoing' : 'incoming';
+                            const senderHtml = message.Sender_Squad_ID != <?= $currentSquadId ?> ? 
+                                `<a href="squadDetailsPage.php?id=${message.Sender_Squad_ID}" class="squadNameSender">
+                                    ${message.Sender_Name}
+                                </a>` : '';
+                            
+                            messagesHtml += `
+                                <div class="message ${messageClass}" data-message-id="${message.Message_ID}">
+                                    ${senderHtml}
+                                    <div class="bubble">${message.Content.replace(/\n/g, '<br>')}</div>
+                                    <div class="message-time">${new Date(message.Created_At).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</div>
+                                </div>`;
+                        });
+                    } else {
+                        messagesHtml += `<div class="no-messages">Start the conversation!</div>`;
+                    }
+                    
+                    messagesHtml += `</div>
+                        <div class="textArea">
+                            <form id="messageForm" data-conversation-id="${conversationId}">
+                                <div class="input-group">
+                                    <textarea class="form-control" name="message" placeholder="Type your message here..." rows="1" required></textarea>
+                                    <button type="submit" class="btn send-btn"><i class="bi bi-send-fill"></i></button>
+                                </div>
+                            </form>
+                        </div>`;
+                    
+                    $('#messagesArea').html(messagesHtml);
+                    
+                    // Scroll to bottom of messages
+                    const container = $('#messagesContainer');
+                    container.scrollTop(container[0].scrollHeight);
+                    
+                    // Update URL without reload
+                    history.pushState(null, null, 'inboxPage.php?conversation_id=' + conversationId);
+                }
+            }, 'json');
+        });
+        
+        // Handle message form submission
+        $(document).on('submit', '#messageForm', function(e) {
+            e.preventDefault();
+            const form = $(this);
+            const conversationId = form.data('conversation-id');
+            const messageInput = form.find('textarea[name="message"]');
+            const messageContent = messageInput.val().trim();
+            
+            if (messageContent) {
+                $.post('inboxPage.php', {
+                    ajax: 'send_message',
+                    conversation_id: conversationId,
+                    message: messageContent
+                }, function(data) {
+                    if (data.status === 'success') {
+                        // Add new message to the container
+                        const message = data.message;
+                        const messageClass = message.Sender_Squad_ID == <?= $currentSquadId ?> ? 'outgoing' : 'incoming';
+                        const senderHtml = message.Sender_Squad_ID != <?= $currentSquadId ?> ? 
+                            `<a href="squadDetailsPage.php?id=${message.Sender_Squad_ID}" class="squadNameSender">
+                                ${message.Sender_Name}
+                            </a>` : '';
+                        
+                        const messageHtml = `
+                            <div class="message ${messageClass}" data-message-id="${message.Message_ID}">
+                                ${senderHtml}
+                                <div class="bubble">${message.Content.replace(/\n/g, '<br>')}</div>
+                                <div class="message-time">${new Date(message.Created_At).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</div>
+                            </div>`;
+                        
+                        $('#messagesContainer').append(messageHtml);
+                        messageInput.val('');
+                        
+                        // Scroll to bottom
+                        const container = $('#messagesContainer');
+                        container.scrollTop(container[0].scrollHeight);
+                        
+                        // Update conversation list to show new message
+                        updateConversationList(conversationId, message.Content);
+                    }
+                }, 'json');
+            }
+        });
+        
+        // Function to update conversation list after sending a message
+        function updateConversationList(conversationId, lastMessage) {
+            const conversationCard = $(`.conversationCard[data-conversation-id="${conversationId}"]`);
+            const lastMessageDiv = conversationCard.find('.lastMessage');
+            
+            // Update last message preview
+            const truncated = lastMessage.length > 30 ? lastMessage.substring(0, 30) + '...' : lastMessage;
+            lastMessageDiv.text(truncated);
+            
+            // Move conversation to top
+            const conversationsList = $('#conversationsList');
+            conversationsList.prepend(conversationCard);
+            
+            // Remove active class from all and add to this one
+            $('.conversationCard').removeClass('active-conversation');
+            conversationCard.addClass('active-conversation');
+        }
+        
+        // Scroll to bottom of messages on initial load
+        const messagesContainer = $('#messagesContainer');
+        if (messagesContainer.length) {
+            messagesContainer.scrollTop(messagesContainer[0].scrollHeight);
+        }
+    });
+    </script>
 </body>
 </html>

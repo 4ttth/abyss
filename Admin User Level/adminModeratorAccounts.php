@@ -111,6 +111,11 @@ if (isset($_GET['error'])) {
                         </a>
                     </li>
                     <li class="nav-item">
+                        <a class="nav-link" href="adminCarouselManagement.php">
+                            <span class="nav-text">CAROUSEL MANAGEMENT</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link" href="adminModeratorAccounts.php">
                             <span class="nav-text active">MODERATOR ACCOUNTS</span>
                         </a>
