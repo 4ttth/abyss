@@ -36,6 +36,17 @@ try {
     die("Database error: " . htmlspecialchars($e->getMessage()));
 }
 
+// Hero check
+$heroPaths = [];
+try {
+    $heroQuery = "SELECT Hero_Name, Path FROM tbl_heroimages";
+    $heroStmt = $pdo->query($heroQuery);
+    $heroPaths = $heroStmt->fetchAll(PDO::FETCH_KEY_PAIR); // Creates [Hero_Name => Path]
+} catch (PDOException $e) {
+    // Handle error if needed
+    die("Error fetching hero data: " . $e->getMessage());
+}
+
 $verificationStatus = 'Pending';
 if (isset($_SESSION['user']['Squad_ID']) && !empty($_SESSION['user']['Squad_ID'])) {
     try {
