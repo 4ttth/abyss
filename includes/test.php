@@ -8,8 +8,8 @@ $output = shell_exec($command);
 $jsonResult = '{"resultStatus": "Defeat", "battleID": "201965272562210724"}';
 $ocrResult1 = json_decode($jsonResult, true);
 $ocrResult2 = json_decode($output, true);
-echo $ocrResult1;
-echo $ocrResult2;
+echo "jsonResult" . $ocrResult1;
+echo "shellResult" . $ocrResult2;
 ?>
 
 </body>
