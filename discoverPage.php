@@ -197,19 +197,18 @@ if (isset($_SESSION['user']['Squad_ID'])) {
                         <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
                     </div>
                     <div class="carousel-inner">
-                        <!-- ECHO ECHO -->
                         <?php
-                        $carousel = $pdo->query("SELECT * FROM tbl_instructions WHERE Show_Status = 'Shown' LIMIT 1")->fetch();
+                        $carousel = $pdo->query("SELECT * FROM tbl_carousels WHERE Show_Status = 'Shown' LIMIT 1")->fetch();
                         ?>
                         <?php if ($carousel): ?>
                             <div class="carousel-item active">
-                                <?php echo htmlspecialchars($carousel['Image1']); ?>
+                                <img src="<?= htmlspecialchars($carousel['Image1']) ?>" class="d-block w-100" alt="Carousel Image 1">
                             </div>
                             <div class="carousel-item">
-                                <?php echo htmlspecialchars($carousel['Image2']); ?>
+                                <img src="<?= htmlspecialchars($carousel['Image2']) ?>" class="d-block w-100" alt="Carousel Image 2">
                             </div>
                             <div class="carousel-item">
-                                <?php echo htmlspecialchars($carousel['Image3']); ?>
+                                <img src="<?= htmlspecialchars($carousel['Image3']) ?>" class="d-block w-100" alt="Carousel Image 3">
                             </div>
                         <?php else: ?>
                             <p>No active carousel yet.</p>
