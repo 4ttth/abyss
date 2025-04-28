@@ -208,7 +208,7 @@ $qrcode = (new QRCode)->render($qrURL);
                                     <div class="role"><?= htmlspecialchars($player['Role']) ?> &nbsp; // &nbsp; <?= htmlspecialchars($player['View_ID']) ?></div>
                                     <div class="IGN"><?= htmlspecialchars($player['IGN']) ?></div>
                                     <div class="detailsTitle">NAME</div>
-                                    <div class="detailsDescription"><?= htmlspecialchars($player['Full_Name']) ?></div>
+                                    <?= htmlspecialchars(trim($player['First_Name'] . ' ' . ($player['Last_Name'] ?? ''))) ?>
                                     <div class="detailsTitle">GAME ID</div>
                                     <div class="detailsDescription"><?= htmlspecialchars($player['Game_ID']) ?></div>
                                     <div class="detailsTitle">CURRENT RANK</div>
