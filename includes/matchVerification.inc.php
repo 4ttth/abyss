@@ -24,7 +24,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['verify_submit'])) {
         $stmt->execute([$scrimID, $squadID, $yourScore, $opponentScore]);
         $verificationID = $pdo->lastInsertId();
 
-        $uploadDir = '../uploads/match_proofs/';
+        $uploadDir = '/var/www/html/abyss/uploads/match_proofs/';
         if (!file_exists($uploadDir)) {
             mkdir($uploadDir, 0755, true);
         }
