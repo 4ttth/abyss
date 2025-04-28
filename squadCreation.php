@@ -200,40 +200,36 @@ $qrcode = (new QRCode)->render($qrURL);
 
                     <!-- Squad Members Profile -->
                     <div class="profiles-wrapper">
-                    <div class="profiles">
-                        <?php $playerIndex = 1; ?>
-                        <?php foreach ($players as $player): ?>
-                            <div class="memberProfile">
-                                <div class="role"><?= htmlspecialchars($player['Role']) ?> &nbsp; // &nbsp; <?= htmlspecialchars($player['View_ID']) ?></div>
-                                <div class="IGN"><?= htmlspecialchars($player['IGN']) ?></div>
-                                <div class="detailsTitle">NAME</div>
-                                <?php 
-                                    $firstName = $player['First_Name'] ?? 'Unknown';
-                                    $lastName = $player['Last_Name'] ?? '';
-                                    $fullName = trim("$firstName $lastName");
-                                ?>
-                                <div class="detailsDescription"><?= htmlspecialchars($fullName) ?></div>
-                                <div class="detailsTitle">GAME ID</div>
-                                <div class="detailsDescription"><?= htmlspecialchars($player['Game_ID']) ?></div>
-                                <div class="detailsTitle">CURRENT RANK</div>
-                                <div class="detailsDescription"><?= htmlspecialchars($player['Current_Rank']) ?> &nbsp; <?= htmlspecialchars($player['Current_Star']) ?><i class="bi bi-star-fill star"></i></div>
-                                <div class="detailsTitle">HIGHEST RANK</div>
-                                <div class="detailsDescription"><?= htmlspecialchars($player['Highest_Rank']) ?> &nbsp; <?= htmlspecialchars($player['Highest_Star']) ?><i class="bi bi-star-fill star"></i></div>
-                                <div class="detailsTitle">HERO POOL</div>
-                                <div class="heroCircles">
-                                    <?php foreach (['Hero_1', 'Hero_2', 'Hero_3'] as $heroField): ?>
-                                        <?php
-                                        $heroName = $player[$heroField] ?? '';
-                                        $heroImage = $heroName ? ($heroPaths[$heroName] ?? '') : '';
-                                        ?>
-                                        <img src="<?= $heroImage ?>" class="hero-icon" alt="<?= $heroName ?>" title="<?= $heroName ?>">
-                                    <?php endforeach; ?>
+                        <div class="profiles">
+                            <?php $playerIndex = 1; ?>
+                            <?php foreach ($players as $player): ?>
+                                <div class="memberProfile">
+                                    
+                                    <div class="role"><?= htmlspecialchars($player['Role']) ?> &nbsp; // &nbsp; <?= htmlspecialchars($player['View_ID']) ?></div>
+                                    <div class="IGN"><?= htmlspecialchars($player['IGN']) ?></div>
+                                    <div class="detailsTitle">NAME</div>
+                                    <?= htmlspecialchars(trim($player['First_Name'] . ' ' . ($player['Last_Name'] ?? ''))) ?>
+                                    <div class="detailsTitle">GAME ID</div>
+                                    <div class="detailsDescription"><?= htmlspecialchars($player['Game_ID']) ?></div>
+                                    <div class="detailsTitle">CURRENT RANK</div>
+                                    <div class="detailsDescription"><?= htmlspecialchars($player['Current_Rank']) ?> &nbsp; <?= htmlspecialchars($player['Current_Star']) ?><i class="bi bi-star-fill star"></i></div>
+                                    <div class="detailsTitle">HIGHEST RANK</div>
+                                    <div class="detailsDescription"><?= htmlspecialchars($player['Highest_Rank']) ?> &nbsp; <?= htmlspecialchars($player['Highest_Star']) ?><i class="bi bi-star-fill star"></i></div>
+                                    <div class="detailsTitle">HERO POOL</div>
+                                    <div class="heroCircles">
+                                        <?php foreach (['Hero_1', 'Hero_2', 'Hero_3'] as $heroField): ?>
+                                            <?php
+                                            $heroName = $player[$heroField] ?? '';
+                                            $heroImage = $heroName ? ($heroPaths[$heroName] ?? '') : '';
+                                            ?>
+                                            <img src="<?= $heroImage ?>" class="hero-icon" alt="<?= $heroName ?>" title="<?= $heroName ?>">
+                                        <?php endforeach; ?>
+                                    </div>
                                 </div>
-                            </div>
-                            <?php $playerIndex += 1; ?>
-                        <?php endforeach; ?>
+                                <?php $playerIndex += 1; ?>
+                            <?php endforeach; ?>
+                        </div>
                     </div>
-                </div>
 
                     <!-- Title -->
                     <?php if ($verificationStatus === 'Pending') : ?>
@@ -686,53 +682,14 @@ $qrcode = (new QRCode)->render($qrURL);
         });
     });
 
-    document.addEventListener('DOMContentLoaded', function () {
-        // Use AJAX to refresh player list without reloading
-        setInterval(function () {
-            fetch('includes/get_members.php?squad_id=<?= urlencode($squadID) ?>')
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        const profilesContainer = document.querySelector('.profiles');
-                        if (profilesContainer) {
-                            // Clear the container
-                            profilesContainer.innerHTML = '';
-
-                            // Populate the container with player profiles
-                            data.players.forEach(player => {
-                                const playerHTML = `
-                                    <div class="memberProfile">
-                                        <div class="role">${player.Role} &nbsp; // &nbsp; Player</div>
-                                        <div class="IGN">${player.IGN}</div>
-                                        <div class="detailsTitle">NAME</div>
-                                        <div class="detailsDescription">${player.First_Name} ${player.Last_Name}</div>
-                                        <div class="detailsTitle">GAME ID</div>
-                                        <div class="detailsDescription">${player.Game_ID}</div>
-                                        <div class="detailsTitle">CURRENT RANK</div>
-                                        <div class="detailsDescription">${player.Current_Rank} &nbsp; ${player.Current_Star}<i class="bi bi-star-fill star"></i></div>
-                                        <div class="detailsTitle">HIGHEST RANK</div>
-                                        <div class="detailsDescription">${player.Highest_Rank} &nbsp; ${player.Highest_Star}<i class="bi bi-star-fill star"></i></div>
-                                        <div class="detailsTitle">HERO POOL</div>
-                                        <div class="heroCircles">
-                                            ${['Hero_1', 'Hero_2', 'Hero_3'].map(heroField => {
-                                                const heroName = player[heroField] || '';
-                                                return heroName ? `<img src="${heroPaths[heroName] || ''}" class="hero-icon" alt="${heroName}" title="${heroName}">` : '';
-                                            }).join('')}
-                                        </div>
-                                    </div>
-                                `;
-                                profilesContainer.innerHTML += playerHTML;
-                            });
-                        }
-                    } else {
-                        console.error('Error fetching players:', data.error);
-                    }
-                })
-                .catch(error => {
-                    console.error('Error fetching players:', error);
-                });
-        }, 5000); // Refresh every 5 seconds
-    });
+    // Use AJAX to refresh player list without reloading
+    setInterval(function() {
+        fetch('includes/get_members.php?squad_id=<?= urlencode($squadID) ?>')
+            .then(response => response.text())
+            .then(data => {
+                document.querySelector('.profiles').innerHTML = data;
+            });
+    }, 5000); // Refresh every 5 seconds
     </script>
     <script src="JS/creatingSquadScript.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
