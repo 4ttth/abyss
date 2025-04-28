@@ -252,7 +252,7 @@ try {
 
     // Determine the rank of the searched squad
     foreach ($leaderboard as $index => $squad) {
-        if ($squad['Squad_ID'] === $squadID) {
+        if ((string)$squad['Squad_ID'] === (string)$squadID) {
             $squadRank = $index + 1; // Rank is index + 1 (1-based)
             break;
         }
@@ -376,8 +376,6 @@ try {
                     <div class="tabsRow">
                         <?php if ($squadRank !== null && $squadRank <= 3): ?>
                             <div class="tabs">Top <?= $squadRank ?> Global Squad</div>
-                        <?php else: ?>
-                            <!-- <div class="tabs">Not in Top 3</div> -->
                         <?php endif; ?>
                         <div class="tabs"><?= htmlspecialchars($squadDetails['Squad_Level']) ?></div>
                     </div>
