@@ -1,7 +1,7 @@
 <?php
 session_start(); // Start the session
 require_once 'includes/dbh.inc.php'; // Database connection
-require_once 'includes/userHomepage.inc.php'; // Squad details logic
+require_once 'includes/userhomepage.inc.php'; // Squad details logic
 
 // ====== NEW CODE START ======
 // Initialize user data from session with proper fallback values
@@ -644,7 +644,10 @@ $verificationData = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <!-- POP UP MODAL TRY FOR OCR ERROR -->
     <?php if (isset($_SESSION['ocr_mismatch']) && $_SESSION['ocr_mismatch']): ?>
         <div id="ocrModal" class="modal-overlay">
-            <div class="modal-content">
+            <div class="modal-content text-white">
+                <?= $_SESSION['debug'] ?? '' ?>
+                <?= $_SESSION['debug2'] ?? '' ?>
+                <?= $_SESSION['debug3'] ?? '' ?>
                 <h2>❌ OCR Mismatch Detected</h2>
                 <p>The number of scanned “Victory” and “Defeat” results does not match the scores you entered.</p>
                 <button onclick="closeModal()">OK, I’ll fix it</button>

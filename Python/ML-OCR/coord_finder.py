@@ -87,7 +87,7 @@ def select_roi(image_path):
 
 if __name__ == "__main__":
     # Hardcoded image path
-    image_path = "C:/xampp/htdocs/abyss/Python/ML-OCR/image.png"
+    image_path = "/var/www/html/abyss/Python/ML-OCR/image.png"
     
     # Verify path
     import os

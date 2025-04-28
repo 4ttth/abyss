@@ -57,7 +57,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $encodedemail = base64_encode($email);
         $encodedusername = base64_encode($username);
         $encodedaccountNumber = base64_encode(strval($accountNumber));
-        $verificationLink = "http://" . $config['HOST_NAME'] . "/abyss/verifyEmail.php?token=$token" . "&rava=$encodedemail" . "&pau=$encodedusername" . "&sel=$encodedaccountNumber";
+        $verificationLink = "https://" . $config['HOST_NAME'] . "/verifyEmail.php?token=$token" . "&rava=$encodedemail" . "&pau=$encodedusername" . "&sel=$encodedaccountNumber";
         $subject = "Verify Your Email Address";
         $body = "
             <h1>Email Verification</h1>

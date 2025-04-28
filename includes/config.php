@@ -20,9 +20,9 @@ return array(
         // Database name, by default it is 'mlofficial_database'
     'DB_NAME' => 'mlofficial_database',
         // Database username that can access the database above
-    'DB_USERNAME' => 'root',
+    'DB_USERNAME' => 'abyss',
         // Database password for the username above (Depending on the user setup.)
-    'DB_PASSWORD' => '',
+    'DB_PASSWORD' => 'siopaoBOL4BOL4',
     // Minimum stars that the user can only search: matchmaking.php
     'MIN_STARS' => 0,
     // Maximum stars that the user can only search: matchmaking.php
@@ -32,6 +32,6 @@ return array(
     // Maximum number of players that can be in a team
     'MAX_PLAYERS' => 5,
     // Machine host name
-    'HOST_NAME' => '192.168.1.119',
+    'HOST_NAME' => 'abyss.folded.cloud',
 );
 ?>

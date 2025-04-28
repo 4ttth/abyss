@@ -24,7 +24,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['verify_submit'])) {
         $stmt->execute([$scrimID, $squadID, $yourScore, $opponentScore]);
         $verificationID = $pdo->lastInsertId();
 
-        $uploadDir = '../uploads/match_proofs/';
+        $uploadDir = '/var/www/html/abyss/uploads/match_proofs/';
         if (!file_exists($uploadDir)) {
             mkdir($uploadDir, 0755, true);
         }
@@ -48,10 +48,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['verify_submit'])) {
                 $stmtFile->execute([$verificationID, $uploadPath]);
                 $proofID = $pdo->lastInsertId();
 
-                $pythonScript = 'C:/xampp/htdocs/abyss/Python/ML-OCR/battleResults.py';
-                $command = "python " . escapeshellcmd($pythonScript) . " " . escapeshellarg($uploadPath) . " 2>&1";
+                $pythonScript = '/var/www/html/abyss/Python/ML-OCR/battleResults.py';
+                $command = "python3 " . escapeshellcmd($pythonScript) . " " . escapeshellarg($uploadPath) . " 2>&1";
                 $output = shell_exec($command);
-
+                $_SESSION['debug'] = $output; // For debugging purposes
                 $ocrResult = json_decode($output, true);
                 if (!is_array($ocrResult)) {
                     $ocrResult = ['battleID' => 'Not found', 'resultStatus' => 'Not found'];

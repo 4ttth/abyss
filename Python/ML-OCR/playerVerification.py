@@ -7,7 +7,7 @@ import pytesseract
 import numpy as np
 
 # For Tesseract PATH
-pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract.exe' 
+# pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract.exe' 
 
 def process_image(image_path):
     try:

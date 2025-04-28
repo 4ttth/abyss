@@ -1,7 +1,7 @@
 import cv2
 
 # Load the image
-image_path = "C:/xampp/htdocs/abyss/Python/ML-OCR/ally2_ocr.png"
+image_path = "/var/www/html/abyss/Python/ML-OCR/ally2_ocr.png"
 image = cv2.imread(image_path)
 
 # Callback function to get mouse coordinates
