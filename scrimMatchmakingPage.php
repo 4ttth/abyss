@@ -331,17 +331,24 @@ $unreadMessageCount = countUnreadMessages($pdo, $_SESSION['user']['Squad_ID']);
 
     <!-- Javascript -->
     <script>
-        // Pagination
         document.addEventListener('DOMContentLoaded', function () {
-            const postsPerPage = 12; // 12 results per page so that it looks visually pleasing
+            const postsPerPage = 12; // 12 results per page
             let currentPage = 1;
-            const posts = document.querySelectorAll('.results'); // Resu
+
+            // Select individual search result items
+            const posts = document.querySelectorAll('.searchResultsGrid > div'); // Adjusted selector
             const totalPages = Math.ceil(posts.length / postsPerPage);
             const prevButton = document.getElementById('prevPage');
             const nextButton = document.getElementById('nextPage');
             const pageInfo = document.getElementById('pageInfo');
 
+            // Function to show a specific page
             function showPage(page) {
+                if (posts.length === 0) {
+                    console.warn('No search results found.');
+                    return;
+                }
+
                 posts.forEach((post, index) => {
                     post.style.display = (index >= (page - 1) * postsPerPage && index < page * postsPerPage) ? 'block' : 'none';
                 });
@@ -350,6 +357,7 @@ $unreadMessageCount = countUnreadMessages($pdo, $_SESSION['user']['Squad_ID']);
                 nextButton.disabled = page === totalPages;
             }
 
+            // Event listeners for pagination buttons
             prevButton.addEventListener('click', () => {
                 if (currentPage > 1) {
                     currentPage--;
