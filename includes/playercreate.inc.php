@@ -192,7 +192,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $pdo->commit();
 
         $_SESSION['success'] = "Player added successfully!";
-        header("Location: close_window.html");
+        header("Location: logout2.inc.php");
         exit();
     } catch (PDOException $e) {
         $pdo->rollBack();

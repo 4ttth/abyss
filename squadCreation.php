@@ -200,36 +200,41 @@ $qrcode = (new QRCode)->render($qrURL);
 
                     <!-- Squad Members Profile -->
                     <div class="profiles-wrapper">
-                        <div class="profiles">
-                            <?php $playerIndex = 1; ?>
-                            <?php foreach ($players as $player): ?>
-                                <div class="memberProfile">
-                                    
-                                    <div class="role"><?= htmlspecialchars($player['Role']) ?> &nbsp; // &nbsp; <?= htmlspecialchars($player['View_ID']) ?></div>
-                                    <div class="IGN"><?= htmlspecialchars($player['IGN']) ?></div>
-                                    <div class="detailsTitle">NAME</div>
-                                    <?= htmlspecialchars(trim($player['First_Name'] . ' ' . ($player['Last_Name'] ?? ''))) ?>
-                                    <div class="detailsTitle">GAME ID</div>
-                                    <div class="detailsDescription"><?= htmlspecialchars($player['Game_ID']) ?></div>
-                                    <div class="detailsTitle">CURRENT RANK</div>
-                                    <div class="detailsDescription"><?= htmlspecialchars($player['Current_Rank']) ?> &nbsp; <?= htmlspecialchars($player['Current_Star']) ?><i class="bi bi-star-fill star"></i></div>
-                                    <div class="detailsTitle">HIGHEST RANK</div>
-                                    <div class="detailsDescription"><?= htmlspecialchars($player['Highest_Rank']) ?> &nbsp; <?= htmlspecialchars($player['Highest_Star']) ?><i class="bi bi-star-fill star"></i></div>
-                                    <div class="detailsTitle">HERO POOL</div>
-                                    <div class="heroCircles">
-                                        <?php foreach (['Hero_1', 'Hero_2', 'Hero_3'] as $heroField): ?>
-                                            <?php
-                                            $heroName = $player[$heroField] ?? '';
-                                            $heroImage = $heroName ? ($heroPaths[$heroName] ?? '') : '';
-                                            ?>
-                                            <img src="<?= $heroImage ?>" class="hero-icon" alt="<?= $heroName ?>" title="<?= $heroName ?>">
-                                        <?php endforeach; ?>
-                                    </div>
+                    <div class="profiles">
+                        <?php $playerIndex = 1; ?>
+                        <?php foreach ($players as $player): ?>
+                            <div class="memberProfile">
+                                <div class="role"><?= htmlspecialchars($player['Role']) ?> &nbsp; // &nbsp; <?= htmlspecialchars($player['View_ID']) ?></div>
+                                <div class="IGN"><?= htmlspecialchars($player['IGN']) ?></div>
+                                <div class="detailsTitle">NAME</div>
+                                <?php
+                                // Debugging: Display raw player data
+                                echo '<pre>';
+                                print_r($player);
+                                echo '</pre>';
+                                ?>
+                                <?= htmlspecialchars(trim(($player['First_Name'] ?? 'Unknown') . ' ' . ($player['Last_Name'] ?? ''))) ?>
+                                <div class="detailsTitle">GAME ID</div>
+                                <div class="detailsDescription"><?= htmlspecialchars($player['Game_ID']) ?></div>
+                                <div class="detailsTitle">CURRENT RANK</div>
+                                <div class="detailsDescription"><?= htmlspecialchars($player['Current_Rank']) ?> &nbsp; <?= htmlspecialchars($player['Current_Star']) ?><i class="bi bi-star-fill star"></i></div>
+                                <div class="detailsTitle">HIGHEST RANK</div>
+                                <div class="detailsDescription"><?= htmlspecialchars($player['Highest_Rank']) ?> &nbsp; <?= htmlspecialchars($player['Highest_Star']) ?><i class="bi bi-star-fill star"></i></div>
+                                <div class="detailsTitle">HERO POOL</div>
+                                <div class="heroCircles">
+                                    <?php foreach (['Hero_1', 'Hero_2', 'Hero_3'] as $heroField): ?>
+                                        <?php
+                                        $heroName = $player[$heroField] ?? '';
+                                        $heroImage = $heroName ? ($heroPaths[$heroName] ?? '') : '';
+                                        ?>
+                                        <img src="<?= $heroImage ?>" class="hero-icon" alt="<?= $heroName ?>" title="<?= $heroName ?>">
+                                    <?php endforeach; ?>
                                 </div>
-                                <?php $playerIndex += 1; ?>
-                            <?php endforeach; ?>
-                        </div>
+                            </div>
+                            <?php $playerIndex += 1; ?>
+                        <?php endforeach; ?>
                     </div>
+                </div>
 
                     <!-- Title -->
                     <?php if ($verificationStatus === 'Pending') : ?>
