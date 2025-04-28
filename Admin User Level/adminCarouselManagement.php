@@ -2,50 +2,80 @@
 include("../includes/dbh.inc.php"); // Your database connection
 session_start();
 
-if (isset($_POST['add_instruction'])) {
-    $step1_title = $_POST['step1_title'];
-    $step1_content = $_POST['step1_content'];
-    $step2_title = $_POST['step2_title'];
-    $step2_content = $_POST['step2_content'];
-    $step3_title = $_POST['step3_title'];
-    $step3_content = $_POST['step3_content'];
-    $step4_title = $_POST['step4_title'];
-    $step4_content = $_POST['step4_content'];
+if (isset($_POST['add_carousel'])) {
+    // Define the upload directory
+    $uploadDir = '../uploads/carousels/';
 
+    // Ensure the directory exists
+    if (!is_dir($uploadDir)) {
+        mkdir($uploadDir, 0777, true);
+    }
+
+    // Allowed file types
+    $allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
+
+    // Handle each file upload
+    $image1 = $_FILES['image1']['name'] ? $uploadDir . basename($_FILES['image1']['name']) : null;
+    $image2 = $_FILES['image2']['name'] ? $uploadDir . basename($_FILES['image2']['name']) : null;
+    $image3 = $_FILES['image3']['name'] ? $uploadDir . basename($_FILES['image3']['name']) : null;
+
+    // Validate and move uploaded files
+    if ($image1 && !in_array($_FILES['image1']['type'], $allowedTypes)) {
+        die('Invalid file type for Image 1');
+    }
+    if ($image1 && !move_uploaded_file($_FILES['image1']['tmp_name'], $image1)) {
+        die('Error uploading Image 1');
+    }
+
+    if ($image2 && !in_array($_FILES['image2']['type'], $allowedTypes)) {
+        die('Invalid file type for Image 2');
+    }
+    if ($image2 && !move_uploaded_file($_FILES['image2']['tmp_name'], $image2)) {
+        die('Error uploading Image 2');
+    }
+
+    if ($image3 && !in_array($_FILES['image3']['type'], $allowedTypes)) {
+        die('Invalid file type for Image 3');
+    }
+    if ($image3 && !move_uploaded_file($_FILES['image3']['tmp_name'], $image3)) {
+        die('Error uploading Image 3');
+    }
+
+    // Insert file paths into the database
     $stmt = $pdo->prepare("
-        INSERT INTO tbl_instructions 
-        (Step1_Title, Step1_Content, Step2_Title, Step2_Content, Step3_Title, Step3_Content, Step4_Title, Step4_Content, Show_Status) 
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, 'Hidden')
+        INSERT INTO tbl_carousels 
+        (Image1, Image2, Image3, Show_Status) 
+        VALUES (?, ?, ?, 'Hidden')
     ");
     $stmt->execute([
-        $step1_title, $step1_content,
-        $step2_title, $step2_content,
-        $step3_title, $step3_content,
-        $step4_title, $step4_content
+        $image1,
+        $image2,
+        $image3
     ]);
 
-    header("Location: adminInstructionsManagement.php");
+    // Redirect back to the page
+    header("Location: adminCarouselManagement.php");
     exit();
 }
 
 // Handle Show Instruction
-if (isset($_POST['show_instruction'])) {
-    $instruction_id = $_POST['instruction_id'];
+if (isset($_POST['show_carousel'])) {
+    $carousel_id = $_POST['carousel_id'];
 
     // Hide all first
-    $pdo->query("UPDATE tbl_instructions SET Show_Status = 'Hidden'");
+    $pdo->query("UPDATE tbl_carousels SET Show_Status = 'Hidden'");
 
     // Then show only the selected
-    $stmt = $pdo->prepare("UPDATE tbl_instructions SET Show_Status = 'Shown' WHERE Instruction_ID = ?");
-    $stmt->execute([$instruction_id]);
+    $stmt = $pdo->prepare("UPDATE tbl_carousels SET Show_Status = 'Shown' WHERE Carousel_ID = ?");
+    $stmt->execute([$carousel_id]);
 
-    header("Location: adminInstructionsManagement.php");
+    header("Location: adminCarouselManagement.php");
     exit();
 }
 
 
 // Fetch Instructions
-$instructions = $pdo->query("SELECT * FROM tbl_instructions ORDER BY Instruction_ID ASC")->fetchAll();
+$carousels = $pdo->query("SELECT * FROM tbl_carousels ORDER BY Carousel_ID ASC")->fetchAll();
 ?>
 
 <!DOCTYPE html>
@@ -93,12 +123,12 @@ $instructions = $pdo->query("SELECT * FROM tbl_instructions ORDER BY Instruction
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" href="adminInstructionsManagement.php">
+                        <a class="nav-link" href="adminInstructionsManagement.php">
                             <span class="nav-text">INSTRUCTION MANAGEMENT</span>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="adminCarouselManagement.php">
+                        <a class="nav-link active" href="adminCarouselManagement.php">
                             <span class="nav-text">CAROUSEL MANAGEMENT</span>
                         </a>
                     </li>
@@ -177,7 +207,7 @@ $instructions = $pdo->query("SELECT * FROM tbl_instructions ORDER BY Instruction
         </div>
 
         <div class="container-fluid row mainBody">
-            <!-- Add Instruction Button -->
+            <!-- Add Carousel Button -->
                 <button class="addContentButton" id="openModalBtn" data-bs-toggle="modal" data-bs-target="#addContentModal">
                     <i class="bi bi-node-plus-fill"></i><i class="bi bi-node-plus-fill"></i>Add Instruction
                 </button>
@@ -187,98 +217,84 @@ $instructions = $pdo->query("SELECT * FROM tbl_instructions ORDER BY Instruction
             <table class="display reportsTable" id="reportsTable">
             <thead>
                     <tr>
-                        <th>Instruction ID</th>
-                        <th>Step 1: Title</th>
-                        <th>Step 1</th>
-                        <th>Step 2: Title</th>
-                        <th>Step 2</th>
-                        <th>Step 3: Title</th>
-                        <th>Step 3</th>
-                        <th>Step 4: Title</th>
-                        <th>Step 4</th>
+                        <th>Carousel ID</th>
+                        <th>Image 1</th>
+                        <th>Image 2</th>
+                        <th>Image 3</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
-            <tbody>
-                <?php foreach ($instructions as $instruction): ?>
-                <tr>
-                    <td><?php echo htmlspecialchars($instruction['Instruction_ID']); ?></td>
-                    <td><?php echo htmlspecialchars($instruction['Step1_Title']); ?></td>
-                    <td><?php echo htmlspecialchars($instruction['Step1_Content']); ?></td>
-                    <td><?php echo htmlspecialchars($instruction['Step2_Title']); ?></td>
-                    <td><?php echo htmlspecialchars($instruction['Step2_Content']); ?></td>
-                    <td><?php echo htmlspecialchars($instruction['Step3_Title']); ?></td>
-                    <td><?php echo htmlspecialchars($instruction['Step3_Content']); ?></td>
-                    <td><?php echo htmlspecialchars($instruction['Step4_Title']); ?></td>
-                    <td><?php echo htmlspecialchars($instruction['Step4_Content']); ?></td>
-                    <td class="buttonColumn">
-                        <form method="POST">
-                            <input type="hidden" name="instruction_id" value="<?php echo $instruction['Instruction_ID']; ?>">
-                            <?php if ($instruction['Show_Status'] == 'Shown'): ?>
-                                <button type="button" disabled class=" buttons active-button" style="opacity: 0.5;">
-                                <i class="bi bi-eye-fill"></i> Active</button>
+                <tbody>
+                    <?php foreach ($carousels as $carousel): ?>
+                    <tr>
+                        <td><?php echo htmlspecialchars($carousel['Carousel_ID']); ?></td>
+                        <td>
+                            <?php if (!empty($carousel['Image1'])): ?>
+                                <img src="<?php echo htmlspecialchars($carousel['Image1']); ?>" alt="Image 1" style="width: 100px; height: auto;">
                             <?php else: ?>
-                                <button type="submit" name="show_instruction" class=" buttons show-button">Show</button>
+                                No Image
                             <?php endif; ?>
-                        </form>
-                    </td>
-                </tr>
-                <?php endforeach; ?>
-            </tbody>
+                        </td>
+                        <td>
+                            <?php if (!empty($carousel['Image2'])): ?>
+                                <img src="<?php echo htmlspecialchars($carousel['Image2']); ?>" alt="Image 2" style="width: 100px; height: auto;">
+                            <?php else: ?>
+                                No Image
+                            <?php endif; ?>
+                        </td>
+                        <td>
+                            <?php if (!empty($carousel['Image3'])): ?>
+                                <img src="<?php echo htmlspecialchars($carousel['Image3']); ?>" alt="Image 3" style="width: 100px; height: auto;">
+                            <?php else: ?>
+                                No Image
+                            <?php endif; ?>
+                        </td>
+                        <td class="buttonColumn">
+                            <form method="POST">
+                                <input type="hidden" name="carousel_id" value="<?php echo $carousel['Carousel_ID']; ?>">
+                                <?php if ($carousel['Show_Status'] == 'Shown'): ?>
+                                    <button type="button" disabled class="buttons active-button" style="opacity: 0.5;">
+                                        <i class="bi bi-eye-fill"></i> Active
+                                    </button>
+                                <?php else: ?>
+                                    <button type="submit" name="show_carousel" class="buttons show-button">Show</button>
+                                <?php endif; ?>
+                            </form>
+                        </td>
+                    </tr>
+                    <?php endforeach; ?>
+                </tbody>
             </table>
         </div>
     </div>
 
-<!-- Add Instruction Modal -->
+<!-- Add Carousel Modal -->
 <div class="modal fade" id="addContentModal" tabindex="-1" aria-labelledby="addContentModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content customModal">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="addContentModalLabel">ADD NEW INSTRUCTION</h5>
+                    <h5 class="modal-title" id="addContentModalLabel">ADD NEW CAROUSEL</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <form method="POST" enctype="multipart/form-data">
                     <div class="modal-body">
 
                         <div class="mb-3">
-                                <label class="form-label">STEP 1 TITLE</label>
-                                <input type="text" name="step1_title" class="form-control plchldr" placeholder="Enter Step 1 Title" required>
+                            <label class="form-label">IMAGE 1</label>
+                            <input type="file" name="image1" class="form-control" accept="image/*">
                         </div>
                         <div class="mb-3">
-                            <label class="form-label">STEP 1</label>
-                            <textarea name="step1_content" class="form-control plchldr" rows="3" placeholder="Enter Step 1" required></textarea>
-                        </div>
-
-                        <div class="mb-3">
-                                <label class="form-label">STEP 2 TITLE</label>
-                                <input type="text" name="step1_title" class="form-control plchldr" placeholder="Enter Step 1 Title" required>
+                            <label class="form-label">IMAGE 2</label>
+                            <input type="file" name="image2" class="form-control" accept="image/*">
                         </div>
                         <div class="mb-3">
-                            <label class="form-label">STEP 2</label>
-                            <textarea name="step2_content" class="form-control plchldr" rows="3" placeholder="Enter Step 2" required></textarea>
-                        </div>
-
-                        <div class="mb-3">
-                                <label class="form-label">STEP 3 TITLE</label>
-                                <input type="text" name="step1_title" class="form-control plchldr" placeholder="Enter Step 1 Title" required>
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">STEP 3</label>
-                            <textarea name="step3_content" class="form-control plchldr" rows="3" placeholder="Enter Step 3" required></textarea>
-                        </div>
-
-                        <div class="mb-3">
-                                <label class="form-label">STEP 4 TITLE</label>
-                                <input type="text" name="step1_title" class="form-control plchldr" placeholder="Enter Step 1 Title" required>
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">STEP 4</label>
-                            <textarea name="step4_content" class="form-control plchldr" rows="3" placeholder="Enter Step 4" required></textarea>
+                            <label class="form-label">IMAGE 3</label>
+                            <input type="file" name="image3" class="form-control" accept="image/*">
                         </div>
 
                     </div>
                     <div class="modal-footer">
-                        <button type="submit" name="add_instruction" class="modalButtons">ADD INSTRUCTIONS</button>
+                        <button type="submit" name="add_carousel" class="modalButtons">ADD IMAGES</button>
                     </div>
                 </form>
             </div>
@@ -291,7 +307,7 @@ $instructions = $pdo->query("SELECT * FROM tbl_instructions ORDER BY Instruction
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     const openModalBtn = document.getElementById('openModalBtn');
-    const modal = document.getElementById('addInstructionModal');
+    const modal = document.getElementById('addCarouselModal');
     const closeModalBtn = document.getElementById('closeModalBtn');
 
     // Open Modal

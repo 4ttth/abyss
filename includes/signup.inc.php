@@ -69,7 +69,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         sendEmailToSquad($pdo, $accountNumber, $subject, $body);
 
         $_SESSION['success'] = "Signup successful! Please verify your email.";
-        header("Location: ../index.php");
+        header("Location: ../emailVerification.php");
         die();
     } catch (PDOException $e) {
         die("Query failed: " . $e->getMessage());

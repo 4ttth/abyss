@@ -440,6 +440,13 @@ $unreadMessageCount = countUnreadMessages($pdo, $_SESSION['user']['Squad_ID']);
                         <div class="post">No posts found.</div>
                     <?php endif; ?>
 
+                    <!-- Pagination Controls Button -->
+                    <div class="scrim-pagination pagination-controls">
+                        <button id="prevPage" class="page-btn prev-btn pagination-button" disabled>Previous</button>
+                        <span id="pageInfo" class="page-indicator">Page 1</span>
+                        <button id="nextPage" class="page-btn next-btn pagination-button">Next</button>
+                    </div>
+
 
                     <!-- End Message -->
                     <div class="end">End of Feed</div>
@@ -466,8 +473,20 @@ $unreadMessageCount = countUnreadMessages($pdo, $_SESSION['user']['Squad_ID']);
                 <div class="squadPlayers">
                     <?php foreach ($players as $player): ?>
                         <div class="playerProfile">
-                            <div class="IGN"><?= htmlspecialchars($player['IGN']) ?></div>
-                            <div class="role"><?= htmlspecialchars($player['Role']) ?></div>
+                            <div class="heroCircles">
+                                <?php foreach (['Hero_1', 'Hero_2', 'Hero_3'] as $heroField): ?>
+                                    <?php
+                                    $heroName = $player[$heroField] ?? '';
+                                    $heroImage = $heroName ? ($heroPaths[$heroName] ?? '') : '';
+                                    ?>
+                                    <img src="<?= $heroImage ?>" class="hero-icon" alt="<?= $heroName ?>" title="<?= $heroName ?>">
+                                <?php endforeach; ?>
+                            </div>
+
+                            <div class="IGNs">
+                                <div class="IGN"><?= htmlspecialchars($player['IGN']) ?></div>
+                                <div class="role"><?= htmlspecialchars($player['Role']) ?></div>
+                            </div>
                         </div>
                     <?php endforeach; ?>
                 </div>
@@ -692,6 +711,43 @@ $unreadMessageCount = countUnreadMessages($pdo, $_SESSION['user']['Squad_ID']);
     // Convert PHP variables to JS
     const verificationStatus = <?= json_encode($verificationStatus) ?>;
     const squadLevel = <?= json_encode($squadDetails['Squad_Level']) ?>;
+
+    // Pagination
+    document.addEventListener('DOMContentLoaded', function () {
+        const postsPerPage = 10;
+        let currentPage = 1;
+        const posts = document.querySelectorAll('.post-item');
+        const totalPages = Math.ceil(posts.length / postsPerPage);
+        const prevButton = document.getElementById('prevPage');
+        const nextButton = document.getElementById('nextPage');
+        const pageInfo = document.getElementById('pageInfo');
+
+        function showPage(page) {
+            posts.forEach((post, index) => {
+                post.style.display = (index >= (page - 1) * postsPerPage && index < page * postsPerPage) ? 'block' : 'none';
+            });
+            pageInfo.textContent = `Page ${page}`;
+            prevButton.disabled = page === 1;
+            nextButton.disabled = page === totalPages;
+        }
+
+        prevButton.addEventListener('click', () => {
+            if (currentPage > 1) {
+                currentPage--;
+                showPage(currentPage);
+            }
+        });
+
+        nextButton.addEventListener('click', () => {
+            if (currentPage < totalPages) {
+                currentPage++;
+                showPage(currentPage);
+            }
+        });
+
+        // Initialize the first page
+        showPage(currentPage);
+    });
     </script>
     <script src="JS/userHomepageScript.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
