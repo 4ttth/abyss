@@ -205,7 +205,7 @@ $videoads = $pdo->query("SELECT * FROM tbl_videoads ORDER BY VideoAd_ID ASC")->f
                             <td><?php echo htmlspecialchars($videoad['VideoAd_ID']); ?></td>
                             <td>
                                 <?php if (!empty($videoad['VideoAd_Path'])): ?>
-                                    <video width="200" controls>
+                                    <video controls>
                                         <source src="<?php echo htmlspecialchars($videoad['VideoAd_Path']); ?>" type="video/mp4">
                                         Your browser does not support the video tag.
                                     </video>
