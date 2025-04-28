@@ -11,12 +11,6 @@ header('Content-Type: application/json');
 
 
 try {
-    // Validate session and permissions
-    if (!isset($_SESSION['user_role']) || !in_array($_SESSION['user_role'], ['Moderator' || 'Admin'])) {
-        throw new Exception('Access Denied');
-    }
-
-
     // Validate input
     if (!isset($_POST['squad_id']) || !is_numeric($_POST['squad_id'])) {
         throw new Exception('Invalid Squad ID');
