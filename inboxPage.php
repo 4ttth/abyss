@@ -727,6 +727,20 @@ $unreadMessageCount = countUnreadMessages($pdo, $_SESSION['user']['Squad_ID']);
         if (messagesContainer.length) {
             messagesContainer.scrollTop(messagesContainer[0].scrollHeight);
         }
+
+                // Handle Enter key in textarea (send message) and Shift+Enter for new line
+                $(document).on('keydown', 'textarea[name="message"]', function(e) {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                $(this).closest('form').submit();
+            }
+        });
+
+        // Auto-resize textarea as user types
+        $(document).on('input', 'textarea[name="message"]', function() {
+            this.style.height = 'auto';
+            this.style.height = (this.scrollHeight) + 'px';
+        });
     });
     </script>
 </body>
