@@ -51,18 +51,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['verify_submit'])) {
                 $pythonScript = '/var/www/html/abyss/Python/ML-OCR/battleResults.py';
                 $command = "python3" . escapeshellcmd($pythonScript) . " " . escapeshellarg($uploadPath) . " 2>&1";
                 $output = shell_exec($command);
-
+                $_SESSION['debug'] = $output; // For debugging purposes
                 $ocrResult = json_decode($output, true);
                 if (!is_array($ocrResult)) {
                     $ocrResult = ['battleID' => 'Not found', 'resultStatus' => 'Not found'];
-                    $_SESSION['debug'] = $ocrResult;
                 }
-                
+
                 $battleID = $ocrResult['battleID'] ?? 'Not found';
-                
                 $resultStatus = $ocrResult['resultStatus'] ?? 'Not found';
-                $_SESSION['debug2'] = $battleID;
-                $_SESSION['debug3'] = $resultStatus;
+
                 if (strpos(strtolower($resultStatus), 'victory') !== false) {
                     $resultStatus = 'Victory';
                     $victoryCount++;
