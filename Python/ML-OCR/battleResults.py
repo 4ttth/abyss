@@ -5,7 +5,7 @@ import sys
 import json
 import os
 
-pytesseract.pytesseract.tesseract_cmd = r'C:\\Program Files\\Tesseract-OCR\\tesseract.exe'
+# pytesseract.pytesseract.tesseract_cmd = r'C:\\Program Files\\Tesseract-OCR\\tesseract.exe'
 
 def preprocess_region_otsu(image):
     resized = cv2.resize(image, None, fx=3, fy=3, interpolation=cv2.INTER_CUBIC)

@@ -2,7 +2,7 @@
 // htdocs/abyss/pythonTrial.php
 
 // Set absolute paths
-$baseDir = "/var/www/html/abyss/";
+$baseDir = "/var/www/html/abyss";
 $pythonScript = "$baseDir/Python/ML-OCR/playerVerification.py";
 $uploadDir = "$baseDir/uploads/";
 
@@ -49,7 +49,7 @@ function executePythonOCR($pythonScript, $imagePath) {
     }
 
     // Use full path to python executable if needed
-    $command = "python " . escapeshellarg($pythonScript) . " " . escapeshellarg($imagePath) . " 2>&1";
+    $command = "python3 " . escapeshellarg($pythonScript) . " " . escapeshellarg($imagePath) . " 2>&1";
     $output = shell_exec($command);
     
     if ($output === null) {

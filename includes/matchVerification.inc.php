@@ -49,7 +49,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['verify_submit'])) {
                 $proofID = $pdo->lastInsertId();
 
                 $pythonScript = '/var/www/html/abyss/Python/ML-OCR/battleResults.py';
-                $command = "python " . escapeshellcmd($pythonScript) . " " . escapeshellarg($uploadPath) . " 2>&1";
+                $command = "python3" . escapeshellcmd($pythonScript) . " " . escapeshellarg($uploadPath) . " 2>&1";
                 $output = shell_exec($command);
 
                 $ocrResult = json_decode($output, true);
