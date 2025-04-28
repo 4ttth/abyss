@@ -6,7 +6,7 @@ $heroPaths = [];
 try {
     $heroQuery = "SELECT Hero_Name, Path FROM tbl_heroimages";
     $heroStmt = $pdo->query($heroQuery);
-    $heroPaths = $heroStmt->fetchAll(PDO::FETCH_KEY_PAIR); // Creates [Hero_Name => Path]
+    $heroPaths = $heroStmt->fetchAll(PDO::FETCH_KEY_PAIR); 
 } catch (PDOException $e) {
     die("Error fetching hero data: " . $e->getMessage());
 }
