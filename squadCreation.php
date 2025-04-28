@@ -686,14 +686,26 @@ $qrcode = (new QRCode)->render($qrURL);
         });
     });
 
-    // Use AJAX to refresh player list without reloading
-    setInterval(function() {
-        fetch('includes/fetchPlayers.inc.php?squad_id=<?= urlencode($squadID) ?>')
-            .then(response => response.text())
-            .then(data => {
-                document.querySelector('.profiles').innerHTML = data;
-            });
-    }, 5000); // Refresh every 5 seconds
+    document.addEventListener('DOMContentLoaded', function () {
+        // Use AJAX to refresh player list without reloading
+        setInterval(function () {
+            fetch('includes/fetchPlayers.inc.php?squad_id=<?= urlencode($squadID) ?>')
+                .then(response => response.text())
+                .then(data => {
+                    // Debug the response to ensure it includes all fields
+                    console.log('AJAX Response:', data);
+
+                    // Update the profiles container
+                    const profilesContainer = document.querySelector('.profiles');
+                    if (profilesContainer) {
+                        profilesContainer.innerHTML = data;
+                    }
+                })
+                .catch(error => {
+                    console.error('Error fetching players:', error);
+                });
+        }, 5000); // Refresh every 5 seconds
+    });
     </script>
     <script src="JS/creatingSquadScript.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
