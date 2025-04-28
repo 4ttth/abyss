@@ -3,10 +3,36 @@ include("../includes/dbh.inc.php"); // Your database connection
 session_start();
 
 if (isset($_POST['add_carousel'])) {
-    $image1 = $_POST['image1'];
-    $image2 = $_POST['image2'];
-    $image3 = $_POST['image3'];
+    // Define the upload directory
+    $uploadDir = '../uploads/carousels/';
 
+    // Ensure the directory exists
+    if (!is_dir($uploadDir)) {
+        mkdir($uploadDir, 0777, true);
+    }
+
+    $allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
+    if (!in_array($_FILES['image1']['type'], $allowedTypes)) {
+        die('Invalid file type for Image 1');
+    }
+
+    // Handle each file upload
+    $image1 = $_FILES['image1']['name'] ? $uploadDir . basename($_FILES['image1']['name']) : null;
+    $image2 = $_FILES['image2']['name'] ? $uploadDir . basename($_FILES['image2']['name']) : null;
+    $image3 = $_FILES['image3']['name'] ? $uploadDir . basename($_FILES['image3']['name']) : null;
+
+    // Move uploaded files to the upload directory
+    if ($image1 && !move_uploaded_file($_FILES['image1']['tmp_name'], $image1)) {
+        die('Error uploading Image 1');
+    }
+    if ($image2 && !move_uploaded_file($_FILES['image2']['tmp_name'], $image2)) {
+        die('Error uploading Image 2');
+    }
+    if ($image3 && !move_uploaded_file($_FILES['image3']['tmp_name'], $image3)) {
+        die('Error uploading Image 3');
+    }
+
+    // Insert into the database
     $stmt = $pdo->prepare("
         INSERT INTO tbl_carousels 
         (Image1, Image2, Image3, Show_Status) 
