@@ -1,105 +1,81 @@
+// Initial page load animation
 document.addEventListener("DOMContentLoaded", function () {
     setTimeout(() => {
         document.querySelector(".introScreen").style.display = "none"; 
         document.querySelector(".pageContent").classList.add("showContent");
-    }, 500); // Matches animation duration
+    }, 0);
+
+    // Initialize inbox functionality
+    initializeInbox();
+    
+    // Initialize notification functionality
+    initializeNotifications();
+    
+    // Initialize other functionality
+    initializeOtherFeatures();
 });
 
-document.addEventListener('DOMContentLoaded', function() {
+function initializeInbox() {
     // Scroll to bottom initially
     scrollToBottom();
     
-    // Optional: MutationObserver to detect new messages added dynamically
+    // Setup conversation card click handlers
+    setupConversationHandlers();
+    
+    // Setup message form submission
+    setupMessageForm();
+    
+    // Setup periodic checks for new messages
+    setupMessagePolling();
+    
+    // Setup mutation observer for dynamic content
     setupMutationObserver();
-    
-    // Optional: If you're using AJAX to refresh messages
-    // window.addEventListener('messageAdded', scrollToBottom);
-});
-
-function validateScores() {
-    const yourScore = parseInt(document.getElementById('yourScore').value) || 0;
-    const opponentScore = parseInt(document.getElementById('opponentScore').value) || 0;
-    const numberOfGames = parseInt(document.getElementById('numberOfGames').value);
-    const maxScore = parseInt(document.getElementById('maxScore').value);
-    const errorElement = document.getElementById('scoreError');
-    const submitButton = document.querySelector('button[type="submit"]');
-    
-    // Reset error and enable button by default
-    errorElement.style.display = 'none';
-    submitButton.disabled = false;
-    
-    // 1. Check if scores exceed maximum possible score
-    if (yourScore > maxScore || opponentScore > maxScore) {
-        errorElement.textContent = `In a best of ${numberOfGames} series, no team can win more than ${maxScore} games!`;
-        errorElement.style.display = 'block';
-        submitButton.disabled = true;
-        return;
-    }
-    
-    // 2. Check if sum of scores exceeds number of games
-    if ((yourScore + opponentScore) > numberOfGames) {
-        errorElement.textContent = `The total games played (${yourScore + opponentScore}) cannot exceed the series length (best of ${numberOfGames})!`;
-        errorElement.style.display = 'block';
-        submitButton.disabled = true;
-        return;
-    }
-    
-    // 3. Check if one team has the winning score
-    const hasWinner = (yourScore === maxScore) || (opponentScore === maxScore);
-    
-    if (!hasWinner) {
-        errorElement.textContent = `One team must have ${maxScore} wins to complete the series!`;
-        errorElement.style.display = 'block';
-        submitButton.disabled = true;
-        return;
-    }
-    
-    // 4. Check if both teams have winning score (impossible)
-    if (yourScore === maxScore && opponentScore === maxScore) {
-        errorElement.textContent = 'Both teams cannot have the winning score!';
-        errorElement.style.display = 'block';
-        submitButton.disabled = true;
-        return;
-    }
-    
-    // 5. Check for negative values
-    if (yourScore < 0 || opponentScore < 0) {
-        errorElement.textContent = 'Scores cannot be negative!';
-        errorElement.style.display = 'block';
-        submitButton.disabled = true;
-        return;
-    }
-    
-    // 6. Additional check: If series should be complete (sum should be at least maxScore)
-    if ((yourScore + opponentScore) < maxScore) {
-        errorElement.textContent = `The series should have at least ${maxScore} games played to have a winner!`;
-        errorElement.style.display = 'block';
-        submitButton.disabled = true;
-        return;
-    }
 }
 
-document.querySelector('form').addEventListener('submit', function(e) {
-    validateScores();
-    if (document.querySelector('button[type="submit"]').disabled) {
-        e.preventDefault();
-    }
-});
+function initializeNotifications() {
+    // Update notification badge count
+    updateNotificationBadge();
+    
+    // Mark all as read handler
+    document.querySelector('.markAllRead')?.addEventListener('click', function() {
+        fetch('includes/markNotificationsRead.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        })
+        .then(() => {
+            updateNotificationBadge();
+        });
+    });
+    
+    // File name display script
+    document.getElementById('fileInput')?.addEventListener('change', function() {
+        document.getElementById('fileName').textContent = this.files[0] ? this.files[0].name : 'No file chosen';
+    });
+}
 
-document.addEventListener('DOMContentLoaded', function() {
+function initializeOtherFeatures() {
+    // Score validation
+    document.querySelector('form')?.addEventListener('submit', function(e) {
+        validateScores();
+        if (document.querySelector('button[type="submit"]').disabled) {
+            e.preventDefault();
+        }
+    });
+    
+    // Form submission handling
     const verifyButton = document.getElementById('verifyButton');
     const form = document.querySelector('form');
     
-    form.addEventListener('submit', function(e) {
+    form?.addEventListener('submit', function(e) {
         e.preventDefault();
         
-        // Get form values
         const yourScore = parseInt(document.getElementById('yourScore').value);
         const opponentScore = parseInt(document.getElementById('opponentScore').value);
         const maxScore = parseInt(document.getElementById('maxScore').value);
         const fileInput = document.getElementById('fileInput');
         
-        // Validate scores
         if (isNaN(yourScore) || isNaN(opponentScore)) {
             alert('Please enter valid scores for both teams');
             return;
@@ -115,108 +91,446 @@ document.addEventListener('DOMContentLoaded', function() {
             return;
         }
         
-        if (!fileInput.files.length) {
+        if (fileInput && !fileInput.files.length) {
             alert('Please upload proof file');
             return;
         }
         
-        // If all validations pass, submit the form
         form.submit();
     });
     
     // Disable button during submission to prevent double-clicking
-    form.addEventListener('submit', function() {
-        verifyButton.disabled = true;
-        verifyButton.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Processing...';
+    form?.addEventListener('submit', function() {
+        if (verifyButton) {
+            verifyButton.disabled = true;
+            verifyButton.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Processing...';
+        }
     });
-});
-
-document.addEventListener('DOMContentLoaded', function() {
+    
+    // Date display
     const subtitleRight = document.querySelector('.subtitleRight');
     if (subtitleRight) {
         const now = new Date();
         const dd = String(now.getDate()).padStart(2, '0');
-        const mm = String(now.getMonth() + 1).padStart(2, '0'); // Months are 0-indexed
+        const mm = String(now.getMonth() + 1).padStart(2, '0');
         const yyyy = now.getFullYear();
         subtitleRight.innerText = `AS OF ${dd}${mm}${yyyy}`;
     }
-});
-
-document.addEventListener("DOMContentLoaded", function () {
+    
+    // Modal scrolling behavior
     let authModal = document.getElementById("authModal");
+    if (authModal) {
+        authModal.addEventListener("shown.bs.modal", function () {
+            document.body.style.overflow = "hidden";
+        });
 
-    authModal.addEventListener("shown.bs.modal", function () {
-        document.body.style.overflow = "hidden"; // Prevent scrolling
-    });
-
-    authModal.addEventListener("hidden.bs.modal", function () {
-        document.body.style.overflow = ""; // Restore scrolling
-    });
-});
-
-function openLabelModal() {
-    document.getElementById("labelModal").style.display = "block";
-}
-
-function closeLabelModal() {
-    document.getElementById("labelModal").style.display = "none";
-}
-
-function saveCustomLabel() {
-    let label = document.getElementById("customLabelInput").value;
-
-    if (label.trim() !== "") {
-        let labelElement = document.createElement("div");
-        labelElement.classList.add("labelTag");
-        labelElement.textContent = label;
-        document.querySelector(".selectedLabels").appendChild(labelElement);
-    }
-
-    closeLabelModal();
-}
-
-function addLabel(labelText) {
-    const labelContainer = document.getElementById("labelContainer"); // Ensure this div exists
-    const label = document.createElement("div");
-    label.classList.add("addedLabel");
-    label.innerText = labelText;
-
-    // Add event listener to remove label on click
-    label.addEventListener("click", function () {
-        label.remove();
-    });
-
-    labelContainer.appendChild(label);
-}
-
-document.addEventListener("click", function (event) {
-    if (event.target.classList.contains("addedLabel")) {
-        event.target.remove();
-    }
-});
-
-// TESTESTESTEST
-document.addEventListener("DOMContentLoaded", function() {
-    const postButton = document.getElementById("postButton");
-
-    if (!postButton) {
-        console.error("Post button not found!");
-    } else {
-        postButton.addEventListener("click", function() {
-            console.log("Post button clicked!"); // Should appear in Console
+        authModal.addEventListener("hidden.bs.modal", function () {
+            document.body.style.overflow = "";
         });
     }
-});
-
-// POSTS
-document.addEventListener("DOMContentLoaded", function () {
-    loadPosts();
     
-    document.getElementById("postButton").addEventListener("click", function () {
-        postStatus();
-    });
-});
+    // Label modal functions
+    window.openLabelModal = function() {
+        document.getElementById("labelModal").style.display = "block";
+    };
+    
+    window.closeLabelModal = function() {
+        document.getElementById("labelModal").style.display = "none";
+    };
+    
+    window.saveCustomLabel = function() {
+        let label = document.getElementById("customLabelInput").value;
 
+        if (label.trim() !== "") {
+            let labelElement = document.createElement("div");
+            labelElement.classList.add("labelTag");
+            labelElement.textContent = label;
+            document.querySelector(".selectedLabels").appendChild(labelElement);
+        }
+
+        closeLabelModal();
+    };
+    
+    window.addLabel = function(labelText) {
+        const labelContainer = document.getElementById("labelContainer");
+        const label = document.createElement("div");
+        label.classList.add("addedLabel");
+        label.innerText = labelText;
+
+        label.addEventListener("click", function () {
+            label.remove();
+        });
+
+        labelContainer.appendChild(label);
+    };
+    
+    // Post functionality
+    const postButton = document.getElementById("postButton");
+    if (postButton) {
+        postButton.addEventListener("click", function() {
+            postStatus();
+        });
+    }
+    
+    // Scrim error function
+    window.showScrimError = function() {
+        const reason = [];
+        
+        if (verificationStatus !== 'Approved') {
+            reason.push(`Verification Status: ${verificationStatus}`);
+        }
+        
+        if (squadLevel.toUpperCase() !== 'AMATEUR') {
+            reason.push(`Squad Level: ${squadLevel}`);
+        }
+        
+        alert(`Scrim access requires:
+- Approved verification status
+OR
+- Amateur squad level
+
+Current status:
+${reason.join('\n')}`);
+    };
+}
+
+// Scroll to bottom of messages
+function scrollToBottom() {
+    const messagesContainer = document.getElementById('messagesContainer');
+    if (messagesContainer) {
+        messagesContainer.scrollTop = messagesContainer.scrollHeight;
+    }
+}
+
+// Handle conversation card clicks
+function setupConversationHandlers() {
+    document.addEventListener('click', function(e) {
+        if (e.target.closest('.conversationCard')) {
+            const card = e.target.closest('.conversationCard');
+            const conversationId = card.dataset.conversationId;
+            
+            document.querySelectorAll('.conversationCard').forEach(c => {
+                c.classList.remove('active-conversation');
+            });
+            card.classList.add('active-conversation');
+            
+            const unreadCount = card.querySelector('.unreadCount');
+            if (unreadCount) unreadCount.remove();
+            card.classList.remove('newMessage');
+            
+            loadMessages(conversationId);
+        }
+    });
+}
+
+// AJAX function to load messages
+function loadMessages(conversationId) {
+    fetch(`inboxPage.php?ajax=get_messages&conversation_id=${conversationId}`)
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === 'success') {
+                updateMessagesArea(data, conversationId);
+                updateURL(conversationId);
+            }
+        })
+        .catch(error => console.error('Error loading messages:', error));
+}
+
+function updateMessagesArea(data, conversationId) {
+    let messagesHtml = `
+        <div class="conversation-header">
+            <strong>${data.otherSquadName}</strong>
+        </div>
+        <div class="messagesPart" id="messagesContainer">`;
+    
+    if (data.messages.length > 0) {
+        data.messages.forEach(message => {
+            const messageClass = message.Sender_Squad_ID == currentSquadId ? 'outgoing' : 'incoming';
+            const senderHtml = message.Sender_Squad_ID != currentSquadId ? 
+                `<a href="squadDetailsPage.php?id=${message.Sender_Squad_ID}" class="squadNameSender">
+                    ${message.Sender_Name}
+                </a>` : '';
+            
+            messagesHtml += `
+                <div class="message ${messageClass}" data-message-id="${message.Message_ID}">
+                    ${senderHtml}
+                    <div class="bubble">${message.Content.replace(/\n/g, '<br>')}</div>
+                    <div class="message-time">${new Date(message.Created_At).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</div>
+                </div>`;
+        });
+    } else {
+        messagesHtml += `<div class="no-messages">Start the conversation!</div>`;
+    }
+    
+    messagesHtml += `</div>
+        <div class="textArea">
+            <form id="messageForm" data-conversation-id="${conversationId}">
+                <div class="input-group">
+                    <textarea class="form-control" name="message" placeholder="Type your message here..." rows="1" required></textarea>
+                    <button type="submit" class="btn send-btn"><i class="bi bi-send-fill"></i></button>
+                </div>
+            </form>
+        </div>`;
+    
+    document.getElementById('messagesArea').innerHTML = messagesHtml;
+    scrollToBottom();
+    
+    setupMessageForm();
+}
+
+// Update URL without reload
+function updateURL(conversationId) {
+    history.pushState(null, null, `inboxPage.php?conversation_id=${conversationId}`);
+}
+
+// Handle message form submission
+function setupMessageForm() {
+    const form = document.getElementById('messageForm');
+    if (form) {
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const conversationId = this.dataset.conversationId;
+            const messageInput = this.querySelector('textarea[name="message"]');
+            const messageContent = messageInput.value.trim();
+            
+            if (messageContent) {
+                sendMessage(conversationId, messageContent);
+                messageInput.value = '';
+                messageInput.style.height = 'auto';
+            }
+        });
+        
+        const textarea = form.querySelector('textarea');
+        textarea.addEventListener('input', function() {
+            this.style.height = 'auto';
+            this.style.height = (this.scrollHeight) + 'px';
+        });
+    }
+}
+
+// AJAX function to send message
+function sendMessage(conversationId, messageContent) {
+    const formData = new FormData();
+    formData.append('ajax', 'send_message');
+    formData.append('conversation_id', conversationId);
+    formData.append('message', messageContent);
+
+    fetch('inboxPage.php', {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.status === 'success') {
+            appendNewMessage(data.message);
+            updateConversationList(conversationId, data.message.Content);
+        }
+    })
+    .catch(error => console.error('Error sending message:', error));
+}
+
+// Append new message to container
+function appendNewMessage(message) {
+    const container = document.getElementById('messagesContainer');
+    if (!container) return;
+
+    const messageClass = message.Sender_Squad_ID == currentSquadId ? 'outgoing' : 'incoming';
+    const senderHtml = message.Sender_Squad_ID != currentSquadId ? 
+        `<a href="squadDetailsPage.php?id=${message.Sender_Squad_ID}" class="squadNameSender">
+            ${message.Sender_Name}
+        </a>` : '';
+    
+    const messageHtml = `
+        <div class="message ${messageClass}" data-message-id="${message.Message_ID}">
+            ${senderHtml}
+            <div class="bubble">${message.Content.replace(/\n/g, '<br>')}</div>
+            <div class="message-time">${new Date(message.Created_At).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</div>
+        </div>`;
+    
+    container.insertAdjacentHTML('beforeend', messageHtml);
+    scrollToBottom();
+}
+
+// Update conversation list after sending message
+function updateConversationList(conversationId, lastMessage) {
+    const conversationCard = document.querySelector(`.conversationCard[data-conversation-id="${conversationId}"]`);
+    if (!conversationCard) return;
+
+    const lastMessageDiv = conversationCard.querySelector('.lastMessage');
+    if (lastMessageDiv) {
+        const truncated = lastMessage.length > 30 ? lastMessage.substring(0, 30) + '...' : lastMessage;
+        lastMessageDiv.textContent = truncated;
+    }
+
+    const conversationsList = document.getElementById('conversationsList');
+    if (conversationsList) {
+        conversationsList.prepend(conversationCard);
+    }
+
+    document.querySelectorAll('.conversationCard').forEach(card => {
+        card.classList.remove('active-conversation');
+    });
+    conversationCard.classList.add('active-conversation');
+}
+
+// Check for new messages periodically
+function setupMessagePolling() {
+    if (typeof selectedConversation !== 'undefined' && selectedConversation) {
+        setInterval(checkNewMessages, 3000);
+    }
+    
+    setInterval(checkUnreadCounts, 30000);
+}
+
+function checkNewMessages() {
+    const conversationId = document.querySelector('.conversationCard.active-conversation')?.dataset.conversationId;
+    if (!conversationId) return;
+
+    const lastMessage = document.querySelector('#messagesContainer .message:last-child');
+    const lastMessageId = lastMessage ? lastMessage.dataset.messageId : 0;
+
+    fetch(`includes/checkMessages.php?conversation_id=${conversationId}&last_id=${lastMessageId}`)
+        .then(response => response.json())
+        .then(data => {
+            if (data.newMessages && data.newMessages.length > 0) {
+                data.newMessages.forEach(message => {
+                    appendNewMessage(message);
+                });
+            }
+        });
+}
+
+function checkUnreadCounts() {
+    fetch('includes/getUnreadCount.inc.php')
+        .then(response => response.json())
+        .then(data => {
+            updateUnreadBadge(data.count);
+        });
+}
+
+function updateUnreadBadge(count) {
+    const inboxLink = document.querySelector('.nav-linkIcon[href="inboxPage.php"]');
+    if (!inboxLink) return;
+
+    let badge = inboxLink.querySelector('.notifCount');
+    
+    if (count > 0) {
+        if (!badge) {
+            badge = document.createElement('span');
+            badge.className = 'notifCount';
+            inboxLink.appendChild(badge);
+        }
+        badge.textContent = count;
+    } else if (badge) {
+        badge.remove();
+    }
+}
+
+// Mutation observer for dynamic content
+function setupMutationObserver() {
+    const observer = new MutationObserver(function(mutations) {
+        mutations.forEach(function(mutation) {
+            if (mutation.addedNodes.length) {
+                scrollToBottom();
+            }
+        });
+    });
+
+    const messagesContainer = document.getElementById('messagesContainer');
+    if (messagesContainer) {
+        observer.observe(messagesContainer, {
+            childList: true,
+            subtree: true
+        });
+    }
+}
+
+// Notification handling functions
+function respondToInvite(scheduleId, action) {
+    const buttons = document.querySelectorAll(`.notification[data-invite-id="${scheduleId}"] .scrimButtons button`);
+    
+    buttons.forEach(btn => {
+        btn.disabled = true;
+        btn.innerHTML = '<i class="bi bi-arrow-repeat spin"></i>';
+    });
+
+    fetch('includes/handleInviteResponse.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ 
+            schedule_id: scheduleId, 
+            action: action 
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            const notification = document.querySelector(`.notification[data-invite-id="${scheduleId}"]`);
+            const buttonsContainer = notification.querySelector('.scrimButtons');
+
+            buttonsContainer.innerHTML = `
+                <button class="${action === 'Accepted' ? 'acceptedOnNotif' : 'declinedOnNotif'}" disabled>
+                    ${action.toUpperCase()}
+                </button>
+            `;
+
+            notification.classList.remove('new');
+            updateNotificationCount();
+        } else {
+            throw new Error(data.message || 'Action failed');
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        buttons.forEach(btn => {
+            btn.disabled = false;
+            btn.innerHTML = btn.classList.contains('acceptOnNotif') ? 'ACCEPT' : 'DECLINE';
+        });
+        alert(error.message);
+    });
+}
+
+function updateNotificationBadge() {
+    fetch('includes/getUnreadNotifications.php')
+        .then(response => response.json())
+        .then(data => {
+            const badge = document.querySelector('.notification-badge');
+            if (data.count > 0) {
+                badge.textContent = data.count;
+                badge.style.display = 'block';
+            } else {
+                badge.style.display = 'none';
+            }
+        });
+}
+
+function updateNotificationCount() {
+    fetch('includes/getNotificationCount.php')
+        .then(response => response.json())
+        .then(data => {
+            const counter = document.querySelector('.notifCount');
+            if (data.count > 0) {
+                if (!counter) {
+                    const badge = document.createElement('span');
+                    badge.className = 'notifCount';
+                    document.querySelector('.nav-linkIcon').appendChild(badge);
+                }
+                document.querySelector('.notifCount').textContent = data.count;
+            } else if (counter) {
+                counter.remove();
+            }
+        });
+}
+
+function fetchNotificationModal() {
+    fetch('includes/getNotifications.php')
+        .then(response => response.text())
+        .then(html => {
+            document.querySelector('.modal-body').innerHTML = html;
+        });
+}
+
+// Post status functionality
 function postStatus() {
     let content = document.getElementById("contentInput").value;
     let postLabel = document.getElementById("postLabelInput").value;
@@ -267,258 +581,59 @@ function loadPosts() {
     });
 }
 
-// NEW ADDITION
-
-function showScrimError() {
-    const reason = [];
+// Score validation
+function validateScores() {
+    const yourScore = parseInt(document.getElementById('yourScore').value) || 0;
+    const opponentScore = parseInt(document.getElementById('opponentScore').value) || 0;
+    const numberOfGames = parseInt(document.getElementById('numberOfGames').value);
+    const maxScore = parseInt(document.getElementById('maxScore').value);
+    const errorElement = document.getElementById('scoreError');
+    const submitButton = document.querySelector('button[type="submit"]');
     
-    // Check verification status
-    if (verificationStatus !== 'Approved') {
-        reason.push(`Verification Status: ${verificationStatus}`);
+    errorElement.style.display = 'none';
+    submitButton.disabled = false;
+    
+    if (yourScore > maxScore || opponentScore > maxScore) {
+        errorElement.textContent = `In a best of ${numberOfGames} series, no team can win more than ${maxScore} games!`;
+        errorElement.style.display = 'block';
+        submitButton.disabled = true;
+        return;
     }
     
-    // Check squad level (case-insensitive)
-    if (squadLevel.toUpperCase() !== 'AMATEUR') {
-        reason.push(`Squad Level: ${squadLevel}`);
+    if ((yourScore + opponentScore) > numberOfGames) {
+        errorElement.textContent = `The total games played (${yourScore + opponentScore}) cannot exceed the series length (best of ${numberOfGames})!`;
+        errorElement.style.display = 'block';
+        submitButton.disabled = true;
+        return;
     }
     
-    alert(`Scrim access requires:
-- Approved verification status
-OR
-- Amateur squad level
-
-Current status:
-${reason.join('\n')}`);
-}
-
-// Notification modal handling
-document.addEventListener('DOMContentLoaded', function() {
-    // Update notification badge count
-    function updateNotificationBadge() {
-        fetch('includes/getUnreadNotifications.php')
-            .then(response => response.json())
-            .then(data => {
-                const badge = document.querySelector('.notification-badge');
-                if (data.count > 0) {
-                    badge.textContent = data.count;
-                    badge.style.display = 'block';
-                } else {
-                    badge.style.display = 'none';
-                }
-            });
-    }
-
-    // Mark all as read
-    document.querySelector('.markAllRead')?.addEventListener('click', function() {
-        fetch('includes/markNotificationsRead.php', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            }
-        })
-        .then(() => {
-            updateNotificationBadge();
-        });
-    });
-
-    // Initial load
-    updateNotificationBadge();
-});
-
-function respondToInvite(scheduleId, action) {
-    const buttons = document.querySelectorAll(`.notification[data-invite-id="${scheduleId}"] .scrimButtons button`);
+    const hasWinner = (yourScore === maxScore) || (opponentScore === maxScore);
     
-    // Show loading state
-    buttons.forEach(btn => {
-        btn.disabled = true;
-        btn.innerHTML = '<i class="bi bi-arrow-repeat spin"></i>';
-    });
-
-    fetch('includes/handleInviteResponse.php', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ 
-            schedule_id: scheduleId, 
-            action: action 
-        })
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.success) {
-            const notification = document.querySelector(`.notification[data-invite-id="${scheduleId}"]`);
-            const buttonsContainer = notification.querySelector('.scrimButtons');
-
-            // Update buttons to show final response
-            buttonsContainer.innerHTML = `
-                <button class="${action === 'Accepted' ? 'acceptedOnNotif' : 'declinedOnNotif'}" disabled>
-                    ${action.toUpperCase()}
-                </button>
-            `;
-
-            // Remove 'new' status
-            notification.classList.remove('new');
-
-            // Update notification count
-            updateNotificationCount();
-        } else {
-            throw new Error(data.message || 'Action failed');
-        }
-    })
-    .catch(error => {
-        console.error('Error:', error);
-        buttons.forEach(btn => {
-            btn.disabled = false;
-            btn.innerHTML = btn.classList.contains('acceptOnNotif') ? 'ACCEPT' : 'DECLINE';
-        });
-        alert(error.message);
-    });
-}
-
-function fetchNotificationModal() {
-    fetch('includes/getNotifications.php')
-        .then(response => response.text())
-        .then(html => {
-            document.querySelector('.modal-body').innerHTML = html;
-        });
-}
-
-// Update the counter
-function updateNotificationCount() {
-    fetch('includes/getNotificationCount.php')
-        .then(response => response.json())
-        .then(data => {
-            const counter = document.querySelector('.notifCount');
-            if (data.count > 0) {
-                if (!counter) {
-                    const badge = document.createElement('span');
-                    badge.className = 'notifCount';
-                    document.querySelector('.nav-linkIcon').appendChild(badge);
-                }
-                document.querySelector('.notifCount').textContent = data.count;
-            } else if (counter) {
-                counter.remove();
-            }
-        });
-}
-
-// File name display script
-document.getElementById('fileInput').addEventListener('change', function() {
-    document.getElementById('fileName').textContent = this.files[0] ? this.files[0].name : 'No file chosen';
-});
-
-
-// Scroll to bottom function
-function scrollToBottom() {
-    const messagesContainer = document.getElementById('messagesContainer');
-    messagesContainer.scrollTop = messagesContainer.scrollHeight;
-}
-
-// Call it when page loads
-window.addEventListener('DOMContentLoaded', scrollToBottom);
-
-// Also call it when the window is fully loaded (in case images affect the height)
-window.addEventListener('load', scrollToBottom);
-
-// If you're using AJAX to load new messages, call scrollToBottom() after new messages are added
-// Handle message submission
-document.getElementById('messageForm')?.addEventListener('submit', function(e) {
-    e.preventDefault();
-    const textarea = this.querySelector('textarea');
-    const message = textarea.value.trim();
+    if (!hasWinner) {
+        errorElement.textContent = `One team must have ${maxScore} wins to complete the series!`;
+        errorElement.style.display = 'block';
+        submitButton.disabled = true;
+        return;
+    }
     
-    if (message) {
-        this.submit();
+    if (yourScore === maxScore && opponentScore === maxScore) {
+        errorElement.textContent = 'Both teams cannot have the winning score!';
+        errorElement.style.display = 'block';
+        submitButton.disabled = true;
+        return;
     }
-});
-
-// Auto-resize textarea
-document.querySelector('.textArea textarea')?.addEventListener('input', function() {
-    this.style.height = 'auto';
-    this.style.height = (this.scrollHeight) + 'px';
-});
-
-// Check for new messages periodically (if conversation is open)
-const currentSquadId = window.currentSquadId || null;
-if (typeof selectedConversation !== 'undefined' && selectedConversation) {
-    let lastMessageId = 0; // Replace with the actual value dynamically if needed
-    let checkingMessages = false;
-
-    function checkNewMessages() {
-        if (checkingMessages) return;
-        checkingMessages = true;
-        
-        fetch(`includes/checkMessages.php?conversation_id=<?= $selectedConversation['Conversation_ID'] ?>&last_id=${lastMessageId}`)
-            .then(response => response.json())
-            .then(data => {
-                if (data.newMessages && data.newMessages.length > 0) {
-                    const container = document.getElementById('messagesContainer');
-                    
-                    data.newMessages.forEach(message => {
-                        const isOutgoing = message.Sender_Squad_ID == currentSquadId;
-                        const messageDiv = document.createElement('div');
-                        messageDiv.className = `message ${isOutgoing ? 'outgoing' : 'incoming'}`;
-                        
-                        if (!isOutgoing) {
-                            const senderDiv = document.createElement('div');
-                            senderDiv.className = 'squadNameSender';
-                            senderDiv.textContent = message.Sender_Name;
-                            messageDiv.appendChild(senderDiv);
-                        }
-                        
-                        const bubbleDiv = document.createElement('div');
-                        bubbleDiv.className = 'bubble';
-                        bubbleDiv.textContent = message.Content;
-                        messageDiv.appendChild(bubbleDiv);
-                        
-                        const timeDiv = document.createElement('div');
-                        timeDiv.className = 'message-time';
-                        timeDiv.textContent = new Date(message.Created_At).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-                        messageDiv.appendChild(timeDiv);
-                        
-                        container.appendChild(messageDiv);
-                        lastMessageId = message.Message_ID;
-                    });
-                    s
-                    scrollToBottom();
-                }
-            })
-            .finally(() => {
-                checkingMessages = false;
-            });
+    
+    if (yourScore < 0 || opponentScore < 0) {
+        errorElement.textContent = 'Scores cannot be negative!';
+        errorElement.style.display = 'block';
+        submitButton.disabled = true;
+        return;
     }
-
-    // Check every 3 seconds
-    setInterval(checkNewMessages, 500);
-
-    // Initial scroll to bottom
-    scrollToBottom();
+    
+    if ((yourScore + opponentScore) < maxScore) {
+        errorElement.textContent = `The series should have at least ${maxScore} games played to have a winner!`;
+        errorElement.style.display = 'block';
+        submitButton.disabled = true;
+        return;
+    }
 }
-
-// SLEDGEHAMMER
-
-// Function to check for new messages periodically
-function checkNewMessages() {
-    fetch('includes/getUnreadCount.inc.php')
-        .then(response => response.json())
-        .then(data => {
-            const badge = document.querySelector('.nav-linkIcon[href="inboxPage.php"] .notifCount');
-            if (data.count > 0) {
-                if (!badge) {
-                    const newBadge = document.createElement('span');
-                    newBadge.className = 'notifCount';
-                    newBadge.textContent = data.count;
-                    document.querySelector('.nav-linkIcon[href="inboxPage.php"]').appendChild(newBadge);
-                } else {
-                    badge.textContent = data.count;
-                }
-            } else if (badge) {
-                badge.remove();
-            }
-        });
-}
-
-// Check every 30 seconds
-setInterval(checkNewMessages, 30000);
-
-// Initial check when page loads
-document.addEventListener('DOMContentLoaded', checkNewMessages);

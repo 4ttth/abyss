@@ -93,12 +93,12 @@ $instructions = $pdo->query("SELECT * FROM tbl_instructions ORDER BY Instruction
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" href="adminInstructionsManagement.php">
+                        <a class="nav-link" href="adminInstructionsManagement.php">
                             <span class="nav-text">INSTRUCTION MANAGEMENT</span>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="adminCarouselManagement.php">
+                        <a class="nav-link active" href="adminCarouselManagement.php">
                             <span class="nav-text">CAROUSEL MANAGEMENT</span>
                         </a>
                     </li>

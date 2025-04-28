@@ -373,42 +373,42 @@ $stmtPosts = $pdo->prepare("SELECT p.*, s.Squad_ID, s.Squad_Name, s.Squad_Acrony
 
     <!-- Javascript -->
     <script>
-        // Pagination
-        document.addEventListener('DOMContentLoaded', function () {
-            const postsPerPage = 10;
-            let currentPage = 1;
-            const posts = document.querySelectorAll('.post-item');
-            const totalPages = Math.ceil(posts.length / postsPerPage);
-            const prevButton = document.getElementById('prevPage');
-            const nextButton = document.getElementById('nextPage');
-            const pageInfo = document.getElementById('pageInfo');
+    // Pagination
+    document.addEventListener('DOMContentLoaded', function () {
+        const postsPerPage = 10;
+        let currentPage = 1;
+        const posts = document.querySelectorAll('.post'); //changed post-item to post
+        const totalPages = Math.ceil(posts.length / postsPerPage);
+        const prevButton = document.getElementById('prevPage');
+        const nextButton = document.getElementById('nextPage');
+        const pageInfo = document.getElementById('pageInfo');
 
-            function showPage(page) {
-                posts.forEach((post, index) => {
-                    post.style.display = (index >= (page - 1) * postsPerPage && index < page * postsPerPage) ? 'block' : 'none';
-                });
-                pageInfo.textContent = `Page ${page}`;
-                prevButton.disabled = page === 1;
-                nextButton.disabled = page === totalPages;
+        function showPage(page) {
+            posts.forEach((post, index) => {
+                post.style.display = (index >= (page - 1) * postsPerPage && index < page * postsPerPage) ? 'block' : 'none';
+            });
+            pageInfo.textContent = `Page ${page}`;
+            prevButton.disabled = page === 1;
+            nextButton.disabled = page === totalPages;
+        }
+
+        prevButton.addEventListener('click', () => {
+            if (currentPage > 1) {
+                currentPage--;
+                showPage(currentPage);
             }
-
-            prevButton.addEventListener('click', () => {
-                if (currentPage > 1) {
-                    currentPage--;
-                    showPage(currentPage);
-                }
-            });
-
-            nextButton.addEventListener('click', () => {
-                if (currentPage < totalPages) {
-                    currentPage++;
-                    showPage(currentPage);
-                }
-            });
-
-            // Initialize the first page
-            showPage(currentPage);
         });
+
+        nextButton.addEventListener('click', () => {
+            if (currentPage < totalPages) {
+                currentPage++;
+                showPage(currentPage);
+            }
+        });
+
+        // Initialize the first page
+        showPage(currentPage);
+    });
     </script>
     <script src="JS/discoverScript.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>

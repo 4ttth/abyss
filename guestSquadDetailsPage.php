@@ -496,7 +496,7 @@ try {
     document.addEventListener('DOMContentLoaded', function () {
         const postsPerPage = 10;
         let currentPage = 1;
-        const posts = document.querySelectorAll('.post-item');
+        const posts = document.querySelectorAll('.post'); //changed post-item to post
         const totalPages = Math.ceil(posts.length / postsPerPage);
         const prevButton = document.getElementById('prevPage');
         const nextButton = document.getElementById('nextPage');
