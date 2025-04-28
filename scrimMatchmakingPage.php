@@ -1,9 +1,5 @@
 <?php
     session_start(); // Start the session
-
-    error_reporting(E_ALL);
-    ini_set('display_errors', 'on');
-
     require_once 'includes/dbh.inc.php'; // Database connection
     $squadID = $_SESSION['user']['Squad_ID'];
     $stmt = $pdo->prepare("SELECT * FROM tbl_squadprofile WHERE Squad_ID = ?"); // Ensure the table name is correct
@@ -119,16 +115,10 @@ $unreadMessageCount = countUnreadMessages($pdo, $_SESSION['user']['Squad_ID']);
                             <div class="logoText">abyss</div>
                         </a>
                        
-                        <!-- <form class="searchBar" action="guestSearchResultsPage.php" method="GET">
+                        <!-- Search Bar -->
+                        <form class="searchBar" action="searchResultsPage.php" method="GET">
                             <input class="searchInput" type="search" name="query" placeholder="Search Squads" aria-label="Search">
                             <button class="searchButton" type="submit">
-                                <img src="IMG/essentials/whiteVer.PNG" alt="Search">
-                            </button>
-                        </form> -->
-                        
-                        <form class="searchBar" action="guestSearchResultsPage.php" method="GET" onsubmit="return false;">
-                            <input class="searchInput" type="search" name="query" placeholder="Search Squads" aria-label="Search" disabled>
-                            <button class="searchButton" type="submit" disabled>
                                 <img src="IMG/essentials/whiteVer.PNG" alt="Search">
                             </button>
                         </form>
@@ -204,17 +194,18 @@ $unreadMessageCount = countUnreadMessages($pdo, $_SESSION['user']['Squad_ID']);
             <div class="container-fluid results">
                 <div class="row g-3 searchResultsGrid">
                     <div id="squadList">
-                        <!-- Results will be dynamically added here -->
+                    <!-- Available squads will be displayed here again change for testing -->
                     </div>
                 </div>
             </div>
 
-            <!-- Pagination Controls -->
-            <div class="scrim-pagination pagination-controls">
-                <button id="prevPage" class="page-btn prev-btn pagination-button" disabled>Previous</button>
-                <span id="pageInfo" class="page-indicator">Page 1</span>
-                <button id="nextPage" class="page-btn next-btn pagination-button" disabled>Next</button>
-            </div>
+
+            <!-- Pagination -->
+            <div class="pagination mt-4">
+                <button id="prevPage" class="btn btn-outline-light" disabled>Previous</button>
+                <span id="pageInfo" class="mx-3">Page 1 of 1</span>
+                <button id="nextPage" class="btn btn-outline-light" disabled>Next</button>
+            </div>        
         </div>
    
         <!-- Challenge Modal -->
@@ -335,107 +326,6 @@ $unreadMessageCount = countUnreadMessages($pdo, $_SESSION['user']['Squad_ID']);
     </div>
 
     <!-- Javascript -->
-    <script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const postsPerPage = 12; // Number of results per page
-        let currentPage = 1;
-        let posts = []; // To store dynamically fetched results
-        let totalPages = 0;
-
-        // Select DOM elements
-        const postsContainer = document.querySelector('#squadList');
-        const prevButton = document.getElementById('prevPage');
-        const nextButton = document.getElementById('nextPage');
-        const pageInfo = document.getElementById('pageInfo');
-        const searchButton = document.getElementById('searchButton');
-        const customRangeInput = document.getElementById('customRange');
-
-        // Function to fetch results from the server
-        async function fetchResults() {
-            const customRange = customRangeInput.value;
-
-            try {
-                const response = await fetch(`includes/matchmaking.php?range=${customRange}`);
-                const data = await response.json();
-
-                if (data.success) {
-                    // Clear existing results
-                    postsContainer.innerHTML = '';
-
-                    // Populate results dynamically
-                    posts = data.squads.map(squad => {
-                        const div = document.createElement('div');
-                        div.classList.add('result-item');
-                        div.innerHTML = `
-                            <div class="squad-card">
-                                <h5>${squad.Squad_Name} (${squad.Squad_Acronym})</h5>
-                                <p>Level: ${squad.Squad_Level}</p>
-                                <p>Average Star: ${squad.Average_Star}</p>
-                                <p>${squad.Squad_Description}</p>
-                            </div>
-                        `;
-                        postsContainer.appendChild(div);
-                        return div;
-                    });
-
-                    // Update pagination
-                    totalPages = Math.ceil(posts.length / postsPerPage);
-                    currentPage = 1; // Reset to the first page
-                    showPage(currentPage);
-                } else {
-                    console.error('Error fetching results:', data.error);
-                    postsContainer.innerHTML = '<div>No results found</div>';
-                    posts = [];
-                    totalPages = 0;
-                    showPage(1);
-                }
-            } catch (error) {
-                console.error('Error fetching results:', error);
-            }
-        }
-
-        // Function to show a specific page
-        function showPage(page) {
-            if (posts.length === 0) {
-                pageInfo.textContent = 'No results';
-                prevButton.disabled = true;
-                nextButton.disabled = true;
-                return;
-            }
-
-            posts.forEach((post, index) => {
-                post.style.display = (index >= (page - 1) * postsPerPage && index < page * postsPerPage) ? 'block' : 'none';
-            });
-
-            pageInfo.textContent = `Page ${page} of ${totalPages}`;
-            prevButton.disabled = page === 1;
-            nextButton.disabled = page === totalPages;
-        }
-
-        // Event listeners for pagination buttons
-        prevButton.addEventListener('click', () => {
-            if (currentPage > 1) {
-                currentPage--;
-                showPage(currentPage);
-            }
-        });
-
-        nextButton.addEventListener('click', () => {
-            if (currentPage < totalPages) {
-                currentPage++;
-                showPage(currentPage);
-            }
-        });
-
-        // Event listener for the search button
-        searchButton.addEventListener('click', () => {
-            fetchResults();
-        });
-
-        // Initialize the first page
-        showPage(currentPage);
-    });
-    </script>
     <script src="JS/matchmakingScript.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 </body>
