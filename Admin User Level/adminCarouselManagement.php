@@ -11,28 +11,37 @@ if (isset($_POST['add_carousel'])) {
         mkdir($uploadDir, 0777, true);
     }
 
+    // Allowed file types
     $allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
-    if (!in_array($_FILES['image1']['type'], $allowedTypes)) {
-        die('Invalid file type for Image 1');
-    }
 
     // Handle each file upload
     $image1 = $_FILES['image1']['name'] ? $uploadDir . basename($_FILES['image1']['name']) : null;
     $image2 = $_FILES['image2']['name'] ? $uploadDir . basename($_FILES['image2']['name']) : null;
     $image3 = $_FILES['image3']['name'] ? $uploadDir . basename($_FILES['image3']['name']) : null;
 
-    // Move uploaded files to the upload directory
+    // Validate and move uploaded files
+    if ($image1 && !in_array($_FILES['image1']['type'], $allowedTypes)) {
+        die('Invalid file type for Image 1');
+    }
     if ($image1 && !move_uploaded_file($_FILES['image1']['tmp_name'], $image1)) {
         die('Error uploading Image 1');
     }
+
+    if ($image2 && !in_array($_FILES['image2']['type'], $allowedTypes)) {
+        die('Invalid file type for Image 2');
+    }
     if ($image2 && !move_uploaded_file($_FILES['image2']['tmp_name'], $image2)) {
         die('Error uploading Image 2');
+    }
+
+    if ($image3 && !in_array($_FILES['image3']['type'], $allowedTypes)) {
+        die('Invalid file type for Image 3');
     }
     if ($image3 && !move_uploaded_file($_FILES['image3']['tmp_name'], $image3)) {
         die('Error uploading Image 3');
     }
 
-    // Insert into the database
+    // Insert file paths into the database
     $stmt = $pdo->prepare("
         INSERT INTO tbl_carousels 
         (Image1, Image2, Image3, Show_Status) 
@@ -44,6 +53,7 @@ if (isset($_POST['add_carousel'])) {
         $image3
     ]);
 
+    // Redirect back to the page
     header("Location: adminCarouselManagement.php");
     exit();
 }
@@ -214,27 +224,46 @@ $carousels = $pdo->query("SELECT * FROM tbl_carousels ORDER BY Carousel_ID ASC")
                         <th>Actions</th>
                     </tr>
                 </thead>
-            <tbody>
-                <?php foreach ($carousels as $carousel): ?>
-                <tr>
-                    <td><?php echo htmlspecialchars($carousel['Carousel_ID']); ?></td>
-                    <td><?php echo htmlspecialchars($carousel['image1']); ?></td>
-                    <td><?php echo htmlspecialchars($carousel['image2']); ?></td>
-                    <td><?php echo htmlspecialchars($carousel['image3']); ?></td>
-                    <td class="buttonColumn">
-                        <form method="POST">
-                            <input type="hidden" name="carousel_id" value="<?php echo $carousel['Instruction_ID']; ?>">
-                            <?php if ($carousel['Show_Status'] == 'Shown'): ?>
-                                <button type="button" disabled class=" buttons active-button" style="opacity: 0.5;">
-                                <i class="bi bi-eye-fill"></i> Active</button>
+                <tbody>
+                    <?php foreach ($carousels as $carousel): ?>
+                    <tr>
+                        <td><?php echo htmlspecialchars($carousel['Carousel_ID']); ?></td>
+                        <td>
+                            <?php if (!empty($carousel['Image1'])): ?>
+                                <img src="<?php echo htmlspecialchars($carousel['Image1']); ?>" alt="Image 1" style="width: 100px; height: auto;">
                             <?php else: ?>
-                                <button type="submit" name="show_carousel" class=" buttons show-button">Show</button>
+                                No Image
                             <?php endif; ?>
-                        </form>
-                    </td>
-                </tr>
-                <?php endforeach; ?>
-            </tbody>
+                        </td>
+                        <td>
+                            <?php if (!empty($carousel['Image2'])): ?>
+                                <img src="<?php echo htmlspecialchars($carousel['Image2']); ?>" alt="Image 2" style="width: 100px; height: auto;">
+                            <?php else: ?>
+                                No Image
+                            <?php endif; ?>
+                        </td>
+                        <td>
+                            <?php if (!empty($carousel['Image3'])): ?>
+                                <img src="<?php echo htmlspecialchars($carousel['Image3']); ?>" alt="Image 3" style="width: 100px; height: auto;">
+                            <?php else: ?>
+                                No Image
+                            <?php endif; ?>
+                        </td>
+                        <td class="buttonColumn">
+                            <form method="POST">
+                                <input type="hidden" name="carousel_id" value="<?php echo $carousel['Carousel_ID']; ?>">
+                                <?php if ($carousel['Show_Status'] == 'Shown'): ?>
+                                    <button type="button" disabled class="buttons active-button" style="opacity: 0.5;">
+                                        <i class="bi bi-eye-fill"></i> Active
+                                    </button>
+                                <?php else: ?>
+                                    <button type="submit" name="show_carousel" class="buttons show-button">Show</button>
+                                <?php endif; ?>
+                            </form>
+                        </td>
+                    </tr>
+                    <?php endforeach; ?>
+                </tbody>
             </table>
         </div>
     </div>
