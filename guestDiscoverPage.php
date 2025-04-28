@@ -156,6 +156,13 @@ $stmtPosts = $pdo->prepare("SELECT p.*, s.Squad_ID, s.Squad_Name, s.Squad_Acrony
                             <div class="post">No public posts found.</div>
                         <?php endif; ?>
 
+                        <!-- Pagination Controls Button -->
+                        <div class="scrim-pagination pagination-controls">
+                            <button id="prevPage" class="page-btn prev-btn pagination-button" disabled>Previous</button>
+                            <span id="pageInfo" class="page-indicator">Page 1</span>
+                            <button id="nextPage" class="page-btn next-btn pagination-button">Next</button>
+                        </div>
+
                         <!-- End Message -->
                         <div class="end">End of Feed</div>
                     </div>
@@ -165,187 +172,65 @@ $stmtPosts = $pdo->prepare("SELECT p.*, s.Squad_ID, s.Squad_Name, s.Squad_Acrony
 
                 <div class="col-3 right">
                 <div class="adver">
-                    <!-- Text Block -->
-                    <div class="row textBlockRight">
-                        <div class="titleRight">
-                            LEADERBOARDS
+                        <!-- Text Block -->
+                        <div class="row textBlockRight">
+                            <div class="titleRight">
+                                LEADERBOARDS
+                            </div>
+                            <div class="subtitleRight">
+                                AS OF 09022025
+                            </div>
+                            <div class="descriptionRight">
+                                RESETS EVERY SUNDAY AT 00:00 (gmt +8) 
+                            </div>
                         </div>
-                        <div class="subtitleRight">
-                            AS OF 09022025
-                        </div>
-                        <div class="descriptionRight">
-                            RESETS EVERY SUNDAY AT 00:00 (gmt +8) 
-                        </div>
-                    </div>
 
-                    <!-- Leaderboard Box -->
-                    <div class="leaderboardBox">
-                            <!-- Table Header -->
+                        <!-- Leaderboard Box -->
+                        <div class="leaderboardBox">
+                                <!-- Table Header -->
                             <div class="leaderboardRow leaderboardHeader">
                                 <div class="leaderboardRank"></div>
                                 <div class="leaderboardSquad">SQUAD</div>
                                 <div class="leaderboardPoints">ABYSS POINTS</div>
                             </div>
-                            
-                            <!-- Top 1 -->
-                            <div class="leaderboardRow">
-                                <div class="leaderboardRank">1</div>
-                                <div class="leaderboardSquad">
-                                    <div class="squadNameContainer">
-                                        <div class="shortName">VST</div>
-                                        <div class="fullName">VESTA HEAVEN</div>
-                                    </div>
-                                </div>
-                                
-                                <div class="leaderboardPoints">
-                                    <img src="IMG/essentials/whiteVer.PNG" alt="Fox Icon" class="foxIcon">
-                                    34,712
-                                </div>
-                            </div>
 
-                            <!-- Top 2 -->
-                            <div class="leaderboardRow">
-                                <div class="leaderboardRank">2</div>
-                                <div class="leaderboardSquad">
-                                    <div class="squadNameContainer">
-                                        <div class="shortName">LSB</div>
-                                        <div class="fullName">LYCEUM SHARKS</div>
-                                    </div>
-                                </div>
-                                
-                                <div class="leaderboardPoints">
-                                    <img src="IMG/essentials/whiteVer.PNG" alt="Fox Icon" class="foxIcon">
-                                    31,223
-                                </div>
-                            </div>
+                            <?php
+                            try {
+                                $stmt = $pdo->prepare("SELECT Squad_Acronym, Squad_Name, abyss_score 
+                                                    FROM tbl_squadprofile 
+                                                    ORDER BY abyss_score DESC 
+                                                    LIMIT 10");
+                                $stmt->execute();
+                                $leaderboard = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-                            <!-- Top 3 -->
-                            <div class="leaderboardRow">
-                                <div class="leaderboardRank">3</div>
-                                <div class="leaderboardSquad">
-                                    <div class="squadNameContainer">
-                                        <div class="shortName">C++</div>
-                                        <div class="fullName">C++ ESPORTS</div>
-                                    </div>
-                                </div>
-                                
-                                <div class="leaderboardPoints">
-                                    <img src="IMG/essentials/whiteVer.PNG" alt="Fox Icon" class="foxIcon">
-                                    29,175
-                                </div>
-                            </div>
-
-                            <!-- Top 4 -->
-                            <div class="leaderboardRow">
-                                <div class="leaderboardRank">4</div>
-                                <div class="leaderboardSquad">
-                                    <div class="squadNameContainer">
-                                        <div class="shortName">Hero</div>
-                                        <div class="fullName">HERO GAMERPACT</div>
-                                    </div>
-                                </div>
-                                
-                                <div class="leaderboardPoints">
-                                    <img src="IMG/essentials/whiteVer.PNG" alt="Fox Icon" class="foxIcon">
-                                    29,173
-                                </div>
-                            </div> 
-                            
-                            <!-- Top 5 -->
-                            <div class="leaderboardRow">
-                                <div class="leaderboardRank">5</div>
-                                <div class="leaderboardSquad">
-                                    <div class="squadNameContainer">
-                                        <div class="shortName">BABY</div>
-                                        <div class="fullName">BABY GIRLS</div>
-                                    </div>
-                                </div>
-                                
-                                <div class="leaderboardPoints">
-                                    <img src="IMG/essentials/whiteVer.PNG" alt="Fox Icon" class="foxIcon">
-                                    24,764
-                                </div>
-                            </div> 
-
-                            <!-- Top 6 -->
-                            <div class="leaderboardRow">
-                                <div class="leaderboardRank">6</div>
-                                <div class="leaderboardSquad">
-                                    <div class="squadNameContainer">
-                                        <div class="shortName">BLCK</div>
-                                        <div class="fullName">BLACKLIST INTERNATIONAL</div>
-                                    </div>
-                                </div>
-                                
-                                <div class="leaderboardPoints">
-                                    <img src="IMG/essentials/whiteVer.PNG" alt="Fox Icon" class="foxIcon">
-                                    23,783
-                                </div>
-                            </div> 
-
-                            <!-- Top 7 -->
-                            <div class="leaderboardRow">
-                                <div class="leaderboardRank">7</div>
-                                <div class="leaderboardSquad">
-                                    <div class="squadNameContainer">
-                                        <div class="shortName">BLTW</div>
-                                        <div class="fullName">BOLTWO ESPORTS</div>
-                                    </div>
-                                </div>
-                                
-                                <div class="leaderboardPoints">
-                                    <img src="IMG/essentials/whiteVer.PNG" alt="Fox Icon" class="foxIcon">
-                                    21,846
-                                </div>
-                            </div> 
-
-                            <!-- Top 8 -->
-                            <div class="leaderboardRow">
-                                <div class="leaderboardRank">8</div>
-                                <div class="leaderboardSquad">
-                                    <div class="squadNameContainer">
-                                        <div class="shortName">OZ</div>
-                                        <div class="fullName">WIZARDS OF OZ</div>
-                                    </div>
-                                </div>
-                                
-                                <div class="leaderboardPoints">
-                                    <img src="IMG/essentials/whiteVer.PNG" alt="Fox Icon" class="foxIcon">
-                                    18,863
-                                </div>
-                            </div> 
-
-                            <!-- Top 9 -->
-                            <div class="leaderboardRow">
-                                <div class="leaderboardRank">9</div>
-                                <div class="leaderboardSquad">
-                                    <div class="squadNameContainer">
-                                        <div class="shortName">BABY</div>
-                                        <div class="fullName">MIYEON ESPORTS</div>
-                                    </div>
-                                </div>
-                                
-                                <div class="leaderboardPoints">
-                                    <img src="IMG/essentials/whiteVer.PNG" alt="Fox Icon" class="foxIcon">
-                                    18,022
-                                </div>
-                            </div> 
-
-                            <!-- Top 10 -->
-                            <div class="leaderboardRow">
-                                <div class="leaderboardRank">10</div>
-                                <div class="leaderboardSquad">
-                                    <div class="squadNameContainer">
-                                        <div class="shortName">X</div>
-                                        <div class="fullName">THALASSOPHOBIA</div>
-                                    </div>
-                                </div>
-                                
-                                <div class="leaderboardPoints">
-                                    <img src="IMG/essentials/whiteVer.PNG" alt="Fox Icon" class="foxIcon">
-                                    13,981
-                                </div>
-                            </div> 
+                                foreach ($leaderboard as $index => $squad) {
+                                    echo '<div class="leaderboardRow">';
+                                    echo '  <div class="leaderboardRank">' . ($index + 1) . '</div>';
+                                    echo '  <div class="leaderboardSquad">';
+                                    echo '      <div class="squadNameContainer">';
+                                    echo '          <div class="shortName">' . htmlspecialchars($squad['Squad_Acronym']) . '</div>';
+                                    echo '          <div class="fullName">' . htmlspecialchars($squad['Squad_Name']) . '</div>';
+                                    echo '      </div>';
+                                    echo '  </div>';
+                                    echo '  <div class="leaderboardPoints">';
+                                    echo '      <img src="IMG/essentials/whiteVer.PNG" alt="Fox Icon" class="foxIcon">';
+                                    echo        number_format($squad['abyss_score']);
+                                    echo '  </div>';
+                                    echo '</div>';
+                                }
+                            } catch (PDOException $e) {
+                                echo '<div class="leaderboardRow">';
+                                echo '  <div class="leaderboardRank">-</div>';
+                                echo '  <div class="leaderboardSquad">';
+                                echo '      <div class="squadNameContainer">';
+                                echo '          <div class="shortName">ERR</div>';
+                                echo '          <div class="fullName">Unable to load</div>';
+                                echo '      </div>';
+                                echo '  </div>';
+                                echo '  <div class="leaderboardPoints">---</div>';
+                                echo '</div>';
+                            }
+                            ?>
                         </div>
                     </div>
                 </div>
@@ -487,6 +372,44 @@ $stmtPosts = $pdo->prepare("SELECT p.*, s.Squad_ID, s.Squad_Name, s.Squad_Acrony
     </div>
 
     <!-- Javascript -->
+    <script>
+        // Pagination
+        document.addEventListener('DOMContentLoaded', function () {
+            const postsPerPage = 10;
+            let currentPage = 1;
+            const posts = document.querySelectorAll('.post-item');
+            const totalPages = Math.ceil(posts.length / postsPerPage);
+            const prevButton = document.getElementById('prevPage');
+            const nextButton = document.getElementById('nextPage');
+            const pageInfo = document.getElementById('pageInfo');
+
+            function showPage(page) {
+                posts.forEach((post, index) => {
+                    post.style.display = (index >= (page - 1) * postsPerPage && index < page * postsPerPage) ? 'block' : 'none';
+                });
+                pageInfo.textContent = `Page ${page}`;
+                prevButton.disabled = page === 1;
+                nextButton.disabled = page === totalPages;
+            }
+
+            prevButton.addEventListener('click', () => {
+                if (currentPage > 1) {
+                    currentPage--;
+                    showPage(currentPage);
+                }
+            });
+
+            nextButton.addEventListener('click', () => {
+                if (currentPage < totalPages) {
+                    currentPage++;
+                    showPage(currentPage);
+                }
+            });
+
+            // Initialize the first page
+            showPage(currentPage);
+        });
+    </script>
     <script src="JS/discoverScript.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 </body>
