@@ -12,6 +12,8 @@ echo "jsonResult" . $ocrResult1 . "<br><br>";
 foreach ($ocrResult1 as $key => $value){
     echo "$key: $value\n";
 };
+echo "jsonResult" . $ocrResult1['battleID'] . "<br><br>";
+echo "jsonResult" . $ocrResult1['resultStatus'] . "<br><br>";
 echo "shellResult" . $ocrResult2 . "<br><br>";
 echo "Raw Shell Output: " . $output . "<br><br>";
 echo shell_exec("/usr/bin/python3 --version 2>&1") . "<br><br>";
