@@ -32,7 +32,7 @@ $imageURL = null;
 
 // File upload handling with validation
 if (isset($_FILES['imageUpload']) && $_FILES['imageUpload']['error'] === UPLOAD_ERR_OK) {
-    $uploadDir = 'uploads/';
+    $uploadDir = '../IMG/post_uploads/';
     
     // Create directory if needed
     if (!is_dir($uploadDir) && !mkdir($uploadDir, 0755, true)) {
