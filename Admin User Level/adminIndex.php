@@ -233,7 +233,49 @@ if (!in_array($_SESSION['user']['Role'], ['Admin'])) {
 
     // System Statistics Chart (existing)
     async function loadStatistics() {
-        // Keep your existing statistics code
+        try {
+                const response = await axios.get('/includes/statistics.php');
+                const data = response.data;
+
+                const ctx = document.getElementById('statisticsChart').getContext('2d');
+                new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: data.labels,
+                        datasets: [{
+                            label: 'Count',
+                            data: data.values,
+                            backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                            borderColor: 'rgba(54, 162, 235, 1)',
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        plugins: {
+                            legend: {
+                                display: false
+                            }
+                        },
+                        scales: {
+                            x: {
+                                title: {
+                                    display: true,
+                                    text: 'Category'
+                                }
+                            },
+                            y: {
+                                title: {
+                                    display: true,
+                                    text: 'Count'
+                                }
+                            }
+                        }
+                    }
+                });
+            } catch (error) {
+                console.error('Error loading statistics:', error);
+            }
     }
 
     // Load all data
