@@ -525,3 +525,37 @@ strong {
 .alert-danger, .alert-success {
     margin-top: 20px;
 }
+
+/* Add to adminMyStyle.css */
+.metric-card {
+    background: #1a1a1a;
+    padding: 20px;
+    border-radius: 8px;
+    border: 1px solid #333;
+}
+
+.metric-card h5 {
+    color: #888;
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+}
+
+.metric-value {
+    color: #fff;
+    font-size: 1.8rem;
+    font-weight: bold;
+}
+
+.chart-card {
+    background: #1a1a1a;
+    padding: 20px;
+    border-radius: 8px;
+    border: 1px solid #333;
+    margin-bottom: 2rem;
+}
+
+.chart-card h5 {
+    color: #fff;
+    margin-bottom: 1.5rem;
+    font-size: 1.2rem;
+}
