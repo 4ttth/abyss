@@ -148,7 +148,7 @@ if (!in_array($_SESSION['user']['Role'], ['Admin'])) {
 
         <div class="container-fluid row mainBody">
             <div class="col analytics">
-            <iframe width="1920" height="1440" src="https://lookerstudio.google.com/embed/reporting/6c61f1b1-81d0-4f6f-8501-14a716f8a451/page/MriIF" frameborder="0" style="border:0" allowfullscreen sandbox="allow-storage-access-by-user-activation allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox"></iframe>
+            <iframe width="1500" height="800" src="https://lookerstudio.google.com/embed/reporting/6c61f1b1-81d0-4f6f-8501-14a716f8a451/page/MriIF" frameborder="0" style="border:0" allowfullscreen sandbox="allow-storage-access-by-user-activation allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox"></iframe>
             </div>
         </div>
     </div>
