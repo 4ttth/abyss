@@ -1,6 +1,6 @@
 <?php
-$config = include('/includes/config.php');
-$cloudflareToken = $config['CLOUDFLARE_TOKEN'];
+
+$cloudflareToken = 'G5o5Hsy8myNXtNjy7ge8hAWCmmsN47kD90beFxqF';
 $zoneId = 'your-zone-id';
 
 // Fetch Cloudflare analytics
