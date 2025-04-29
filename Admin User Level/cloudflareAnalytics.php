@@ -1,7 +1,9 @@
 <?php
+header('Access-Control-Allow-Origin: *');
+header('Access-Control-Allow-Methods: GET');
 
 $cloudflareToken = 'G5o5Hsy8myNXtNjy7ge8hAWCmmsN47kD90beFxqF';
-$zoneId = 'your-zone-id';
+$zoneId = '06f62b29f5cdc6aa62ea7c2a02c1812f';
 
 // Fetch Cloudflare analytics
 $ch = curl_init();

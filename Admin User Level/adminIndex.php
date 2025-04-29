@@ -1,4 +1,7 @@
 <?php
+header('Access-Control-Allow-Origin: *');
+header('Access-Control-Allow-Methods: GET');
+
 session_start();
 require_once '../includes/dbh.inc.php';
 
@@ -165,20 +168,18 @@ if (!in_array($_SESSION['user']['Role'], ['Admin'])) {
     <!-- Cloudflare Charts -->
     <div class="row mb-4 g-4">
         <div class="col-md-8">
-            <div class="chart-card">
-                <h5>Web Traffic by Country</h5>
-                <canvas id="countryTrafficChart"></canvas>
-            </div>
+        <div class="chart-container" style="position: relative; height:60vh; width:100%">
+    <canvas id="countryTrafficChart"></canvas>
+</div>
         </div>
     </div>
 
     <!-- System Statistics -->
     <div class="row">
         <div class="col-12">
-            <div class="chart-card">
-                <h5>System Statistics</h5>
-                <canvas id="statisticsChart"></canvas>
-            </div>
+        <div class="chart-container" style="position: relative; height:80vh; width:100%">
+    <canvas id="statisticsChart"></canvas>
+</div>
         </div>
     </div>
 </div>
@@ -189,19 +190,35 @@ if (!in_array($_SESSION['user']['Role'], ['Admin'])) {
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     <script>
     // Cloudflare Analytics
-    async function loadCloudflareAnalytics() {
-        try {
-            const response = await axios.get('cloudflareAnalytics.php');
-            const data = response.data;
+    let cloudflareChart = null;
 
-            // Update metric cards
-            document.getElementById('uniqueVisitors').textContent = data.uniqueVisitors.toLocaleString();
-            document.getElementById('totalRequests').textContent = data.totalRequests.toLocaleString();
-            document.getElementById('percentCached').textContent = `${data.percentCached}%`;
+async function loadCloudflareAnalytics() {
+    try {
+        const response = await axios.get('../includes/cloudflareAnalytics.php');
+        const data = response.data;
 
-            // Country Traffic Chart
-            const countryCtx = document.getElementById('countryTrafficChart').getContext('2d');
-            new Chart(countryCtx, {
+        // Add null checks
+        if(!data || data.error) {
+            throw new Error(data?.error || 'No data received');
+        }
+
+        // Update metric cards with fallbacks
+        document.getElementById('uniqueVisitors').textContent = 
+            (data.uniqueVisitors?.toLocaleString()) || 'N/A';
+            
+        document.getElementById('totalRequests').textContent = 
+            (data.totalRequests?.toLocaleString()) || 'N/A';
+            
+        document.getElementById('percentCached').textContent = 
+            data.percentCached ? `${data.percentCached}%` : 'N/A';
+
+        // Handle country chart
+        const countryCtx = document.getElementById('countryTrafficChart').getContext('2d');
+        if(cloudflareChart) {
+            cloudflareChart.destroy();
+        }
+        
+        cloudflareChart = new Chart(countryCtx, {
                 type: 'bar',
                 data: {
                     labels: data.countries,
@@ -227,56 +244,57 @@ if (!in_array($_SESSION['user']['Role'], ['Admin'])) {
                 }
             });
         } catch (error) {
-            console.error('Error loading Cloudflare Analytics:', error);
-        }
+        console.error('Error loading Cloudflare Analytics:', error);
+        // Display error to user
+        document.querySelectorAll('.metric-value').forEach(el => {
+            el.textContent = 'Error loading data';
+        });
+    }
     }
 
     // System Statistics Chart (existing)
-    async function loadStatistics() {
-        try {
-                const response = await axios.get('statistics.php');
-                const data = response.data;
+    let statisticsChart = null;
 
-                const ctx = document.getElementById('statisticsChart').getContext('2d');
-                new Chart(ctx, {
-                    type: 'bar',
-                    data: {
-                        labels: data.labels,
-                        datasets: [{
-                            label: 'Count',
-                            data: data.values,
-                            backgroundColor: 'rgba(54, 162, 235, 0.2)',
-                            borderColor: 'rgba(54, 162, 235, 1)',
-                            borderWidth: 1
-                        }]
-                    },
-                    options: {
-                        responsive: true,
-                        plugins: {
-                            legend: {
-                                display: false
-                            }
-                        },
-                        scales: {
-                            x: {
-                                title: {
-                                    display: true,
-                                    text: 'Category'
-                                }
-                            },
-                            y: {
-                                title: {
-                                    display: true,
-                                    text: 'Count'
-                                }
-                            }
-                        }
-                    }
-                });
-            } catch (error) {
-                console.error('Error loading statistics:', error);
+async function loadStatistics() {
+    try {
+        const response = await axios.get('statistics.php');
+        const data = response.data;
+
+        const ctx = document.getElementById('statisticsChart').getContext('2d');
+        
+        // Destroy existing chart
+        if(statisticsChart) {
+            statisticsChart.destroy();
+        }
+
+        statisticsChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: data.labels,
+                datasets: [{
+                    label: 'Count',
+                    data: data.values,
+                    backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                indexAxis: 'y',
+                plugins: {
+                    legend: { display: false }
+                },
+                scales: {
+                    x: { beginAtZero: true }
+                }
             }
+        });
+    } catch (error) {
+        console.error('Error loading statistics:', error);
     }
+}
+
 
     // Load all data
     loadCloudflareAnalytics();
