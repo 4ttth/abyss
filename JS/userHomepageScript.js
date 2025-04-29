@@ -116,7 +116,7 @@ function postStatus() {
             document.getElementById("imageUpload").value = "";
             loadPosts();
         } else {
-            console.log(data.error);
+
             alert("Failed to post!");
         }
     });
