@@ -32,12 +32,12 @@ $imageURL = null;
 
 // File upload handling with validation
 if (isset($_FILES['imageUpload']) && $_FILES['imageUpload']['error'] === UPLOAD_ERR_OK) {
-    $uploadDir = '../IMG/post_uploads/';
+    $uploadDir = '/var/www/html/abyss/IMG/post_uploads/';
     
     // Create directory if needed
     if (!is_dir($uploadDir) && !mkdir($uploadDir, 0755, true)) {
         error_log("Failed to create upload directory");
-        header("Location: ../userHomepage.php?error=upload_failed");
+        header("Location: ../userHomepage.php?error=upload_failed1");
         exit();
     }
 
@@ -58,7 +58,7 @@ if (isset($_FILES['imageUpload']) && $_FILES['imageUpload']['error'] === UPLOAD_
     if (move_uploaded_file($_FILES['imageUpload']['tmp_name'], $targetPath)) {
         $imageURL = $targetPath;
     } else {
-        header("Location: ../userHomepage.php?error=upload_failed");
+        header("Location: ../userHomepage.php?error=upload_failed2");
         exit();
     }
 }
