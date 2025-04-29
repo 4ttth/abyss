@@ -1,33 +1,43 @@
 <?php
 header('Access-Control-Allow-Origin: *');
 header('Access-Control-Allow-Methods: GET');
+header('Content-Type: application/json');
 
 $cloudflareToken = 'G5o5Hsy8myNXtNjy7ge8hAWCmmsN47kD90beFxqF';
 $zoneId = '06f62b29f5cdc6aa62ea7c2a02c1812f';
 
 // Fetch Cloudflare analytics
-$ch = curl_init();
-curl_setopt($ch, CURLOPT_URL, "https://api.cloudflare.com/client/v4/zones/$zoneId/analytics/dashboard");
-curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-curl_setopt($ch, CURLOPT_HTTPHEADER, [
-    "Authorization: Bearer $cloudflareToken",
-    "Content-Type: application/json"
-]);
+$analyticsUrl = "https://api.cloudflare.com/client/v4/zones/$zoneId/analytics/dashboard";
+$options = [
+    'http' => [
+        'method' => 'GET',
+        'header' => "Authorization: Bearer $cloudflareToken\r\n" .
+                    "Content-Type: application/json\r\n"
+    ]
+];
 
-$response = curl_exec($ch);
+$context = stream_context_create($options);
+$response = file_get_contents($analyticsUrl, false, $context);
+
+if ($response === false) {
+    echo json_encode(['error' => 'Failed to fetch analytics data']);
+    exit;
+}
+
 $data = json_decode($response, true);
 
 if ($data && $data['success']) {
-    $analytics = $data['result']['timeseries'];
     $totals = $data['result']['totals'];
     
     // Calculate metrics
-    $uniqueVisitors = $totals['uniques']['all'];
     $totalRequests = $totals['requests']['all'];
-    $percentCached = ($totals['cached']['all'] / $totalRequests) * 100;
-    
+    $uniqueVisitors = $totals['uniques']['all'];
+    $percentCached = $totalRequests > 0 
+        ? round(($totals['cached']['all'] / $totalRequests) * 100, 1)
+        : 0;
+
     // Country traffic data
-    $countryQuery = json_encode([
+    $graphqlQuery = json_encode([
         'query' => '
             query {
                 viewer {
@@ -44,33 +54,46 @@ if ($data && $data['success']) {
                 }
             }'
     ]);
-    
-    curl_setopt($ch, CURLOPT_URL, "https://api.cloudflare.com/client/v4/graphql");
-    curl_setopt($ch, CURLOPT_POST, 1);
-    curl_setopt($ch, CURLOPT_POSTFIELDS, $countryQuery);
-    $countryResponse = curl_exec($ch);
-    $countryData = json_decode($countryResponse, true);
-    
+
+    $graphqlOptions = [
+        'http' => [
+            'method' => 'POST',
+            'header' => "Authorization: Bearer $cloudflareToken\r\n" .
+                        "Content-Type: application/json\r\n",
+            'content' => $graphqlQuery
+        ]
+    ];
+
+    $graphqlContext = stream_context_create($graphqlOptions);
+    $countryResponse = file_get_contents(
+        'https://api.cloudflare.com/client/v4/graphql',
+        false,
+        $graphqlContext
+    );
+
     $countries = [];
     $countryRequests = [];
-    if ($countryData['data']['viewer']['zones'][0]['httpRequests1dGroups']) {
-        foreach ($countryData['data']['viewer']['zones'][0]['httpRequests1dGroups'] as $group) {
-            foreach ($group['sum']['countryMap'] as $country) {
-                $countries[] = $country['clientCountryName'];
-                $countryRequests[] = $country['requests'];
+    
+    if ($countryResponse !== false) {
+        $countryData = json_decode($countryResponse, true);
+        if (isset($countryData['data']['viewer']['zones'][0]['httpRequests1dGroups'])) {
+            foreach ($countryData['data']['viewer']['zones'][0]['httpRequests1dGroups'] as $group) {
+                foreach ($group['sum']['countryMap'] as $country) {
+                    $countries[] = $country['clientCountryName'];
+                    $countryRequests[] = $country['requests'];
+                }
             }
         }
     }
-    
+
     echo json_encode([
         'uniqueVisitors' => $uniqueVisitors,
         'totalRequests' => $totalRequests,
-        'percentCached' => round($percentCached, 1),
+        'percentCached' => $percentCached,
         'countries' => $countries,
         'countryRequests' => $countryRequests
     ]);
 } else {
-    echo json_encode(['error' => 'Failed to fetch analytics']);
+    echo json_encode(['error' => 'Invalid analytics response']);
 }
-curl_close($ch);
 ?>
