@@ -16,7 +16,7 @@ $imageURL = '';
 
 // Handle image upload
 if (!empty($_FILES['image']['name'])) {
-    $uploadDir = "uploads/"; 
+    $uploadDir = "../IMG/post_uploads/"; 
     $imageName = basename($_FILES['image']['name']);
     $imagePath = $uploadDir . time() . "_" . $imageName;
 
