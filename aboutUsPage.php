@@ -97,12 +97,12 @@
         <div class="mainContent">
             <!-- Meet the ZeroNine Team -->
             <div class="meetTeamContainer">
-                <img src="IMG/backgrounds/3.png" class="aboutUsPic1" alt="Team ZeroNine"> 
+                <img src="IMG/backgrounds/3.png" class="aboutUsPic1" alt="Meet the ZeroNine Team">
             </div>
 
             <!-- Mission -->
             <div class="meetTeamContainer">
-                <img src="IMG/backgrounds/2.png" class="aboutUsPic1" alt="Team ZeroNine"> 
+                <img src="IMG/backgrounds/2.png" class="aboutUsPic1" alt="Our Mission">
             </div>
         </div>
 
