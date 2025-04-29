@@ -20,9 +20,9 @@ return array(
         // Database name, by default it is 'mlofficial_database'
     'DB_NAME' => 'mlofficial_database',
         // Database username that can access the database above
-    'DB_USERNAME' => 'root',
+    'DB_USERNAME' => 'abyss',
         // Database password for the username above (Depending on the user setup.)
-    'DB_PASSWORD' => '',
+    'DB_PASSWORD' => 'siopaoBOL4BOL4',
     // Minimum stars that the user can only search: matchmaking.php
     'MIN_STARS' => 0,
     // Maximum stars that the user can only search: matchmaking.php
