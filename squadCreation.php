@@ -302,7 +302,7 @@ $qrcode = (new QRCode)->render($qrURL);
                                         <div class="alert alert-warning">Verification Pending - <?= $verificationLevel ?> Level</div>
                                         <input type="hidden" name="Squad_Level" class="form-control plchldr" value="<?= $verificationLevel ?>">
                                     <?php else : ?>
-                                        <button type="button" class="btn verifyButton" data-bs-toggle="modal" data-bs-target="#squadVerificationModal">
+                                        <button type="button" class="btn verifyButton" id="verifyButton" data-bs-toggle="modal" data-bs-target="#squadVerificationModal">
                                             VERIFY
                                         </button>
                                     <?php endif; ?>
@@ -670,20 +670,39 @@ $qrcode = (new QRCode)->render($qrURL);
         });
     });
 
-    // Use AJAX to refresh player list without reloading
-    setInterval(function () {
-        fetch('includes/fetchPlayers.inc.php?squad_id=<?= urlencode($squadID) ?>')
-            .then(response => response.text())
-            .then(data => {
-                const profilesContainer = document.querySelector('.profiles');
-                if (profilesContainer) {
+    document.addEventListener('DOMContentLoaded', function () {
+        const verifyButton = document.getElementById('verifyButton');
+        const profilesContainer = document.querySelector('.profiles');
+
+        function validatePlayerCount() {
+            // Count the number of player profiles
+            const playerProfiles = profilesContainer.querySelectorAll('.memberProfile');
+            const playerCount = playerProfiles.length;
+
+            // Enable the button only if there are 5 or 6 players
+            if (playerCount === 5 || playerCount === 6) {
+                verifyButton.disabled = false;
+            } else {
+                verifyButton.disabled = true;
+            }
+        }
+
+        // Run validation on page load
+        validatePlayerCount();
+
+        // Re-run validation every time the player list is updated
+        setInterval(function () {
+            fetch('includes/fetchPlayers.inc.php?squad_id=<?= urlencode($squadID) ?>')
+                .then(response => response.text())
+                .then(data => {
                     profilesContainer.innerHTML = data;
-                }
-            })
-            .catch(error => {
-                console.error('Error fetching player list:', error);
-            });
-    }, 5000); // Refresh every 5 seconds
+                    validatePlayerCount(); // Re-validate after updating the player list
+                })
+                .catch(error => {
+                    console.error('Error fetching player list:', error);
+                });
+        }, 5000); // Refresh every 5 seconds
+    });
     </script>
     <script src="JS/creatingSquadScript.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>

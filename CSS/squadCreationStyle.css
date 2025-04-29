@@ -460,7 +460,7 @@ a {
     cursor: pointer !important;
     transition: 0.3s ease !important;
     font-weight: bold !important;
-    padding: 8px 15px;
+    padding: 8px 30px;
     white-space: nowrap;
 }
 
