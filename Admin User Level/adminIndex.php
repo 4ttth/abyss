@@ -194,7 +194,7 @@ if (!in_array($_SESSION['user']['Role'], ['Admin'])) {
 
 async function loadCloudflareAnalytics() {
     try {
-        const response = await axios.get('../includes/cloudflareAnalytics.php');
+        const response = await axios.get('cloudflareAnalytics.php');
         const data = response.data;
 
         // Add null checks
