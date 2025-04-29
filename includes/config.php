@@ -33,5 +33,7 @@ return array(
     'MAX_PLAYERS' => 5,
     // Machine host name
     'HOST_NAME' => 'abyss.folded.cloud',
+    // CLOUDFLARE API TOKEN
+    'CLOUDFLARE_TOKEN' => 'G5o5Hsy8myNXtNjy7ge8hAWCmmsN47kD90beFxqF'
 );
 ?>

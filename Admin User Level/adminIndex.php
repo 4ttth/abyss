@@ -19,6 +19,8 @@ if (!in_array($_SESSION['user']['Role'], ['Admin'])) {
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <link rel="icon" type="image/x-icon" href="IMG/essentials/whiteVer.PNG">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 </head>
 
 <body>
@@ -73,7 +75,7 @@ if (!in_array($_SESSION['user']['Role'], ['Admin'])) {
                             <span class="nav-text">SQUAD ACCOUNTS</span>
                         </a>
                     </li>
-                    <!-- Moderator Priivileges -->
+                    <!-- Moderator Priivleges -->
                     <li class="nav-item">
                     <a class="nav-link" href="../Admin User Level/Moderator Functions/modIndex.php">
                             <span class="nav-text">MODERATOR INDEX</span>
@@ -139,12 +141,12 @@ if (!in_array($_SESSION['user']['Role'], ['Admin'])) {
 
         <div class="container-fluid row mainBody">
             <div class="col analytics">
-                <iframe width="1500" height="800" 
-                src="https://lookerstudio.google.com/embed/reporting/71150ab3-cd01-4ce8-b5f2-1d93c8a88937/page/sa3HF?authuser=3" 
-                frameborder="0" style="border:0; padding:0; margin-top:50px" 
-                allowfullscreen 
-                sandbox="allow-storage-access-by-user-activation allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox">
-                </iframe>
+                <canvas id="cloudflareAnalyticsChart" width="1500" height="800"></canvas>
+            </div>
+
+            <!-- Statistics Section -->
+            <div class="col statistics">
+                <canvas id="statisticsChart" width="1500" height="800"></canvas>
             </div>
         </div>
     </div>
@@ -152,5 +154,110 @@ if (!in_array($_SESSION['user']['Role'], ['Admin'])) {
     <!-- Javascript -->
     <script src="JS/adminScript.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <script>
+        // Cloudflare Analytics Chart
+        async function loadCloudflareAnalytics() {
+            try {
+                const response = await axios.get('/includes/cloudflareAnalytics.php');
+                const data = response.data;
+
+                const ctx = document.getElementById('cloudflareAnalyticsChart').getContext('2d');
+                new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: data.labels,
+                        datasets: [{
+                            label: 'Requests',
+                            data: data.requests,
+                            borderColor: 'rgba(75, 192, 192, 1)',
+                            borderWidth: 2,
+                            fill: false
+                        }, {
+                            label: 'Bandwidth (MB)',
+                            data: data.bandwidth,
+                            borderColor: 'rgba(255, 99, 132, 1)',
+                            borderWidth: 2,
+                            fill: false
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        plugins: {
+                            legend: {
+                                position: 'top',
+                            },
+                        },
+                        scales: {
+                            x: {
+                                title: {
+                                    display: true,
+                                    text: 'Time'
+                                }
+                            },
+                            y: {
+                                title: {
+                                    display: true,
+                                    text: 'Count'
+                                }
+                            }
+                        }
+                    }
+                });
+            } catch (error) {
+                console.error('Error loading Cloudflare Analytics:', error);
+            }
+        }
+
+        // Statistics Chart
+        async function loadStatistics() {
+            try {
+                const response = await axios.get('/includes/statistics.php');
+                const data = response.data;
+
+                const ctx = document.getElementById('statisticsChart').getContext('2d');
+                new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: data.labels,
+                        datasets: [{
+                            label: 'Count',
+                            data: data.values,
+                            backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                            borderColor: 'rgba(54, 162, 235, 1)',
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        plugins: {
+                            legend: {
+                                display: false
+                            }
+                        },
+                        scales: {
+                            x: {
+                                title: {
+                                    display: true,
+                                    text: 'Category'
+                                }
+                            },
+                            y: {
+                                title: {
+                                    display: true,
+                                    text: 'Count'
+                                }
+                            }
+                        }
+                    }
+                });
+            } catch (error) {
+                console.error('Error loading statistics:', error);
+            }
+        }
+
+        // Load both charts
+        loadCloudflareAnalytics();
+        loadStatistics();
+    </script>
 </body>
 </html>
