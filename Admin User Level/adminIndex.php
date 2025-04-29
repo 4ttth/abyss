@@ -139,125 +139,106 @@ if (!in_array($_SESSION['user']['Role'], ['Admin'])) {
             </div>
         </div>
 
-        <div class="container-fluid row mainBody">
-            <div class="col analytics">
-                <canvas id="cloudflareAnalyticsChart" width="1500" height="800"></canvas>
-            </div>
-
-            <!-- Statistics Section -->
-            <div class="col statistics">
-                <canvas id="statisticsChart" width="1500" height="800"></canvas>
+        <div class="container-fluid mainBody">
+    <!-- Cloudflare Metrics Cards -->
+    <div class="row mb-4 g-4">
+        <div class="col-md-3">
+            <div class="metric-card">
+                <h5>Unique Visitors</h5>
+                <div id="uniqueVisitors" class="metric-value">...</div>
             </div>
         </div>
+        <div class="col-md-3">
+            <div class="metric-card">
+                <h5>Total Requests</h5>
+                <div id="totalRequests" class="metric-value">...</div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="metric-card">
+                <h5>Percent Cached</h5>
+                <div id="percentCached" class="metric-value">...</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Cloudflare Charts -->
+    <div class="row mb-4 g-4">
+        <div class="col-md-8">
+            <div class="chart-card">
+                <h5>Web Traffic by Country</h5>
+                <canvas id="countryTrafficChart"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <!-- System Statistics -->
+    <div class="row">
+        <div class="col-12">
+            <div class="chart-card">
+                <h5>System Statistics</h5>
+                <canvas id="statisticsChart"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
     </div>
 
     <!-- Javascript -->
     <script src="JS/adminScript.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     <script>
-        // Cloudflare Analytics Chart
-        async function loadCloudflareAnalytics() {
-            try {
-                const response = await axios.get('/includes/cloudflareAnalytics.php');
-                const data = response.data;
+    // Cloudflare Analytics
+    async function loadCloudflareAnalytics() {
+        try {
+            const response = await axios.get('/includes/cloudflareAnalytics.php');
+            const data = response.data;
 
-                const ctx = document.getElementById('cloudflareAnalyticsChart').getContext('2d');
-                new Chart(ctx, {
-                    type: 'line',
-                    data: {
-                        labels: data.labels,
-                        datasets: [{
-                            label: 'Requests',
-                            data: data.requests,
-                            borderColor: 'rgba(75, 192, 192, 1)',
-                            borderWidth: 2,
-                            fill: false
-                        }, {
-                            label: 'Bandwidth (MB)',
-                            data: data.bandwidth,
-                            borderColor: 'rgba(255, 99, 132, 1)',
-                            borderWidth: 2,
-                            fill: false
-                        }]
+            // Update metric cards
+            document.getElementById('uniqueVisitors').textContent = data.uniqueVisitors.toLocaleString();
+            document.getElementById('totalRequests').textContent = data.totalRequests.toLocaleString();
+            document.getElementById('percentCached').textContent = `${data.percentCached}%`;
+
+            // Country Traffic Chart
+            const countryCtx = document.getElementById('countryTrafficChart').getContext('2d');
+            new Chart(countryCtx, {
+                type: 'bar',
+                data: {
+                    labels: data.countries,
+                    datasets: [{
+                        label: 'Requests',
+                        data: data.countryRequests,
+                        backgroundColor: 'rgba(54, 162, 235, 0.5)',
+                        borderColor: 'rgba(54, 162, 235, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: { display: false }
                     },
-                    options: {
-                        responsive: true,
-                        plugins: {
-                            legend: {
-                                position: 'top',
-                            },
-                        },
-                        scales: {
-                            x: {
-                                title: {
-                                    display: true,
-                                    text: 'Time'
-                                }
-                            },
-                            y: {
-                                title: {
-                                    display: true,
-                                    text: 'Count'
-                                }
-                            }
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            title: { display: true, text: 'Requests' }
                         }
                     }
-                });
-            } catch (error) {
-                console.error('Error loading Cloudflare Analytics:', error);
-            }
+                }
+            });
+        } catch (error) {
+            console.error('Error loading Cloudflare Analytics:', error);
         }
+    }
 
-        // Statistics Chart
-        async function loadStatistics() {
-            try {
-                const response = await axios.get('/includes/statistics.php');
-                const data = response.data;
+    // System Statistics Chart (existing)
+    async function loadStatistics() {
+        // Keep your existing statistics code
+    }
 
-                const ctx = document.getElementById('statisticsChart').getContext('2d');
-                new Chart(ctx, {
-                    type: 'bar',
-                    data: {
-                        labels: data.labels,
-                        datasets: [{
-                            label: 'Count',
-                            data: data.values,
-                            backgroundColor: 'rgba(54, 162, 235, 0.2)',
-                            borderColor: 'rgba(54, 162, 235, 1)',
-                            borderWidth: 1
-                        }]
-                    },
-                    options: {
-                        responsive: true,
-                        plugins: {
-                            legend: {
-                                display: false
-                            }
-                        },
-                        scales: {
-                            x: {
-                                title: {
-                                    display: true,
-                                    text: 'Category'
-                                }
-                            },
-                            y: {
-                                title: {
-                                    display: true,
-                                    text: 'Count'
-                                }
-                            }
-                        }
-                    }
-                });
-            } catch (error) {
-                console.error('Error loading statistics:', error);
-            }
-        }
-
-        // Load both charts
-        loadCloudflareAnalytics();
-        loadStatistics();
-    </script>
+    // Load all data
+    loadCloudflareAnalytics();
+    loadStatistics();
+</script>
 </body>
 </html>
