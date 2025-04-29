@@ -298,18 +298,6 @@ $qrcode = (new QRCode)->render($qrURL);
                             <div class="form-group mt-3 col-4">
                                 <label class="form-label title">SQUAD LEVEL</label>
                                 <div class="verifyLevel d-flex align-items-center">
-                                    <!-- Dropdown with Caret -->
-                                    <?php if (!($verificationStatus === 'Pending')) : ?>
-                                    <div class="dropdown-wrapper">
-                                        <select name="Squad_Level" class="form-control plchldr squadLevelDropdown">
-                                            <option value="Amateur">Amateur</option>
-                                            <option value="Collegiate">Collegiate</option>
-                                            <option value="Professional">Professional</option>
-                                        </select>
-                                        <i class="bi bi-caret-down-fill dropdown-icon"></i>
-                                    </div>
-                                    <?php endif; ?>
-
                                     <?php if ($verificationStatus === 'Pending') : ?>
                                         <div class="alert alert-warning">Verification Pending - <?= $verificationLevel ?> Level</div>
                                         <input type="hidden" name="Squad_Level" class="form-control plchldr" value="<?= $verificationLevel ?>">
@@ -683,11 +671,17 @@ $qrcode = (new QRCode)->render($qrURL);
     });
 
     // Use AJAX to refresh player list without reloading
-    setInterval(function() {
+    setInterval(function () {
         fetch('includes/fetchPlayers.inc.php?squad_id=<?= urlencode($squadID) ?>')
             .then(response => response.text())
             .then(data => {
-                document.querySelector('.profiles').innerHTML = data;
+                const profilesContainer = document.querySelector('.profiles');
+                if (profilesContainer) {
+                    profilesContainer.innerHTML = data;
+                }
+            })
+            .catch(error => {
+                console.error('Error fetching player list:', error);
             });
     }, 5000); // Refresh every 5 seconds
     </script>
