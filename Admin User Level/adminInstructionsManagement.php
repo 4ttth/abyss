@@ -251,7 +251,7 @@ $instructions = $pdo->query("SELECT * FROM tbl_instructions ORDER BY Instruction
 
                         <div class="mb-3">
                                 <label class="form-label">STEP 2 TITLE</label>
-                                <input type="text" name="step1_title" class="form-control plchldr" placeholder="Enter Step 1 Title" required>
+                                <input type="text" name="step2_title" class="form-control plchldr" placeholder="Enter Step 1 Title" required>
                         </div>
                         <div class="mb-3">
                             <label class="form-label">STEP 2</label>
@@ -260,7 +260,7 @@ $instructions = $pdo->query("SELECT * FROM tbl_instructions ORDER BY Instruction
 
                         <div class="mb-3">
                                 <label class="form-label">STEP 3 TITLE</label>
-                                <input type="text" name="step1_title" class="form-control plchldr" placeholder="Enter Step 1 Title" required>
+                                <input type="text" name="step3_title" class="form-control plchldr" placeholder="Enter Step 1 Title" required>
                         </div>
                         <div class="mb-3">
                             <label class="form-label">STEP 3</label>
@@ -269,7 +269,7 @@ $instructions = $pdo->query("SELECT * FROM tbl_instructions ORDER BY Instruction
 
                         <div class="mb-3">
                                 <label class="form-label">STEP 4 TITLE</label>
-                                <input type="text" name="step1_title" class="form-control plchldr" placeholder="Enter Step 1 Title" required>
+                                <input type="text" name="step4_title" class="form-control plchldr" placeholder="Enter Step 1 Title" required>
                         </div>
                         <div class="mb-3">
                             <label class="form-label">STEP 4</label>
