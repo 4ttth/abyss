@@ -97,7 +97,7 @@
         <div class="mainContent">
             <!-- Meet the ZeroNine Team -->
             <div class="meetTeamContainer">
-                <img src="IMG/backgrounds/3.png" class="aboutUsPic1" alt="Meet the ZeroNine Team">
+                <img src="IMG/backgrounds/teamZeroNine.PNG" class="aboutUsPic1" alt="Meet the ZeroNine Team">
             </div>
 
             <!-- Mission -->
