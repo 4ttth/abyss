@@ -191,7 +191,7 @@ if (!in_array($_SESSION['user']['Role'], ['Admin'])) {
     // Cloudflare Analytics
     async function loadCloudflareAnalytics() {
         try {
-            const response = await axios.get('/includes/cloudflareAnalytics.php');
+            const response = await axios.get('cloudflareAnalytics.php');
             const data = response.data;
 
             // Update metric cards
@@ -234,7 +234,7 @@ if (!in_array($_SESSION['user']['Role'], ['Admin'])) {
     // System Statistics Chart (existing)
     async function loadStatistics() {
         try {
-                const response = await axios.get('/includes/statistics.php');
+                const response = await axios.get('statistics.php');
                 const data = response.data;
 
                 const ctx = document.getElementById('statisticsChart').getContext('2d');
