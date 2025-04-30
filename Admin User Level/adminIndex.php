@@ -134,7 +134,7 @@ if (!in_array($_SESSION['user']['Role'], ['Admin'])) {
                     ADMIN DASHBOARD
                 </div>
                 <div class="descriptionLeft">
-                    LOG AS OF <strong>MARCH 24, 2025</strong>
+                    LOG AS OF <strong><?= date('F j, Y') ?></strong>
                 </div>
             </div>
 
