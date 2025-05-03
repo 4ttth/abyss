@@ -26,10 +26,10 @@ if (!isset($_SESSION['user'])) {
 }
 
 // Game ID Validation
-if (!preg_match('/^\d{9,11}$/', $_POST['Game_ID'])) {
-    header("Location: playerCreation.php?error=invalid_game_id");
-    exit();
-}
+// if (!preg_match('/^\d{9,11}$/', $_POST['Game_ID'])) {
+//     header("Location: playerCreation.php?error=invalid_game_id");
+//     exit();
+// }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $IGN = $_POST['IGN'];
