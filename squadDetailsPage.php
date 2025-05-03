@@ -10,6 +10,9 @@ if (!$squadID) {
     exit();
 }
 
+$matchCount = 0;
+$winCount = 0;
+$winRate = 0;
 // Fetch squad details
 try {
     $stmt = $pdo->prepare("SELECT * FROM tbl_squadprofile WHERE Squad_ID = ?");
@@ -21,15 +24,37 @@ try {
         exit();
     }
 
+    $stmtMatch = $pdo->prepare("SELECT COUNT(*) 
+        FROM tbl_prooffiles pf
+        INNER JOIN tbl_matchverifications mv 
+        ON pf.Verification_ID = mv.Verification_ID 
+        WHERE mv.Squad_ID = ?");
+    $stmtMatch->execute([$squadID]);
+    $matchCount = (int)$stmtMatch->fetchColumn();
+
+    $stmtWin = $pdo->prepare("SELECT COUNT(*) FROM tbl_matchverifications WHERE Squad_ID = ? AND Game_Result = 'Victory'");
+    $stmtWin->execute([$squadID]);
+    $winCount = (int)$stmtWin->fetchColumn();
+
+    if ($matchCount > 0) {
+        $winRate = round(($winCount / $matchCount) * 100, 2); // Rounded to 2 decimal places
+    }
+
     // Fetch players
     $stmtPlayers = $pdo->prepare("SELECT * FROM tbl_playerprofile WHERE Squad_ID = ?");
     $stmtPlayers->execute([$squadID]);
     $players = $stmtPlayers->fetchAll(PDO::FETCH_ASSOC);
 
     // Fetch public posts only
-    $stmtPosts = $pdo->prepare("SELECT * FROM tbl_squadposts WHERE Squad_ID = ? AND Post_Type = 'public' ORDER BY Timestamp DESC");
-    $stmtPosts->execute([$squadID]);
-    $posts = $stmtPosts->fetchAll(PDO::FETCH_ASSOC);
+    if (isset($_SESSION['user']['Squad_ID'])) {
+        $squadID = $_SESSION['user']['Squad_ID'];
+        // Fetch posts for the squad
+        $stmtPosts = $pdo->prepare("SELECT * FROM tbl_squadposts WHERE Squad_ID = ? AND Post_Type = 'Public' ORDER BY Timestamp DESC");
+        $stmtPosts->execute([$squadID]);
+        $posts = $stmtPosts->fetchAll(PDO::FETCH_ASSOC);
+    } else {
+        $posts = []; // Handle no Squad_ID case
+    }
 
 } catch (PDOException $e) {
     // Handle error
@@ -409,7 +434,7 @@ try {
                 <div class="squadStats">
                     <div class="winRate">
                         <div class="statsContent">
-                            <div class="number">88%</div>
+                        <div class="number" name="win_rate"><?= $winRate ?>%</div>
                         <div class="statsLabel">WIN RATE</div>
                         </div>
                     </div>
@@ -417,7 +442,7 @@ try {
 
                     <div class="winRate">
                         <div class="statsContent">
-                            <div class="number">245</div>
+                        <div class="number" name="matches_count"><?= $matchCount ?></div>
                         <div class="statsLabel">MATCHES</div>
                         </div>
                     </div>
@@ -425,17 +450,30 @@ try {
             </div>
 
             <!-- Main Feed (posts only, no post form) -->
-            <div class="col-6">
-                <div class="feed post">
-                    <?php if (!empty($posts)): ?>
+            <?php if (!empty($posts)): ?>
                         <?php foreach ($posts as $post): ?>
-                            <!-- Same post display as before -->
+                            <div class="post post-item"> <!-- Added post-item for pagination validation -->
+                                <div class="date">
+                                    <?= htmlspecialchars(date('F j, Y', strtotime($post['Timestamp']))); ?>
+                                </div>
+                                <?php if (!empty($post['Image_URL'])): ?>
+                                    <div class="attachedIMG">
+                                        <img src="<?= htmlspecialchars($post['Image_URL']); ?>" alt="Post Image" class="attachedIMG">
+                                    </div>
+                                <?php endif; ?>
+                                <div class="caption">
+                                    <?= htmlspecialchars($post['Content']); ?>
+                                </div>
+                                <?php if (!empty($post['Post_Label'])): ?>
+                                    <div class="postedLabels">
+                                        <div class="labelTag"><?= htmlspecialchars($post['Post_Label']); ?></div>
+                                    </div>
+                                <?php endif; ?>
+                            </div>
                         <?php endforeach; ?>
                     <?php else: ?>
-                        <div class="end">This squad has no public posts.</div>
+                        <div class="post">No posts found.</div>
                     <?php endif; ?>
-                </div>
-            </div>
 
             <!-- Pagination Controls Button -->
             <div class="scrim-pagination pagination-controls">
