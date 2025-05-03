@@ -376,11 +376,17 @@ $unreadMessageCount = countUnreadMessages($pdo, $_SESSION['user']['Squad_ID']);
                                                 }
                                                 echo $scrimver_result ?? ''; 
                                                 ?>
-                                                <?= ($scrim['Squad2_ID'] == $_SESSION['user']['Squad_ID'] ? $scrim['Winner_Score'] ?? '' : $scrim['Loser_Score'] ?? '') ?>
                                             </div>
                                             <div class="dash">-</div>
                                             <div class="theirScore">
-                                                <?= ($scrim['Squad1_ID'] == $_SESSION['user']['Squad_ID'] ? $scrim['Winner_Score'] ?? '' : $scrim['Loser_Score'] ?? '') ?>
+                                            <?php
+                                                foreach ($scrimsverify as $scrimver) {
+                                                    if($scrim['Match_ID'] == $scrimver['Match_ID'] && $_SESSION['user']['Squad_ID'] == $scrimver['Squad_ID']) {
+                                                        $scrimver_result = $scrimver['Opponent_Score'];
+                                                    }
+                                                }
+                                                echo $scrimver_result ?? ''; 
+                                                ?>
                                             </div>
                                         </div>
                                         
