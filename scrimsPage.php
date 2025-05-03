@@ -399,7 +399,7 @@ $unreadMessageCount = countUnreadMessages($pdo, $_SESSION['user']['Squad_ID']);
                                         
                                         <!-- Number of Games -->
                                         <div class="noGames">
-                                            BEST OF <?= ($scrim['Winner_Score'] + $scrim['Loser_Score']) ?? '3' ?>
+                                            BEST OF <?= ($scrim['No_Of_Games']) ?? '3' ?>
                                         </div>
                                         
                                         <!-- Scheduled Time -->
