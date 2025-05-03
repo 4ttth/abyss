@@ -228,7 +228,7 @@
                         <div class="aboutUsBot">
                             With a user-friendly system, we aim to eliminate the hassle of manual scheduling and random opponent searches. Whether you're a casual team looking for practice or a competitive squad aiming for the top, abyss makes scrimmage organized, fair, and accessible. Join us in reshaping the competitive scene — where squads battle, strategies evolve, and legends are made!
                             <br><br>
-                            © FEBRUARY 2025
+                            © MAY 2025
                         </div>
                     </div>  
 
