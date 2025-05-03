@@ -19,6 +19,15 @@ $stmtPosts = $pdo->prepare("SELECT p.*, s.Squad_ID, s.Squad_Name, s.Squad_Acrony
 <!doctype html>
 <html lang="en">
 <head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-5PJVHXE14X"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-5PJVHXE14X');
+</script>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>ABYSS — Discover Public Posts</title>
@@ -46,9 +55,16 @@ $stmtPosts = $pdo->prepare("SELECT p.*, s.Squad_ID, s.Squad_Name, s.Squad_Acrony
                             <div class="logoText">abyss</div>
                         </a>
                         
-                        <form class="searchBar" action="guestSearchResultsPage.php" method="GET">
+                        <!-- <form class="searchBar" action="guestSearchResultsPage.php" method="GET">
                             <input class="searchInput" type="search" name="query" placeholder="Search Squads" aria-label="Search">
                             <button class="searchButton" type="submit">
+                                <img src="IMG/essentials/whiteVer.PNG" alt="Search">
+                            </button>
+                        </form> -->
+
+                        <form class="searchBar" action="guestSearchResultsPage.php" method="GET" onsubmit="return false;">
+                            <input class="searchInput" type="search" name="query" placeholder="Search Squads" aria-label="Search" disabled>
+                            <button class="searchButton" type="submit" disabled>
                                 <img src="IMG/essentials/whiteVer.PNG" alt="Search">
                             </button>
                         </form>
@@ -91,15 +107,22 @@ $stmtPosts = $pdo->prepare("SELECT p.*, s.Squad_ID, s.Squad_Name, s.Squad_Acrony
                         <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
                     </div>
                     <div class="carousel-inner">
-                        <div class="carousel-item active">
-                        <img src="IMG/backgrounds/DiscoverContent/1.jpg" class="d-block w-100" alt="...">
-                        </div>
-                        <div class="carousel-item">
-                        <img src="IMG/backgrounds/DiscoverContent/2.jpg" class="d-block w-100" alt="...">
-                        </div>
-                        <div class="carousel-item">
-                        <img src="IMG/backgrounds/DiscoverContent/3.jpg" class="d-block w-100" alt="...">
-                        </div>
+                        <?php
+                        $carousel = $pdo->query("SELECT * FROM tbl_carousels WHERE Show_Status = 'Shown' LIMIT 1")->fetch();
+                        ?>
+                        <?php if ($carousel): ?>
+                            <div class="carousel-item active">
+                                <img src="<?= htmlspecialchars($carousel['Image1']) ?>" class="d-block w-100" alt="Carousel Image 1">
+                            </div>
+                            <div class="carousel-item">
+                                <img src="<?= htmlspecialchars($carousel['Image2']) ?>" class="d-block w-100" alt="Carousel Image 2">
+                            </div>
+                            <div class="carousel-item">
+                                <img src="<?= htmlspecialchars($carousel['Image3']) ?>" class="d-block w-100" alt="Carousel Image 3">
+                            </div>
+                        <?php else: ?>
+                            <p>No active carousel yet.</p>
+                        <?php endif; ?>
                     </div>
                     <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
                         <span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -111,7 +134,8 @@ $stmtPosts = $pdo->prepare("SELECT p.*, s.Squad_ID, s.Squad_Name, s.Squad_Acrony
                     </button>
                 </div>
             </div>
-
+            
+            <!-- Video AD Content -->
             <div class="row thisMain">
                 <div class="col-2 left">
                     <div class="videoAD">

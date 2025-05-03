@@ -25,9 +25,16 @@ if (!isset($_SESSION['user'])) {
     ];
 }
 
+// Game ID Validation
+if (!preg_match('/^\d{9,11}$/', $_POST['Game_ID'])) {
+    header("Location: playerCreation.php?error=invalid_game_id");
+    exit();
+}
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $IGN = $_POST['IGN'];
-    $Full_Name = $_POST['Full_Name'];
+    $firstName = trim($_POST['First_Name']);
+    $lastName = trim($_POST['Last_Name']);
     $Game_ID = $_POST['Game_ID'];
     $Current_Rank = $_POST['Current_Rank'];
     $Current_Star = $_POST['Current_Star'];
@@ -39,8 +46,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $Hero_3 = $_POST['Hero_3'];
 
     // Insert player data into tbl_playerprofile
-    $stmt = $pdo->prepare("INSERT INTO tbl_playerprofile (Squad_ID, IGN, Full_Name, Game_ID, Current_Rank, Current_Star, Highest_Rank, Highest_Star, Role, Hero_1, Hero_2, Hero_3) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-    $stmt->execute([$squadID, $IGN, $Full_Name, $Game_ID, $Current_Rank, $Current_Star, $Highest_Rank, $Highest_Star, $Role, $Hero_1, $Hero_2, $Hero_3]);
+    $stmt = $pdo->prepare("INSERT INTO tbl_playerprofile (Squad_ID, IGN, First_Name, Last_Name, Game_ID, Current_Rank, Current_Star, Highest_Rank, Highest_Star, Role, Hero_1, Hero_2, Hero_3) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+    $stmt->execute([$squadID, $IGN, $firstName, $lastName, $Game_ID, $Current_Rank, $Current_Star, $Highest_Rank, $Highest_Star, $Role, $Hero_1, $Hero_2, $Hero_3]);
 
     header("Location: includes/logout2.inc.php");
     exit();
@@ -50,6 +57,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <html lang="en">
 
 <head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-5PJVHXE14X"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-5PJVHXE14X');
+</script>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>ABYSS — Solo Player</title>
@@ -75,13 +91,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <label class="form-label">IN-GAME NAME</label>
                 <input type="text" name="IGN" class="form-control plchldr" placeholder="Enter IGN" required>
             </div>
-            <div class="mb-3">
-                <label class="form-label">FULL NAME</label>
-                <input type="text" name="Full_Name" class="form-control plchldr" placeholder="Enter Full Name" required>
+            
+            <!-- Split Full Name into First Name and Last Name -->
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <label class="form-label">FIRST NAME</label>
+                    <input type="text" name="First_Name" class="form-control plchldr" placeholder="Enter First Name" required>
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label">LAST NAME</label>
+                    <input type="text" name="Last_Name" class="form-control plchldr" placeholder="Enter Last Name" required>
+                </div>
             </div>
+
             <div class="mb-3">
                 <label class="form-label">GAME ID</label>
-                <input type="text" name="Game_ID" class="form-control plchldr" placeholder="Enter Game ID" required>
+                <input type="text" name="Game_ID" class="form-control plchldr" placeholder="Enter Game ID" required
+                    pattern="\d{9,11}" title="Game ID must be 9 digits">
             </div>
 
             <!-- Two-Column Layout for Rank -->
@@ -393,8 +419,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         </div>
                     </div>
 
-                    <!-- Javascript -->
+    <!-- Javascript -->
     <script>
+        // For Game ID Validation
+        document.addEventListener('DOMContentLoaded', function () {
+            const gameIdInput = document.querySelector('input[name="Game_ID"]');
+
+            gameIdInput.addEventListener('input', function () {
+                const value = gameIdInput.value;
+                const isValid = /^\d{9,11}$/.test(value);
+
+                if (!isValid) {
+                    gameIdInput.setCustomValidity("Game ID must be between 9 to 11 digits.");
+                } else {
+                    gameIdInput.setCustomValidity("");
+                }
+
+                gameIdInput.reportValidity();
+            });
+        });
+
+        // For Stars Validation
         document.addEventListener('DOMContentLoaded', function() {
             const rankStars = {
                 // Warrior

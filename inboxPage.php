@@ -225,6 +225,15 @@ $unreadMessageCount = countUnreadMessages($pdo, $_SESSION['user']['Squad_ID']);
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-5PJVHXE14X"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-5PJVHXE14X');
+</script>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>ABYSS — Inbox</title>
@@ -727,6 +736,20 @@ $unreadMessageCount = countUnreadMessages($pdo, $_SESSION['user']['Squad_ID']);
         if (messagesContainer.length) {
             messagesContainer.scrollTop(messagesContainer[0].scrollHeight);
         }
+
+                // Handle Enter key in textarea (send message) and Shift+Enter for new line
+                $(document).on('keydown', 'textarea[name="message"]', function(e) {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                $(this).closest('form').submit();
+            }
+        });
+
+        // Auto-resize textarea as user types
+        $(document).on('input', 'textarea[name="message"]', function() {
+            this.style.height = 'auto';
+            this.style.height = (this.scrollHeight) + 'px';
+        });
     });
     </script>
 </body>

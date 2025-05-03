@@ -12,6 +12,15 @@ if (!in_array($_SESSION['user']['Role'], ['Admin'])) {
 <!doctype html>
 <html lang="en">
 <head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-5PJVHXE14X"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-5PJVHXE14X');
+</script>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>ABYSS — Admin</title>
@@ -125,7 +134,7 @@ if (!in_array($_SESSION['user']['Role'], ['Admin'])) {
                     ADMIN DASHBOARD
                 </div>
                 <div class="descriptionLeft">
-                    LOG AS OF <strong>MARCH 24, 2025</strong>
+                    LOG AS OF <strong><?= date('F j, Y') ?></strong>
                 </div>
             </div>
 
@@ -139,12 +148,7 @@ if (!in_array($_SESSION['user']['Role'], ['Admin'])) {
 
         <div class="container-fluid row mainBody">
             <div class="col analytics">
-                <iframe width="1500" height="800" 
-                src="https://lookerstudio.google.com/embed/reporting/71150ab3-cd01-4ce8-b5f2-1d93c8a88937/page/sa3HF?authuser=3" 
-                frameborder="0" style="border:0; padding:0; margin-top:50px" 
-                allowfullscreen 
-                sandbox="allow-storage-access-by-user-activation allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox">
-                </iframe>
+            <iframe width="1500" height="800" src="https://lookerstudio.google.com/embed/reporting/6c61f1b1-81d0-4f6f-8501-14a716f8a451/page/MriIF" frameborder="0" style="border:0" allowfullscreen sandbox="allow-storage-access-by-user-activation allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox"></iframe>
             </div>
         </div>
     </div>

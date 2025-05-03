@@ -87,6 +87,15 @@ $unreadMessageCount = countUnreadMessages($pdo, $_SESSION['user']['Squad_ID']);
 <!doctype html>
 <html lang="en">
 <head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-5PJVHXE14X"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-5PJVHXE14X');
+</script>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>ABYSS — Scrim Matchmaking</title>
@@ -200,12 +209,12 @@ $unreadMessageCount = countUnreadMessages($pdo, $_SESSION['user']['Squad_ID']);
             </div>
 
 
-            <!-- Pagination Controls Button -->
-            <div class="scrim-pagination pagination-controls">
-                <button id="prevPage" class="page-btn prev-btn pagination-button" disabled>Previous</button>
-                <span id="pageInfo" class="page-indicator">Page 1</span>
-                <button id="nextPage" class="page-btn next-btn pagination-button">Next</button>
-            </div>    
+            <!-- Pagination -->
+            <div class="pagination mt-4">
+                <button id="prevPage" class="btn btn-outline-light" disabled>Previous</button>
+                <span id="pageInfo" class="mx-3">Page 1 of 1</span>
+                <button id="nextPage" class="btn btn-outline-light" disabled>Next</button>
+            </div>        
         </div>
    
         <!-- Challenge Modal -->
@@ -326,44 +335,6 @@ $unreadMessageCount = countUnreadMessages($pdo, $_SESSION['user']['Squad_ID']);
     </div>
 
     <!-- Javascript -->
-    <script>
-        // Pagination
-        document.addEventListener('DOMContentLoaded', function () {
-            const postsPerPage = 12; // 12 results per page so that it looks visually pleasing
-            let currentPage = 1;
-            const posts = document.querySelectorAll('.results'); // Results
-            const totalPages = Math.ceil(posts.length / postsPerPage);
-            const prevButton = document.getElementById('prevPage');
-            const nextButton = document.getElementById('nextPage');
-            const pageInfo = document.getElementById('pageInfo');
-
-            function showPage(page) {
-                posts.forEach((post, index) => {
-                    post.style.display = (index >= (page - 1) * postsPerPage && index < page * postsPerPage) ? 'block' : 'none';
-                });
-                pageInfo.textContent = `Page ${page}`;
-                prevButton.disabled = page === 1;
-                nextButton.disabled = page === totalPages;
-            }
-
-            prevButton.addEventListener('click', () => {
-                if (currentPage > 1) {
-                    currentPage--;
-                    showPage(currentPage);
-                }
-            });
-
-            nextButton.addEventListener('click', () => {
-                if (currentPage < totalPages) {
-                    currentPage++;
-                    showPage(currentPage);
-                }
-            });
-
-            // Initialize the first page
-            showPage(currentPage);
-        });
-    </script>
     <script src="JS/matchmakingScript.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 </body>

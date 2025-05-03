@@ -7,6 +7,15 @@ require_once 'includes/signup_view.inc.php';
 <html lang="en">
 
 <head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-5PJVHXE14X"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-5PJVHXE14X');
+</script>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>ABYSS — Signup</title>
@@ -99,7 +108,7 @@ require_once 'includes/signup_view.inc.php';
                         <div class="form-group mt-3">
                             <label class="form-label title">EMAIL</label>
                             <input type="text" name="email" class="form-control plchldr" placeholder="Enter email" 
-                                value="<?php echo isset($_SESSION['signup_form_data']['email']) ? htmlspecialchars($_SESSION['signup_form_data']['email']) : ''; ?>">
+                                value="<?php echo isset($_SESSION['signup_email']) ? htmlspecialchars($_SESSION['signup_email']) : ''; ?>">
                             <?php if (isset($_SESSION['errors_signup']['invalid_email'])): ?>
                                 <div class="text-danger"><?php echo $_SESSION['errors_signup']['invalid_email']; ?></div>
                             <?php endif; ?>
@@ -113,7 +122,7 @@ require_once 'includes/signup_view.inc.php';
                         <div class="form-group mt-3">
                             <label class="form-label title">USERNAME</label>
                             <input type="text" name="username" class="form-control plchldr" placeholder="Enter username" 
-                                value="<?php echo isset($_SESSION['signup_form_data']['username']) ? htmlspecialchars($_SESSION['signup_form_data']['username']) : ''; ?>">
+                                value="<?php echo isset($_SESSION['signup_username']) ? htmlspecialchars($_SESSION['signup_username']) : ''; ?>">
                             <?php if (isset($_SESSION['errors_signup']['username_taken'])): ?>
                                 <div class="text-danger"><?php echo $_SESSION['errors_signup']['username_taken']; ?></div>
                             <?php endif; ?>
@@ -148,7 +157,7 @@ require_once 'includes/signup_view.inc.php';
                             <?php endif; ?>
                         </div>
 
-                        <!-- Display general errors -->
+                        <!-- Display General Errors -->
                         <?php if (isset($_SESSION['errors_signup']['empty_input'])): ?>
                             <div class="alert alert-danger"><?php echo $_SESSION['errors_signup']['empty_input']; ?></div>
                         <?php endif; ?>
@@ -163,7 +172,8 @@ require_once 'includes/signup_view.inc.php';
                     <?php 
                     // Clear errors and form data after displaying them
                     unset($_SESSION['errors_signup']);
-                    unset($_SESSION['signup_form_data']); 
+                    unset($_SESSION['signup_email']);
+                    unset($_SESSION['signup_username']); 
                     ?>
 
                     <?php

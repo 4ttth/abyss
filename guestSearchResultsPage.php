@@ -35,6 +35,15 @@ echo "</script>";
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-5PJVHXE14X"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-5PJVHXE14X');
+</script>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>ABYSS — Search Results</title>
@@ -62,10 +71,16 @@ echo "</script>";
                             <div class="logoText">abyss</div>
                         </a>
                         
-                        <!-- Search Bar -->
-                        <form class="searchBar" action="searchResultsPage.php" method="GET">
+                        <!-- <form class="searchBar" action="guestSearchResultsPage.php" method="GET">
                             <input class="searchInput" type="search" name="query" placeholder="Search Squads" aria-label="Search">
                             <button class="searchButton" type="submit">
+                                <img src="IMG/essentials/whiteVer.PNG" alt="Search">
+                            </button>
+                        </form> -->
+                        
+                        <form class="searchBar" action="guestSearchResultsPage.php" method="GET" onsubmit="return false;">
+                            <input class="searchInput" type="search" name="query" placeholder="Search Squads" aria-label="Search" disabled>
+                            <button class="searchButton" type="submit" disabled>
                                 <img src="IMG/essentials/whiteVer.PNG" alt="Search">
                             </button>
                         </form>

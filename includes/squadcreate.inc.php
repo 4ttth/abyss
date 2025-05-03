@@ -25,6 +25,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
         $squadID = $_SESSION['Squad_ID'];
 
+
         // Insert squad profile
         $sql = "INSERT INTO tbl_squadprofile (Squad_ID, Squad_Name, Squad_Acronym, Squad_Description, Squad_Level)
                 VALUES (:squadID, :squadName, :squadAcr, :squadDesc, :squadLevel)";

@@ -23,7 +23,7 @@ if ($squadID) {
         echo '<div class="role">' . htmlspecialchars($player['Role']) . ' // player 00' . ($index + 1) . '</div>';
         echo '<div class="IGN">' . htmlspecialchars($player['IGN']) . '</div>';
         echo '<div class="detailsTitle">NAME</div>';
-        echo '<div class="detailsDescription">' . htmlspecialchars($player['Full_Name']) . '</div>';
+        echo '<div class="detailsDescription">' . htmlspecialchars(trim(($player['First_Name'] ?? 'Unknown') . ' ' . ($player['Last_Name'] ?? ''))) . '</div>';
         echo '<div class="detailsTitle">GAME ID</div>';
         echo '<div class="detailsDescription">' . htmlspecialchars($player['Game_ID']) . '</div>';
         echo '<div class="detailsTitle">CURRENT RANK</div>';

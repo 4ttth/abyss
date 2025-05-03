@@ -34,6 +34,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         // Handle errors
         if ($errors) {
             $_SESSION["error_login"] = reset($errors);
+            $_SESSION["login_username"] = $username; // Store the username in the session
             header("Location: ../loginPage.php");
             die();
         }
@@ -50,6 +51,9 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             'is_player' => is_player_login($result),
             'Player_ID' => $result["Player_ID"] ?? null
         ];
+
+        // Unset credentials
+        unset($_SESSION["login_username"]);
 
         // Check penalty status
         try {

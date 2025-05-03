@@ -89,6 +89,15 @@ $qrcode = (new QRCode)->render($qrURL);
 <html lang="en">
 
 <head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-5PJVHXE14X"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-5PJVHXE14X');
+</script>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>ABYSS — Squad Creation</title>
@@ -204,11 +213,10 @@ $qrcode = (new QRCode)->render($qrURL);
                             <?php $playerIndex = 1; ?>
                             <?php foreach ($players as $player): ?>
                                 <div class="memberProfile">
-                                    
                                     <div class="role"><?= htmlspecialchars($player['Role']) ?> &nbsp; // &nbsp; <?= htmlspecialchars($player['View_ID']) ?></div>
                                     <div class="IGN"><?= htmlspecialchars($player['IGN']) ?></div>
                                     <div class="detailsTitle">NAME</div>
-                                    <div class="detailsDescription"><?= htmlspecialchars($player['Full_Name']) ?></div>
+                                    <div class="detailsDescription"><?= htmlspecialchars(trim($player['First_Name'] . ' ' . ($player['Last_Name'] ?? ''))) ?></div>
                                     <div class="detailsTitle">GAME ID</div>
                                     <div class="detailsDescription"><?= htmlspecialchars($player['Game_ID']) ?></div>
                                     <div class="detailsTitle">CURRENT RANK</div>
@@ -229,112 +237,72 @@ $qrcode = (new QRCode)->render($qrURL);
                                 <?php $playerIndex += 1; ?>
                             <?php endforeach; ?>
                         </div>
-                    </div>
+                    </div> <!-- Properly close the profiles-wrapper div -->
 
-                    <!-- Title -->
-                    <?php if ($verificationStatus === 'Pending') : ?>
-                    <div class="titleLeft">
-                        CREATE YOUR SQUAD PROFILE
-                    </div>
-                    <?php else : ?>
-                        <div class="titleLeft">
-                        VERIFY YOUR SQUAD LEVEL
-                    </div>
-                    <?php endif;?>
-                    <form action="includes/squadcreate.inc.php" method="post">
+                    <!-- Create Squad Section -->
+                    <div class="create-squad-section">
+                        <!-- Title -->
                         <?php if ($verificationStatus === 'Pending') : ?>
-                        <div class="row">
-                            <!-- Squad Name Field -->
-                            <div class="form-group mt-3 col-8">
-                                <label class="form-label title">SQUAD NAME</label>
-                                <input type="text" name="Squad_Name" class="form-control plchldr"
-                                    placeholder="Enter Squad Name">
-                            </div>
-
-                            <!-- Squad Aronym Field -->
-                            <div class="form-group mt-3 col-4">
-                                <label class="form-label title">SQUAD ACRONYM</label>
-                                <input type="text" name="Squad_Acronym" class="form-control plchldr"
-                                    placeholder="Enter Squad Acronym">
-                            </div>
-                        </div>
-
-                        <!-- Squad Description Field -->
-                        <div class="form-group mt-3">
-                            <label class="form-label title">SQUAD DESCRIPTION</label>
-                            <input type="text" name="Squad_Description" class="form-control plchldr"
-                                placeholder="Enter Squad Description">
-                        </div>
-                        <div class="row align-items-center">
-                            <!-- Squad Level Field -->
-                            <div class="form-group mt-3 col-4">
-                                <label class="form-label title">SQUAD LEVEL</label>
-                                <div class="verifyLevel d-flex align-items-center">
-                                    <!-- Dropdown with Caret -->
-                                    <?php if (!($verificationStatus === 'Pending')) : ?>
-                                    <div class="dropdown-wrapper">
-                                        <select name="Squad_Level" class="form-control plchldr squadLevelDropdown">
-                                            <option value="Amateur">Amateur</option>
-                                            <option value="Collegiate">Collegiate</option>
-                                            <option value="Professional">Professional</option>
-                                        </select>
-                                        <i class="bi bi-caret-down-fill dropdown-icon"></i>
-                                    </div>
-                                    <?php endif; ?>
-
-                                    <?php if ($verificationStatus === 'Pending') : ?>
-                                        <div class="alert alert-warning">Verification Pending - <?= $verificationLevel ?> Level</div>
-                                        <input type="hidden" name="Squad_Level" class="form-control plchldr" value="<?= $verificationLevel ?>">
-                                    <?php else : ?>
-                                        <button type="button" class="btn verifyButton" data-bs-toggle="modal" data-bs-target="#squadVerificationModal">
-                                            VERIFY
-                                        </button>
-                                    <?php endif; ?>
-                                </div>
+                            <div class="titleLeft">
+                                CREATE YOUR SQUAD PROFILE
                             </div>
                         <?php else : ?>
-                        <div class="row align-items-center">
-                            <!-- Squad Level Field -->
-                            <div class="form-group mt-3 col-4">
-                                <label class="form-label title">SQUAD LEVEL</label>
-                                <div class="verifyLevel d-flex align-items-center">
-                                    <!-- Dropdown with Caret -->
-                                    <?php if (!($verificationStatus === 'Pending')) : ?>
-                                    <div class="dropdown-wrapper">
-                                        <select name="Squad_Level" class="form-control plchldr squadLevelDropdown">
-                                            <option value="Amateur">Amateur</option>
-                                            <option value="Collegiate">Collegiate</option>
-                                            <option value="Professional">Professional</option>
-                                        </select>
-                                        <i class="bi bi-caret-down-fill dropdown-icon"></i>
-                                    </div>
-                                    <?php endif; ?>
+                            <div class="titleLeft">
+                                VERIFY YOUR SQUAD LEVEL
+                            </div>
+                        <?php endif; ?>
 
+                        <form action="includes/squadcreate.inc.php" method="post">
+                            <?php if ($verificationStatus === 'Pending') : ?>
+                                <div class="row">
+                                    <!-- Squad Name Field -->
+                                    <div class="form-group mt-3 col-8">
+                                        <label class="form-label title">SQUAD NAME</label>
+                                        <input type="text" name="Squad_Name" class="form-control plchldr" placeholder="Enter Squad Name">
+                                    </div>
+
+                                    <!-- Squad Acronym Field -->
+                                    <div class="form-group mt-3 col-4">
+                                        <label class="form-label title">SQUAD ACRONYM</label>
+                                        <input type="text" name="Squad_Acronym" class="form-control plchldr" placeholder="Enter Squad Acronym">
+                                    </div>
+                                </div>
+
+                                <!-- Squad Description Field -->
+                                <div class="form-group mt-3">
+                                    <label class="form-label title">SQUAD DESCRIPTION</label>
+                                    <input type="text" name="Squad_Description" class="form-control plchldr" placeholder="Enter Squad Description">
+                                </div>
+                            <?php endif; ?>
+
+                            <div class="row align-items-center">
+                                <!-- Squad Level Field -->
+                                <div class="form-group mt-3 col-4">
+                                    <label class="form-label title">SQUAD LEVEL</label>
+                                    <div class="verifyLevel d-flex align-items-center">
+                                        <?php if ($verificationStatus === 'Pending') : ?>
+                                            <div class="alert alert-warning">Verification Pending - <?= $verificationLevel ?> Level</div>
+                                            <input type="hidden" name="Squad_Level" class="form-control plchldr" value="<?= $verificationLevel ?>">
+                                        <?php else : ?>
+                                            <button type="button" class="btn verifyButton" id="verifyButton" data-bs-toggle="modal" data-bs-target="#squadVerificationModal">
+                                                VERIFY
+                                            </button>
+                                        <?php endif; ?>
+                                    </div>
+                                </div>
+
+                                <!-- Empty Column for Spacing -->
+                                <div class="col-4"></div>
+
+                                <!-- Signup Button -->
+                                <div class="col-4 text-end mt-3">
                                     <?php if ($verificationStatus === 'Pending') : ?>
-                                        <div class="alert alert-warning">Verification Pending - <?= $verificationLevel ?> Level</div>
-                                        <input type="hidden" name="Squad_Level" class="form-control plchldr" value="<?= $verificationLevel ?>">
-                                    <?php else : ?>
-                                        <button type="button" class="btn verifyButton" data-bs-toggle="modal" data-bs-target="#squadVerificationModal">
-                                            VERIFY
-                                        </button>
+                                        <button type="submit" class="btn loginButton">CREATE SQUAD</button>
                                     <?php endif; ?>
                                 </div>
                             </div>
-                            <?php endif; ?>
-
-                            <!-- Empty Column for Spacing -->
-                            <div class="col-4"></div>
-
-                            <!-- Signup Button -->
-                            <div class="col-4 text-end mt-3">
-                            <?php if ($verificationStatus === 'Pending') : ?>
-                                <form action="includes/squadcreate.inc.php" method="post">
-                                    <button type="submit" class="btn loginButton">CREATE SQUAD</button>
-                                    <?php endif; ?>
-                                </form>
-                            </div>
-                        </div>
-                    </form>
+                        </form>
+                    </div>
 
                     <!-- END HERE -->
 
@@ -682,14 +650,39 @@ $qrcode = (new QRCode)->render($qrURL);
         });
     });
 
-    // Use AJAX to refresh player list without reloading
-    setInterval(function() {
-        fetch('includes/fetchPlayers.inc.php?squad_id=<?= urlencode($squadID) ?>')
-            .then(response => response.text())
-            .then(data => {
-                document.querySelector('.profiles').innerHTML = data;
-            });
-    }, 5000); // Refresh every 5 seconds
+    document.addEventListener('DOMContentLoaded', function () {
+        const verifyButton = document.getElementById('verifyButton');
+        const profilesContainer = document.querySelector('.profiles');
+
+        function validatePlayerCount() {
+            // Count the number of player profiles
+            const playerProfiles = profilesContainer.querySelectorAll('.memberProfile');
+            const playerCount = playerProfiles.length;
+
+            // Enable the button only if there are 5 or 6 players
+            if (playerCount === 5 || playerCount === 6) {
+                verifyButton.disabled = false;
+            } else {
+                verifyButton.disabled = true;
+            }
+        }
+
+        // Run validation on page load
+        validatePlayerCount();
+
+        // Re-run validation every time the player list is updated
+        setInterval(function () {
+            fetch('includes/fetchPlayers.inc.php?squad_id=<?= urlencode($squadID) ?>')
+                .then(response => response.text())
+                .then(data => {
+                    profilesContainer.innerHTML = data;
+                    validatePlayerCount(); // Re-validate after updating the player list
+                })
+                .catch(error => {
+                    console.error('Error fetching player list:', error);
+                });
+        }, 5000); // Refresh every 5 seconds
+    });
     </script>
     <script src="JS/creatingSquadScript.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>

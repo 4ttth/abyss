@@ -46,7 +46,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     // Get form data
     $ign = trim($_POST['IGN']);
-    $fullName = trim($_POST['Full_Name']);
+    $firstName = trim($_POST['First_Name']);
+    $lastName = trim($_POST['Last_Name']);
     $gameID = trim($_POST['Game_ID']);
     $currentRank = trim($_POST['Current_Rank']);
     $currentStar = (int)$_POST['Current_Star'];
@@ -58,7 +59,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $highestScore = isset($baseScores[$highestRank]) ? $baseScores[$highestRank] + $highestStar : $highestStar;
 
     // Validate required fields
-    if (empty($ign) || empty($fullName) || empty($gameID) || empty($role)) {
+    if (empty($ign) || empty($firstName) || empty($lastName) || empty($gameID) || empty($role)) {
         $_SESSION['error'] = "Please fill in all required player fields";
         header("Location: " . $_SERVER['HTTP_REFERER']);
         exit();
@@ -165,16 +166,17 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
         // Insert player
         $sql = "INSERT INTO tbl_playerprofile (
-                    Squad_ID, IGN, Full_Name, Game_ID, 
+                    Squad_ID, IGN, First_Name, Last_Name, Game_ID, 
                     Current_Rank, Current_Star, Highest_Rank, Highest_Star, Highest_Score, Role,
                     Hero_1, Hero_2, Hero_3
-                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         $stmt = $pdo->prepare($sql);
         $stmt->execute([
             $_SESSION['user']['Squad_ID'],
             $ign,
-            $fullName,
+            $firstName,
+            $lastName,
             $gameID,
             $currentRank,
             $currentStar,

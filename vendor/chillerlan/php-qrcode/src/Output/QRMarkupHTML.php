@@ -38,7 +38,16 @@ class QRMarkupHTML extends QRMarkup{
 		// wrap the snippet into a body when saving to file
 		if($saveToFile){
 			$html = sprintf(
-				'<!DOCTYPE html><html lang="none">%2$s<head>%2$s<meta charset="UTF-8">%2$s'.
+				'<!DOCTYPE html><html lang="none">%2$s<head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-5PJVHXE14X"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-5PJVHXE14X');
+</script>%2$s<meta charset="UTF-8">%2$s'.
 					'<title>QR Code</title></head>%2$s<body>%1$s</body>%2$s</html>',
 				$html,
 				$this->eol

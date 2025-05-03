@@ -57,6 +57,15 @@ try {
 <!doctype html>
 <html lang="en">
 <head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-5PJVHXE14X"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-5PJVHXE14X');
+</script>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>ABYSS — Moderator</title>
@@ -170,7 +179,7 @@ try {
                     MODERATOR DASHBOARD
                 </div>
                 <div class="descriptionLeft">
-                    LOG AS OF <strong>MARCH 24, 2025</strong>
+                    LOG AS OF <strong><?= date('F j, Y') ?></strong>
                 </div>
             </div>
 

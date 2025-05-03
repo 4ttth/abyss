@@ -36,6 +36,17 @@ try {
     die("Database error: " . htmlspecialchars($e->getMessage()));
 }
 
+// Hero check
+$heroPaths = [];
+try {
+    $heroQuery = "SELECT Hero_Name, Path FROM tbl_heroimages";
+    $heroStmt = $pdo->query($heroQuery);
+    $heroPaths = $heroStmt->fetchAll(PDO::FETCH_KEY_PAIR); // Creates [Hero_Name => Path]
+} catch (PDOException $e) {
+    // Handle error if needed
+    die("Error fetching hero data: " . $e->getMessage());
+}
+
 $verificationStatus = 'Pending';
 if (isset($_SESSION['user']['Squad_ID']) && !empty($_SESSION['user']['Squad_ID'])) {
     try {
@@ -227,11 +238,43 @@ function countUnreadMessages($pdo, $squadId) {
 $unreadMessageCount = countUnreadMessages($pdo, $_SESSION['user']['Squad_ID']);
 
 // FIFTHHARMONY
+
+// Fetch leaderboard data
+$leaderboard = [];
+$squadRank = null;
+
+try {
+    $stmtLeaderboard = $pdo->query("SELECT Squad_ID, Squad_Name, ABYSS_Score 
+                                    FROM tbl_squadprofile 
+                                    ORDER BY ABYSS_Score DESC 
+                                    LIMIT 10"); // Fetch top 10 squads
+    $leaderboard = $stmtLeaderboard->fetchAll(PDO::FETCH_ASSOC);
+
+    // Determine the rank of the searched squad
+    foreach ($leaderboard as $index => $squad) {
+        if ((string)$squad['Squad_ID'] === (string)$squadID) {
+            $squadRank = $index + 1; // Rank is index + 1 (1-based)
+            break;
+        }
+    }
+} catch (PDOException $e) {
+    // Handle error silently
+    die("Error fetching leaderboard: " . $e->getMessage());
+}
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-5PJVHXE14X"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-5PJVHXE14X');
+</script>
 <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>ABYSS — Search Results</title>
@@ -340,6 +383,9 @@ $unreadMessageCount = countUnreadMessages($pdo, $_SESSION['user']['Squad_ID']);
                         ID: <?= htmlspecialchars($squadDetails['Squad_ID']) ?>
                     </div>
                     <div class="tabsRow">
+                        <?php if ($squadRank !== null && $squadRank <= 3): ?>
+                            <div class="tabs">Top <?= $squadRank ?> Global Squad</div>
+                        <?php endif; ?>
                         <div class="tabs"><?= htmlspecialchars($squadDetails['Squad_Level']) ?></div>
                     </div>
                     <div class="squadDescription">

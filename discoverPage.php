@@ -93,10 +93,22 @@ if (isset($_SESSION['user']['Squad_ID'])) {
 
     $unreadMessageCount = countUnreadMessages($pdo, $_SESSION['user']['Squad_ID']);
 }
+
+// For Video AD Content Echo
+$activeVideoAd = $pdo->query("SELECT * FROM tbl_videoads WHERE Show_Status = 'Shown' LIMIT 1")->fetch();
 ?>
 <!doctype html>
 <html lang="en">
 <head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-5PJVHXE14X"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-5PJVHXE14X');
+</script>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>ABYSS — Discover Public Posts</title>
@@ -224,7 +236,8 @@ if (isset($_SESSION['user']['Squad_ID'])) {
                     </button>
                 </div>
             </div>
-
+            
+            <!-- Video Content AD -->
             <div class="row thisMain">
                 <div class="col-2 left">
                     <div class="videoAD">

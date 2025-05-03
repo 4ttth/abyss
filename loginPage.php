@@ -1,11 +1,50 @@
 <?php
 session_start();
 require_once 'includes/login_view.inc.php';
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $username = $_POST['username'];
+    $password = $_POST['password'];
+
+    // Store the username in the session
+    $_SESSION['login_username'] = $username;
+
+    // Validate login credentials (example logic)
+    if (empty($username) || empty($password)) {
+        $_SESSION['error_login'] = 'Please fill in all fields.';
+        header('Location: ../loginPage.php');
+        exit();
+    }
+
+    // Example: Check credentials (replace with your actual logic)
+    if ($username !== 'correctUsername' || $password !== 'correctPassword') {
+        $_SESSION['error_login'] = 'Invalid username or password.';
+        header('Location: ../loginPage.php');
+        exit();
+    }
+
+    // If login is successful, clear the session variables
+    unset($_SESSION['login_username']);
+    unset($_SESSION['error_login']);
+
+    // Redirect to the homepage or dashboard
+    header('Location: ../index.php');
+    exit();
+}
 ?>
 
 <!doctype html>
 <html lang="en">
 <head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-5PJVHXE14X"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-5PJVHXE14X');
+</script>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>ABYSS — Login</title>
@@ -119,7 +158,10 @@ require_once 'includes/login_view.inc.php';
                     </form>
 
                     <?php check_login_errors(); ?>
-
+                    <?php
+                    unset($_SESSION['login_username']);
+                    unset($_SESSION['error_login']);
+                    ?>
                 </div>
             </div>
         </div>
