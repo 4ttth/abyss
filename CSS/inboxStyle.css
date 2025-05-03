@@ -480,6 +480,15 @@ form {
     flex-direction: column !important;
 }
 
+/* MESSAGE BOX TRY SIZE */
+.messagesPart {
+    max-height: 400px;
+    overflow-y: auto;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
 .conversationCard {
     position: relative;
     display: flex;

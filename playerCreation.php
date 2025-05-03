@@ -25,6 +25,12 @@ if (!isset($_SESSION['user'])) {
     ];
 }
 
+// Game ID Validation
+if (!preg_match('/^\d{9,11}$/', $_POST['Game_ID'])) {
+    header("Location: playerCreation.php?error=invalid_game_id");
+    exit();
+}
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $IGN = $_POST['IGN'];
     $firstName = trim($_POST['First_Name']);
@@ -100,7 +106,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             <div class="mb-3">
                 <label class="form-label">GAME ID</label>
-                <input type="text" name="Game_ID" class="form-control plchldr" placeholder="Enter Game ID" required>
+                <input type="text" name="Game_ID" class="form-control plchldr" placeholder="Enter Game ID" required
+                    pattern="\d{9,11}" title="Game ID must be 9 digits">
             </div>
 
             <!-- Two-Column Layout for Rank -->
@@ -412,8 +419,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         </div>
                     </div>
 
-                    <!-- Javascript -->
+    <!-- Javascript -->
     <script>
+        // For Game ID Validation
+        document.addEventListener('DOMContentLoaded', function () {
+            const gameIdInput = document.querySelector('input[name="Game_ID"]');
+
+            gameIdInput.addEventListener('input', function () {
+                const value = gameIdInput.value;
+                const isValid = /^\d{9,11}$/.test(value);
+
+                if (!isValid) {
+                    gameIdInput.setCustomValidity("Game ID must be between 9 to 11 digits.");
+                } else {
+                    gameIdInput.setCustomValidity("");
+                }
+
+                gameIdInput.reportValidity();
+            });
+        });
+
+        // For Stars Validation
         document.addEventListener('DOMContentLoaded', function() {
             const rankStars = {
                 // Warrior
