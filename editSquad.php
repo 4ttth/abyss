@@ -88,7 +88,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
 
         $success = "Squad details updated successfully!";
-        header("Location: editSquad.php");
+        header("Location: userHomepage.php");
         exit();
 
     } catch (PDOException $e) {
