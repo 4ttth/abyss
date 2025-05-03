@@ -482,10 +482,10 @@ form {
 
 /* MESSAGE BOX TRY SIZE */
 .messagesPart {
-    max-height: 560px !important;
     flex: 1;
     overflow-y: auto;
     padding: 20px 20px 0px 20px !important;
+    max-height: 560px !important;
 }
 
 .conversationCard {
