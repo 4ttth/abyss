@@ -448,7 +448,7 @@ try {
                     </div>
                 </div>
             </div>
-
+<div class="col-6 feed">
             <!-- Main Feed (posts only, no post form) -->
             <?php if (!empty($posts)): ?>
                         <?php foreach ($posts as $post): ?>
@@ -481,7 +481,7 @@ try {
                 <span id="pageInfo" class="page-indicator">Page 1</span>
                 <button id="nextPage" class="page-btn next-btn pagination-button">Next</button>
             </div>
-
+            </div>
             <!-- Players Column -->
             <div class="col-3" >
                 <div class="squadPlayers">
