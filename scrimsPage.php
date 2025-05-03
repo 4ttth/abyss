@@ -118,6 +118,17 @@ if (isset($_SESSION['user']['Squad_ID'])) {
     $scrims = $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
 
+$scrimsverify = [];
+if (isset($_SESSION['user']['Squad_ID'])) {
+    $squadID = $_SESSION['user']['Squad_ID'];
+    
+    $stmt = $pdo->prepare("SELECT * FROM tbl_scrimslog WHERE Squad_ID = ?");
+
+    // Execute with array of values
+    $stmt->execute($squadID);
+    $scrimsverify = $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+
 // sledgehammer
 // Function to count unread messages
 function countUnreadMessages($pdo, $squadId) {
