@@ -316,6 +316,28 @@ $unreadMessageCount = countUnreadMessages($pdo, $_SESSION['user']['Squad_ID']);
                                     // Case 4: Match hasn't happened yet
                                     $statusClass = 'upcoming';
                                 }
+
+                                foreach ($scrimsverify as $scrimverify) {
+                                    if ($scrim['Match_ID'] == $scrimverify['Match_ID'] && $_SESSION['user']['Squad_ID'] == $scrimverify['Squad_ID']) {
+                                        $statusClass = $scrimverify['Game_Result'];
+                                        switch ($statusClass) {
+                                            case 'Victory':
+                                                $statusClass = 'victory';
+                                                break;
+                                            case 'Defeat':
+                                                $statusClass = 'defeat';
+                                                break;
+                                            case 'Pending':
+                                                $statusClass = 'pendingVerification';
+                                                break;
+                                            case 'Unverified':
+                                                $statusClass = 'unverified';
+                                                break;
+                                            default:
+                                                $statusClass = 'upcoming';
+                                        }
+                                    }
+                                }
                                 ?>
                                 
                                 <div class="scrim-card post-item" data-status="<?= strtolower($statusClass) ?>"> <!-- Added post-item for pagination validation -->
