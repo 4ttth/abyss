@@ -46,8 +46,8 @@ try {
     $players = $stmtPlayers->fetchAll(PDO::FETCH_ASSOC);
 
     // Fetch public posts only
-    if (isset($_SESSION['user']['Squad_ID'])) {
-        $squadID = $_SESSION['user']['Squad_ID'];
+    if (!empty($_GET['id'])) {
+        $squadID = $_GET['id'];
         // Fetch posts for the squad
         $stmtPosts = $pdo->prepare("SELECT * FROM tbl_squadposts WHERE Squad_ID = ? AND Post_Type = 'Public' ORDER BY Timestamp DESC");
         $stmtPosts->execute([$squadID]);
