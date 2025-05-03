@@ -125,7 +125,7 @@ if (isset($_SESSION['user']['Squad_ID'])) {
     $stmt = $pdo->prepare("SELECT * FROM tbl_matchverifications WHERE Squad_ID = ?");
 
     // Execute with array of values
-    $stmt->execute($squadID);
+    $stmt->execute([$squadID]);
     $scrimsverify = $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
 
