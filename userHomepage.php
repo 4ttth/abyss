@@ -6,12 +6,7 @@ require_once 'includes/userhomepage.inc.php'; // Squad details logic
 
 // ====== NEW CODE START ======
 // Initialize user data from session with proper fallback values
-$user = isset($_SESSION['user']) ? $_SESSION['user'] : [
-    'User_ID' => 'N/A',
-    'Username' => 'Guest',
-    'Squad_ID' => 'N/A',
-    'Role' => 'Guest'
-];
+$user = isset($_SESSION['user']) ? $_SESSION['user'] : (header("Location: /includes/logout.inc.php")) && exit;
 
 
 // Initialize squad details with default values
