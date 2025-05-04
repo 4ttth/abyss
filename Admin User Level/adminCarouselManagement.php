@@ -200,7 +200,7 @@ $carousels = $pdo->query("SELECT * FROM tbl_carousels ORDER BY Carousel_ID ASC")
         <!-- Header -->
         <div class="row textBlockLeft">
                 <div class="titleLeft">
-                    INSTRUCTION MANAGEMENT
+                    CAROUSEL MANAGEMENT
                 </div>
                 <div class="descriptionLeft">
                     LOG AS OF <strong>MARCH 24, 2025</strong>
